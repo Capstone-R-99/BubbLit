@@ -1,5 +1,6 @@
 import React from 'react'
 import socket from './socket'
+import { Presence } from 'phoenix'
 
 // 모듈 테스트용 입력 창
 
@@ -11,16 +12,11 @@ class ChatTestModule extends React.Component {
         this.state = {
             chooseChannel: "",
             channel: "",
-            inputMessage: ""
+            inputMessage: "",
+            participants: []
         }
     }
 
-    // componentDidMount() {
-    //     let channel = socket.channel("room:myroom", {})
-    //     channel.join()
-    //         .receive("ok", resp => { console.log("Joined successfully", resp) })
-    //         .receive("error", resp => { console.log("Unable to join", resp) })
-    // }
 
     handleInputMessageSubmit(event) {
         event.preventDefault();
@@ -41,13 +37,25 @@ class ChatTestModule extends React.Component {
 
     handleChooseChannelSubmit(event) {
         event.preventDefault();
+        let presences = {}
         let channelName = "room:" + this.state.chooseChannel
         console.log(channelName)
+        if (this.state.channel != "") {
+
+        }
         this.setState({
-            channel: socket.channel(channelName)
+            channel: socket.channel(channelName, {})
         }, () => {
             this.state.channel.join()
-                .receive("ok", response => { console.log("Joined successfully at " + channelName, response) })
+                .receive("ok", response => {
+                    console.log("Joined successfully at " + channelName, response)
+                    // 채널 입장 성공, Presence에 입장했음을 알림.
+                    this.state.channel.on("presence_state", state => {
+                        presences = Presence.syncState(presences, state)
+                        console.log(presences)
+                    })
+                })
+                .receive("error", resp => { console.log("Unable to join", resp) })
             this.state.channel.on("new_msg", payload => {
                 console.log(payload);
             })

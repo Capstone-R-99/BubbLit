@@ -11,9 +11,10 @@ defmodule Bubblit.Application do
       # Start the Ecto repository
       Bubblit.Repo,
       # Start the endpoint when the application starts
-      BubblitWeb.Endpoint
+      BubblitWeb.Endpoint,
       # Starts a worker by calling: Bubblit.Worker.start_link(arg)
       # {Bubblit.Worker, arg},
+      BubblitWeb.Presence
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

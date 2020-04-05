@@ -18,8 +18,8 @@ defmodule BubblitWeb.RoomChannel do
     {:noreply, socket}
   end
 
-  def handle_in("new_msg", %{"body" => body, "uid" => uid}, socket) do
-    broadcast!(socket, "new_msg", %{uid: uid, body: body})
+  def handle_in("new_msg", %{"body" => body}, socket) do
+    broadcast!(socket, "new_msg", %{body: body})
     {:noreply, socket}
   end
 end

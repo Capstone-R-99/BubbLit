@@ -46,7 +46,10 @@ class ChatTestModule extends React.Component {
         this.setState({
             channel: socket.channel(channelName, {})
         }, () => {
-            this.state.channel.join()
+            // 이해를 돕기 위한 console.log 분리
+            let cur_channel = this.state.channel.join()
+            console.log(cur_channel)
+            cur_channel
                 .receive("ok", response => {
                     console.log("Joined successfully at " + channelName, response)
                     // 채널 입장 성공, Presence에 입장했음을 알림.
@@ -59,6 +62,7 @@ class ChatTestModule extends React.Component {
             this.state.channel.on("new_msg", payload => {
                 console.log(payload);
             })
+
         })
     }
 

@@ -18,9 +18,9 @@ import "phoenix_html"
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import Hello from './Hello'
+import ChatTestModule from './chatTestModule'
 
 
 // This code starts up the React app when it runs in a browser. It sets up the routing
 // configuration and injects the app into a DOM element.
-ReactDOM.render(<Hello />, document.getElementById('react-app'))
+ReactDOM.render(<ChatTestModule />, document.getElementById('react-app'))

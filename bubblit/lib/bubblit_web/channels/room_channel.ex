@@ -1,7 +1,7 @@
 defmodule BubblitWeb.Roomchannel do
   use Phoenix.Channel
 
-  def join("room:" <> room_name, _params, _socket) do
+  def join("room:" <> _room_name, _params, socket) do
     {:ok, socket}
   end
 end

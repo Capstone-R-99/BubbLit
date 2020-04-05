@@ -2,7 +2,7 @@ defmodule BubblitWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", BubblitWeb.RoomChannel
+  channel("room:*", BubblitWeb.RoomChannel)
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

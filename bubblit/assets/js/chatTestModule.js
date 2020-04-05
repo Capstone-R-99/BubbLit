@@ -73,7 +73,7 @@ class ChatTestModule extends React.Component {
             </button>
                 </form>
                 <br />
-                <form onSubmit={this.handleSubmit.bind(this)}>
+                <form onSubmit={this.handleInputMessageSubmit.bind(this)}>
                     <h2> 채팅 입력</h2>
                     <input
                         className="input"

@@ -14,12 +14,17 @@ defmodule Bubblit.Application do
       BubblitWeb.Endpoint,
       # Starts a worker by calling: Bubblit.Worker.start_link(arg)
       # {Bubblit.Worker, arg},
-      BubblitWeb.Presence
+      # 여기부턴 내가 추가함
+      BubblitWeb.Presence,
+      {Bubblit.Room.DynamicSupervisor, strategy: :one_for_one}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Bubblit.Supervisor]
+    opts = [strategy: :one_for_one]
+
+    Util.log("#{__MODULE__} 이 시작됩니다.")
+
     Supervisor.start_link(children, opts)
   end
 

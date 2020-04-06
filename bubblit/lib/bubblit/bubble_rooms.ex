@@ -21,6 +21,14 @@ defmodule Bubblit.BubbleRooms do
     Repo.all(BubbleLog)
   end
 
+  def list_bubble_logs(room_id) do
+    query =
+      from l in BubbleLog,
+        where: l.room_id == ^room_id
+
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single bubble_log.
 
@@ -194,7 +202,7 @@ defmodule Bubblit.BubbleRooms do
       %Ecto.Changeset{source: %Room{}}
 
   """
-  def change_room(%Room{} = room) do
-    Room.changeset(room, %{})
+  def change_room(%Room{} = room, attrs) do
+    Room.changeset(room, attrs)
   end
 end

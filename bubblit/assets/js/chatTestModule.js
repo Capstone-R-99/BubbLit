@@ -13,7 +13,8 @@ class ChatTestModule extends React.Component {
             chooseChannel: "",
             channel: "",
             inputMessage: "",
-            participants: []
+            participants: [],
+            received: ""
         }
     }
 
@@ -41,7 +42,8 @@ class ChatTestModule extends React.Component {
         let channelName = "room:" + this.state.chooseChannel
         console.log(channelName)
         if (this.state.channel != "") {
-
+            this.state.channel.leave()
+                .receive("ok", () => alert("기존 채널을 떠납니다!"))
         }
         this.setState({
             channel: socket.channel(channelName, {})
@@ -60,7 +62,10 @@ class ChatTestModule extends React.Component {
                 })
                 .receive("error", resp => { console.log("Unable to join", resp) })
             this.state.channel.on("new_msg", payload => {
-                console.log(payload);
+                console.log(payload)
+                this.setState({
+                    received: payload['body']
+                })
             })
 
         })
@@ -101,7 +106,7 @@ class ChatTestModule extends React.Component {
                 </button>
                 </form>
                 <br />
-                <font>{this.state.received}</font>
+                <font>채팅 내용: {this.state.received}</font>
             </div>
         )
     }

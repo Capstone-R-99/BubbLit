@@ -2,9 +2,9 @@ defmodule Bubblit.Room.Monitor do
   require Util
   use Agent
 
-  def start_link(initial_state) do
+  def start_link({:room_id, room_id} = initial_state) do
     Util.log(" #{__MODULE__} #{inspect(initial_state)} 가 실행됩니다.")
-    Agent.start_link(fn -> initial_state end, name: via_tuple(initial_state[:room_id]))
+    Agent.start_link(fn -> initial_state end, name: via_tuple(room_id))
   end
 
   defp via_tuple(room_id) do

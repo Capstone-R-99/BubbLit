@@ -16,7 +16,8 @@ defmodule Bubblit.Application do
       # {Bubblit.Worker, arg},
       # 여기부턴 내가 추가함
       BubblitWeb.Presence,
-      {Bubblit.Room.DynamicSupervisor, strategy: :one_for_one}
+      {Bubblit.Room.DynamicSupervisor, strategy: :one_for_one},
+      Bubblit.Room.Registry
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

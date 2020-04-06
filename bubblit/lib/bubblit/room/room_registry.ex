@@ -1,7 +1,7 @@
 defmodule Bubblit.Room.Registry do
   use GenServer
 
-  def start_link do
+  def start_link(_) do
     GenServer.start_link(__MODULE__, nil, name: :room_registry)
   end
 

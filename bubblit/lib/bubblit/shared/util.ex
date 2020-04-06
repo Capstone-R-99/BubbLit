@@ -2,7 +2,7 @@ defmodule Util do
   require Logger
 
   def log(msg) do
-    Logger.info(IO.chardata_to_string(msg))
+    Logger.info(msg)
   end
 
   def log_error(msg) do

@@ -1,0 +1,54 @@
+.chatting {
+    font-size: x-large;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.first-chatter {
+    top:40%;
+    left:50%;
+    position: absolute;
+}
+
+.second-chatter {
+    top: 60%;
+    left: 50%;
+    position: absolute;
+}
+
+.third-chatter {
+    top: 80%;
+    left: 50%;
+    position: absolute;
+}
+
+.fourth-chatter {
+    top: 40%;
+    left: 80%;
+    position: absolute;
+}
+
+.fifth-chatter {
+    top: 60%;
+    left: 80%;
+    position: absolute;
+}
+
+.image-area {
+    border: 1px solid black;
+    width: 30%;
+    box-sizing: border-box;
+    display: block;
+    float: left;
+}
+
+.image-area img {
+    max-width:100%;
+    max-height:100%;
+}
+
+.chat-area {
+    width: 65%;
+    height: 30%;
+    margin-left: 4%;
+    box-sizing: border-box;
+}

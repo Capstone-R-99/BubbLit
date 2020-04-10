@@ -18,7 +18,7 @@ class ChatTestModule extends React.Component {
             inputMessage: "",
             nickname: "",
             participants: [],
-            received: ['', '', '', '', '', '']
+            received: [[], [], [], [], [], []]
         }
     }
 
@@ -90,9 +90,12 @@ class ChatTestModule extends React.Component {
                 }
 
                 let user_idx = this.state.participants.findIndex(find_nickname)
-                console.log(user_idx)
                 let modified_received = this.state.received
-                modified_received[user_idx] = msg
+                if (modified_received[user_idx].length >= 5) {
+                    modified_received[user_idx].shift();
+                }
+
+                modified_received[user_idx].push(msg)
                 this.setState({
                     received: modified_received
                 })
@@ -148,15 +151,36 @@ class ChatTestModule extends React.Component {
                         <img src={Frog} alt="이미지" />
                     </div>
                     <div className="chat-area">
-                        <font className="first-chatter chatting"> 테스트 <br></br> {this.state.received[0]} </font>
-                        <font className="second-chatter chatting"> 테스트{this.state.received[1]} </font>
-                        <font className="third-chatter chatting"> 테스트{this.state.received[2]} </font>
-                        <font className="fourth-chatter chatting"> 테스트{this.state.received[3]} </font>
-                        <font className="fifth-chatter chatting"> 테스트{this.state.received[4]} </font>
-                    </div>
+                        <div className="first-chatter chatting">
+                            <h3>{this.state.participants[0]}</h3>
+                            {this.state.received[0].map((msg, i) => {
+                                return <font key={i}>{msg}<br></br></font>
+                            })} </div>
+                        <div className="second-chatter chatting">
+                            <h3>{this.state.participants[1]}</h3>
+                            {this.state.received[1].map((msg, i) => {
+                                return <font key={i}>{msg}<br></br></font>
+                            })} </div>
+                        <div className="third-chatter chatting">
+                            <h3>{this.state.participants[2]}</h3>
+                            {this.state.received[2].map((msg, i) => {
+                                return <font key={i}>{msg}<br></br></font>
+                            })} </div>
 
-                </div>
-            </div>
+                        <div className="fourth-chatter chatting">
+                            <h3>{this.state.participants[3]}</h3>
+                            {this.state.received[3].map((msg, i) => {
+                                return <font key={i}>{msg}<br></br></font>
+                            })} </div>
+                        <div className="fifth-chatter chatting">
+                            <h3>{this.state.participants[4]}</h3>
+                            {this.state.received[4].map((msg, i) => {
+                                return <font key={i}>{msg}<br></br></font>
+                            })} </div>
+                    </div >
+
+                </div >
+            </div >
         )
     }
 }

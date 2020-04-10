@@ -1,35 +1,39 @@
 .chatting {
     font-size: x-large;
     font-family: 'Courier New', Courier, monospace;
+    width: 20%;
+    height: 15%;
+    border: 2px solid black;
+    border-radius: 5px;
 }
 
 .first-chatter {
     top:40%;
-    left:50%;
+    left:40%;
     position: absolute;
 }
 
 .second-chatter {
     top: 60%;
-    left: 50%;
+    left: 40%;
     position: absolute;
 }
 
 .third-chatter {
     top: 80%;
-    left: 50%;
+    left: 40%;
     position: absolute;
 }
 
 .fourth-chatter {
     top: 40%;
-    left: 80%;
+    left: 70%;
     position: absolute;
 }
 
 .fifth-chatter {
     top: 60%;
-    left: 80%;
+    left: 70%;
     position: absolute;
 }
 

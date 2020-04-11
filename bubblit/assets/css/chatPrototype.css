@@ -1,20 +1,28 @@
+font {
+    line-height: 1.3em;
+}
+
+.roomarea {
+    width:50%;
+}
+
 .chatting {
     font-size: x-large;
-    font-family: 'Courier New', Courier, monospace;
-    width: 20%;
-    height: 15%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 27%;
+    height: 25%;
     border: 2px solid black;
     border-radius: 5px;
 }
 
 .first-chatter {
-    top:40%;
+    top:20%;
     left:40%;
     position: absolute;
 }
 
 .second-chatter {
-    top: 60%;
+    top: 50%;
     left: 40%;
     position: absolute;
 }
@@ -26,20 +34,20 @@
 }
 
 .fourth-chatter {
-    top: 40%;
+    top: 50%;
     left: 70%;
     position: absolute;
 }
 
 .fifth-chatter {
-    top: 60%;
+    top: 80%;
     left: 70%;
     position: absolute;
 }
 
 .image-area {
     border: 1px solid black;
-    width: 30%;
+    width: 50%;
     box-sizing: border-box;
     display: block;
     float: left;

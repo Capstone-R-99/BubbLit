@@ -2,7 +2,7 @@ import React from 'react'
 import socket from './socket'
 import { Presence } from 'phoenix'
 // import { List } from 'semantic-ui-react'
-import Frog from '../static/images/frog.jpeg'
+import Cat from '../static/images/cat.jpg'
 import '../css/chatPrototype.css'
 
 // 모듈 테스트용 입력 창
@@ -154,7 +154,7 @@ class ChatTestModule extends React.Component {
                 <br />
                 <div className="proto-area">
                     <div className="image-area">
-                        <img src={Frog} alt="이미지" />
+                        <img src={Cat} alt="이미지" />
                     </div>
                     <div className="chat-area">
                         <div className="first-chatter chatting">

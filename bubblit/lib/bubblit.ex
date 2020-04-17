@@ -42,6 +42,8 @@ defmodule BubblitWeb do
       import BubblitWeb.ErrorHelpers
       import BubblitWeb.Gettext
       alias BubblitWeb.Router.Helpers, as: Routes
+
+      import Bubblit.Accounts.Auth, only: [signed_in?: 1]
     end
   end
 

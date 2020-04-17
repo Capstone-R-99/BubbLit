@@ -5,7 +5,8 @@ defmodule Bubblit.BubbleRooms.BubbleLog do
   schema "bubble_logs" do
     field :content, :string
     field :room_id, :integer
-    field :user_id, :integer
+
+    belongs_to :user, Bubblit.Accounts.User
 
     timestamps()
   end

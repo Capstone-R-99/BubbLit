@@ -16,16 +16,9 @@ class ChatTestModule extends React.Component {
             chooseChannel: "",
             channel: "",
             inputMessage: "",
-            nickname: "",
             participants: [],
             received: [[], [], [], [], [], []]
         }
-    }
-
-    handleNickname(event) {
-        this.setState({
-            nickname: event.target.value
-        })
     }
 
     handleInputMessageSubmit(event) {
@@ -61,7 +54,7 @@ class ChatTestModule extends React.Component {
                 .receive("ok", () => alert("기존 채널을 떠납니다!"))
         }
         this.setState({
-            channel: socket.channel(channelName, { nickname: this.state.nickname })
+            channel: socket.channel(channelName)
         }, () => {
             // 이해를 돕기 위한 console.log 분리
             let cur_channel = this.state.channel.join()
@@ -73,6 +66,10 @@ class ChatTestModule extends React.Component {
                     this.state.channel.on("presence_state", state => {
                         presences = Presence.syncState(presences, state)
                     })
+                    this.state.channel.on("bubble_history", resp => {
+                        console.log("버블히스토리납시오")
+                        console.dir(resp.history)
+                    })
                 })
                 .receive("error", resp => { console.log("Unable to join", resp) })
 
@@ -82,20 +79,20 @@ class ChatTestModule extends React.Component {
                 // this.setState({
                 //     received: payload['body']
                 // })
-                let nickname = payload['nickname']
+                let user_id = payload['user_id']
                 let msg = payload['body']
                 // 오류가 나면 콜백을 넣어야 할 듯?
-                if (!this.state.participants.includes(nickname)) {
+                if (!this.state.participants.includes(user_id)) {
                     this.setState({
-                        participants: this.state.participants.concat(nickname)
+                        participants: this.state.participants.concat(user_id)
                     })
                 }
 
-                let find_nickname = (element) => {
-                    return element == nickname
+                let find_user_id = (element) => {
+                    return element == user_id
                 }
 
-                let user_idx = this.state.participants.findIndex(find_nickname)
+                let user_idx = this.state.participants.findIndex(find_user_id)
                 let modified_received = this.state.received
                 if (modified_received[user_idx].length >= 5) {
                     modified_received[user_idx].shift();
@@ -113,13 +110,6 @@ class ChatTestModule extends React.Component {
     render() {
         return (
             <div className='roomarea'>
-                <h2> 닉네임 입력...은 이제 안씁니다.</h2>
-                <input
-                    className="input"
-                    type="text"
-                    value={this.state.nickname}
-                    onChange={this.handleNickname.bind(this)}
-                />
                 <form onSubmit={this.handleChooseChannelSubmit.bind(this)}>
                     <h2>채팅방 이름 작성</h2>
                     <input className="input"

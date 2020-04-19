@@ -48,7 +48,7 @@ defmodule BubblitWeb.RoomChannel do
   def handle_in("new_msg", %{"body" => body}, socket) do
     Bubblit.Room.Monitor.add_message(socket.assigns.room_record.id, socket.assigns.user_id, body)
 
-    broadcast!(socket, "new_msg", %{body: body, nickname: socket.assigns.user.name})
+    broadcast!(socket, "new_msg", %{body: body, user_id: socket.assigns.user_id})
 
     {:noreply, socket}
   end

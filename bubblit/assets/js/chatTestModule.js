@@ -80,7 +80,7 @@ class ChatTestModule extends React.Component {
                 //     received: payload['body']
                 // })
 
-                var changes = { 'participants': this.state.participants, 'received': this.state.received }
+                var changes = { 'participants': this.state.participants, 'received': { ...this.state.received } }
 
                 let user_id = payload['user_id']
                 let msg = payload['body']

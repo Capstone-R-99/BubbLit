@@ -140,6 +140,7 @@ defmodule Bubblit.BubbleRooms do
 
   """
   def get_room!(id), do: Repo.get!(Room, id)
+  def get_room(id), do: Repo.get(Room, id)
 
   @doc """
   Creates a room.

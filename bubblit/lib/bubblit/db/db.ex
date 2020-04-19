@@ -10,6 +10,24 @@ defmodule Bubblit.Db do
     room_record
   end
 
+  def get_or_create_room(id, host_user_id) do
+    room_db = Bubblit.BubbleRooms.get_room(id)
+
+    if room_db == nil do
+      create_room("#{host_user_id} 번 id 유저의 임시 방(#{id}번)이다냥!", host_user_id)
+    else
+      room_db
+    end
+  end
+
+  def load_room(title, host_user_id) do
+    # 일단 Default 세팅으로 가보자.
+    attrs = %{title: title, host_user_id: host_user_id, config_value: ""}
+    {:ok, room_record} = Bubblit.BubbleRooms.create_room(attrs)
+
+    room_record
+  end
+
   def change_room_config(room_record, config_value) do
     # 일단 Default 세팅으로 가보자.
     attrs = %{config_value: config_value}

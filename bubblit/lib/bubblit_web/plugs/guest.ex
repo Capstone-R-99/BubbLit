@@ -9,8 +9,8 @@ defmodule BubblitWeb.Plugs.Guest do
       conn
       |> redirect(to: BubblitWeb.Router.Helpers.page_path(conn, :index))
       |> halt()
+    else
+      conn
     end
-
-    conn
   end
 end

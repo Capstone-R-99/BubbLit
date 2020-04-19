@@ -1,5 +1,6 @@
 defmodule BubblitWeb.UserSocket do
   use Phoenix.Socket
+  require Util
 
   ## Channels
   channel("room:*", BubblitWeb.RoomChannel)
@@ -15,8 +16,24 @@ defmodule BubblitWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(params, socket, _connect_info) do
-    {:ok, assign(socket, :user_id, params["user_id"])}
+  def connect(%{"token" => token}, socket, _connect_info) do
+    case Phoenix.Token.verify(socket, "user salt", token, max_age: 86400) do
+      {:ok, user_id} ->
+        user = Bubblit.Accounts.get_user!(user_id)
+        Util.log("#{inspect(user)} login.")
+        socket = assign(socket, :user, user) |> assign(:user_id, user_id)
+        {:ok, socket}
+
+      {:error, error} ->
+        Util.log("#{inspect(error)} error.")
+        :error
+    end
+  end
+
+  def connect(params, _socket, _connect_info) do
+    Util.log_error("has no tokens! #{inspect(params)}")
+
+    :error
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:

@@ -13,7 +13,7 @@ defmodule BubblitWeb.SessionController do
     case Auth.login(auth_params, Repo) do
       {:ok, user} ->
         conn
-        |> put_session(:current_user_id, user.id)
+        |> BubblitWeb.UserController.login_user(user)
         |> put_flash(:info, "Signed in successfully.")
         |> redirect(to: Routes.page_path(conn, :index))
 
@@ -26,7 +26,7 @@ defmodule BubblitWeb.SessionController do
 
   def delete(conn, _params) do
     conn
-    |> delete_session(:current_user_id)
+    |> BubblitWeb.UserController.logout_user()
     |> put_flash(:info, "Signed out successfully.")
     |> redirect(to: Routes.session_path(conn, :new))
   end

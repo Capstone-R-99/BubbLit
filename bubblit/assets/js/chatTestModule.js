@@ -79,34 +79,40 @@ class ChatTestModule extends React.Component {
                 // this.setState({
                 //     received: payload['body']
                 // })
+
+                var changes = { 'participants': this.state.participants, 'received': this.state.received }
+
                 let user_id = payload['user_id']
                 let msg = payload['body']
-                // 오류가 나면 콜백을 넣어야 할 듯?
-                if (!this.state.participants.includes(user_id)) {
-                    this.setState({
-                        participants: this.state.participants.concat(user_id)
-                    })
-                }
 
-                let find_user_id = (element) => {
-                    return element == user_id
-                }
+                changes = this.addNewMessageToChangesInplace(this.state, user_id, msg)
 
-                let user_idx = this.state.participants.findIndex(find_user_id)
-                let modified_received = this.state.received
-                if (modified_received[user_idx].length >= 5) {
-                    modified_received[user_idx].shift();
-                }
-
-                modified_received[user_idx].push(msg)
-                this.setState({
-                    received: modified_received
-                })
+                this.setState(changes)
             })
 
         })
-    }
 
+    }
+    addNewMessageToChangesInplace(changes, user_id, msg) {
+        let notInChanges = (changes.hasOwnProperty('participants') && changes['participants'].includes(user_id)) == false;
+        if (notInChanges) {
+            changes.participants = changes.participants.concat(user_id)
+        }
+
+        let find_user_id = (element) => {
+            return element == user_id
+        }
+
+        let user_idx = changes.participants.findIndex(find_user_id)
+        let modified_received = changes.received
+        if (modified_received[user_idx].length >= 5) {
+            modified_received[user_idx].shift();
+        }
+
+        changes.received[user_idx] = modified_received[user_idx].concat(msg)
+
+        return changes
+    }
     render() {
         return (
             <div className='roomarea'>

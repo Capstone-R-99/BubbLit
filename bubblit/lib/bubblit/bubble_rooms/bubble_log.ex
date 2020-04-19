@@ -2,6 +2,7 @@ defmodule Bubblit.BubbleRooms.BubbleLog do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [:id, :content, :room_id, :user_id, :inserted_at]}
   schema "bubble_logs" do
     field :content, :string
     field :room_id, :integer

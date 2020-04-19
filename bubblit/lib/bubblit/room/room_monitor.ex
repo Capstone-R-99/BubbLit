@@ -4,6 +4,11 @@ defmodule Bubblit.Room.Monitor do
 
   def start_link({:room_id, room_id} = initial_state) do
     Util.log(" #{__MODULE__} #{inspect(initial_state)} 가 실행됩니다.")
+
+    # 역순 저장임.
+    history = Bubblit.Db.read_bubble_log(room_id) |> Enum.reverse()
+
+    initial_state = %{history: history, room_id: room_id}
     Agent.start_link(fn -> initial_state end, name: via_tuple(room_id))
   end
 
@@ -11,17 +16,24 @@ defmodule Bubblit.Room.Monitor do
     {:via, Bubblit.Room.Registry, {:room_monitor, room_id}}
   end
 
-  def add_message(room_id, message) do
-    GenServer.cast(via_tuple(room_id), {:add_message, message})
+  def add_message(room_id, user_id, message) do
+    Agent.update(via_tuple(room_id), fn state -> handle_add_message(state, user_id, message) end)
   end
 
   def get_messages(room_id) do
-    GenServer.call(via_tuple(room_id), :get_messages)
+    Agent.get(via_tuple(room_id), fn state -> handle_get_messages(state) end)
   end
 
+  def handle_get_messages(state) do
+    Map.get(state, :history, [])
   end
 
+  def handle_add_message(state, user_id, message) do
+    Util.log("user_id #{user_id} add_message #{message}")
+    {:ok, bubble} = Bubblit.Db.create_bubble_log(state.room_id, user_id, message)
+    history = [bubble | Map.get(state, :history, [])]
 
+    Map.put(state, :history, history)
   end
 
   # 여기 아래는 참고용

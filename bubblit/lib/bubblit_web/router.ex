@@ -9,8 +9,6 @@ defmodule BubblitWeb.Router do
     plug(:fetch_flash)
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
-    plug BubblitWeb.Plugs.Auth
-    plug(:put_user_token)
   end
 
   pipeline :api do
@@ -27,7 +25,7 @@ defmodule BubblitWeb.Router do
   end
 
   scope "/", BubblitWeb do
-    pipe_through [:browser, BubblitWeb.Plugs.Auth]
+    pipe_through [:browser, BubblitWeb.Plugs.Auth, :put_user_token]
 
     delete "/logout", SessionController, :delete
 

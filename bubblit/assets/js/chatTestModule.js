@@ -33,7 +33,7 @@ class ChatTestModule extends React.Component {
         if (this.state.inputMessage == "") {
             return
         }
-        this.state.channel.push("new_msg", { body: this.state.inputMessage, nickname: this.state.nickname })
+        this.state.channel.push("new_msg", { body: this.state.inputMessage })
         this.setState({
             inputMessage: ""
         })
@@ -113,7 +113,7 @@ class ChatTestModule extends React.Component {
     render() {
         return (
             <div className='roomarea'>
-                <h2> 닉네임 입력. 반드시 닉네임 먼저 쓰고 아래 두개 할 것.</h2>
+                <h2> 닉네임 입력...은 이제 안씁니다.</h2>
                 <input
                     className="input"
                     type="text"

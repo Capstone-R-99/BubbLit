@@ -8,6 +8,8 @@
 // from the params if you are not using authentication.
 import { Socket } from "phoenix"
 
+console.log("주목!!!!!!!!!!!!!!!! token = " + window.userToken)
+
 let socket = new Socket("/socket", { params: { token: window.userToken } })
 
 // When you connect, you'll often need to authenticate the client.

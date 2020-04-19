@@ -21,6 +21,8 @@ defmodule BubblitWeb.RoomChannel do
 
   # 그냥 메세지 브로드캐스트할때 닉네임 추가했음.
   def handle_in("new_msg", %{"body" => body}, socket) do
+    Bubblit.Db.create_bubble_log(1, socket.assigns.user_id, body)
+
     broadcast!(socket, "new_msg", %{body: body, nickname: socket.assigns.user.name})
 
     {:noreply, socket}

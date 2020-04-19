@@ -19,20 +19,12 @@ defmodule Bubblit.Room.Monitor do
     GenServer.call(via_tuple(room_id), :get_messages)
   end
 
-  def get_record_state_id(id) do
-    Util.log("get_record_state_id #{id}")
-    get_record_state(id) |> Map.get(id)
   end
 
-  def get_record_state(id) do
-    Util.log("get_record_state #{id}")
-    Agent.get(__MODULE__, fn state -> get_record_state(state, id) end)
+
   end
 
-  def step_record_update(id, step_record) do
-    Util.log("step_record_update #{id} #{step_record}")
-    Agent.get_and_update(__MODULE__, fn state -> step_record_update(state, id, step_record) end)
-  end
+  # 여기 아래는 참고용
 
   def get_record_state(state, _id) do
     state
@@ -57,5 +49,20 @@ defmodule Bubblit.Room.Monitor do
     # Util.log("record #{inspect(record)}가 갱신.#{inspect(new_record)}로 됨여.")
 
     {state, Map.put(state, id, step_record)}
+  end
+
+  def get_record_state_id(id) do
+    Util.log("get_record_state_id #{id}")
+    get_record_state(id) |> Map.get(id)
+  end
+
+  def get_record_state(id) do
+    Util.log("get_record_state #{id}")
+    Agent.get(__MODULE__, fn state -> get_record_state(state, id) end)
+  end
+
+  def step_record_update(id, step_record) do
+    Util.log("step_record_update #{id} #{step_record}")
+    Agent.get_and_update(__MODULE__, fn state -> step_record_update(state, id, step_record) end)
   end
 end

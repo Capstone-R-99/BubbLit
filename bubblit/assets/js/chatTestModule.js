@@ -69,6 +69,14 @@ class ChatTestModule extends React.Component {
                     this.state.channel.on("bubble_history", resp => {
                         console.log("버블히스토리납시오")
                         console.dir(resp.history)
+                        var changes = { 'participants': this.state.participants, 'received': { ...this.state.received } }
+                        resp.history.forEach(history => {
+                            let user_id = history['user_id']
+                            let msg = history['content']
+
+                            changes = this.addNewMessageToChangesInplace(this.state, user_id, msg)
+                        })
+                        this.setState(changes)
                     })
                 })
                 .receive("error", resp => { console.log("Unable to join", resp) })

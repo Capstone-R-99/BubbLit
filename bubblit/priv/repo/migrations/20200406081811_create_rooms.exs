@@ -11,6 +11,5 @@ defmodule Bubblit.Repo.Migrations.CreateRooms do
 
       timestamps()
     end
-
   end
 end

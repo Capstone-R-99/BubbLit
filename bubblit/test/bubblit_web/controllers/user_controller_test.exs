@@ -4,7 +4,10 @@ defmodule BubblitWeb.UserControllerTest do
   alias Bubblit.Accounts
 
   @create_attrs %{encrypted_password: "some encrypted_password", name: "some name"}
-  @update_attrs %{encrypted_password: "some updated encrypted_password", name: "some updated name"}
+  @update_attrs %{
+    encrypted_password: "some updated encrypted_password",
+    name: "some updated name"
+  }
   @invalid_attrs %{encrypted_password: nil, name: nil}
 
   def fixture(:user) do
@@ -75,6 +78,7 @@ defmodule BubblitWeb.UserControllerTest do
     test "deletes chosen user", %{conn: conn, user: user} do
       conn = delete(conn, Routes.user_path(conn, :delete, user))
       assert redirected_to(conn) == Routes.user_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.user_path(conn, :show, user))
       end

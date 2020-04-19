@@ -10,6 +10,7 @@ defmodule BubblitWeb.Plugs.Guest do
       |> redirect(to: BubblitWeb.Router.Helpers.page_path(conn, :index))
       |> halt()
     end
+
     conn
   end
 end

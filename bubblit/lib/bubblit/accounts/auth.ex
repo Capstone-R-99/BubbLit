@@ -6,7 +6,9 @@ defmodule Bubblit.Accounts.Auth do
     user = repo.get_by(User, name: params["name"])
 
     case authenticate(user, params["password"]) do
-      true -> {:ok, user}
+      true ->
+        {:ok, user}
+
       error ->
         Util.log(inspect(error))
 
@@ -16,11 +18,11 @@ defmodule Bubblit.Accounts.Auth do
 
   defp authenticate(user, password) do
     if user do
-        case Encryption.validate_password(user, password) do
-          # 갑자기 email이?
-          {:ok, validated_user} -> true
-          {:error, _} -> nil
-        end
+      case Encryption.validate_password(user, password) do
+        # 갑자기 email이?
+        {:ok, _validated_user} -> true
+        {:error, _} -> nil
+      end
     else
       nil
     end

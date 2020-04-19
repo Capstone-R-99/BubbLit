@@ -42,7 +42,10 @@ defmodule Bubblit.BubbleRoomsTest do
 
     test "update_bubble_log/2 with valid data updates the bubble_log" do
       bubble_log = bubble_log_fixture()
-      assert {:ok, %BubbleLog{} = bubble_log} = BubbleRooms.update_bubble_log(bubble_log, @update_attrs)
+
+      assert {:ok, %BubbleLog{} = bubble_log} =
+               BubbleRooms.update_bubble_log(bubble_log, @update_attrs)
+
       assert bubble_log.content == "some updated content"
       assert bubble_log.room_id == 43
       assert bubble_log.user_id == 43
@@ -50,7 +53,10 @@ defmodule Bubblit.BubbleRoomsTest do
 
     test "update_bubble_log/2 with invalid data returns error changeset" do
       bubble_log = bubble_log_fixture()
-      assert {:error, %Ecto.Changeset{}} = BubbleRooms.update_bubble_log(bubble_log, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               BubbleRooms.update_bubble_log(bubble_log, @invalid_attrs)
+
       assert bubble_log == BubbleRooms.get_bubble_log!(bubble_log.id)
     end
 
@@ -69,9 +75,27 @@ defmodule Bubblit.BubbleRoomsTest do
   describe "rooms" do
     alias Bubblit.BubbleRooms.Room
 
-    @valid_attrs %{config_value: "some config_value", host_name: "some host_name", is_anonymous: true, is_private: true, title: "some title"}
-    @update_attrs %{config_value: "some updated config_value", host_name: "some updated host_name", is_anonymous: false, is_private: false, title: "some updated title"}
-    @invalid_attrs %{config_value: nil, host_name: nil, is_anonymous: nil, is_private: nil, title: nil}
+    @valid_attrs %{
+      config_value: "some config_value",
+      host_name: "some host_name",
+      is_anonymous: true,
+      is_private: true,
+      title: "some title"
+    }
+    @update_attrs %{
+      config_value: "some updated config_value",
+      host_name: "some updated host_name",
+      is_anonymous: false,
+      is_private: false,
+      title: "some updated title"
+    }
+    @invalid_attrs %{
+      config_value: nil,
+      host_name: nil,
+      is_anonymous: nil,
+      is_private: nil,
+      title: nil
+    }
 
     def room_fixture(attrs \\ %{}) do
       {:ok, room} =

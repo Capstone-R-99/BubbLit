@@ -9,6 +9,5 @@ defmodule Bubblit.Repo.Migrations.CreateBubbleLogs do
 
       timestamps()
     end
-
   end
 end

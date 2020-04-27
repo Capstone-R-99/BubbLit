@@ -11,6 +11,8 @@ function mapReduxDispatchToReactProps(dispatch) {
     return {
         enterRoom: function (title, roomlist) {
             dispatch({ type: 'ENTER_CHAT', title: title, roomlist: roomlist })
+        refreshRoomList: function (room_list) {
+            dispatch({ type: 'REFRESH_ROOM_LIST', room_list: room_list })
         }
     }
 }

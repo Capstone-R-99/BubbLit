@@ -1,7 +1,22 @@
 import React, { Component } from 'react'
 import { Button, Table } from 'semantic-ui-react'
+import axios from 'axios'
+
 
 export default class Lobby extends Component {
+    componentDidMount() {
+        // then 안에서 this를 쓰기위함...
+        var self = this;
+        axios.get('/api/room/get/')
+            .then(function (response) {
+                console.dir(response);
+                let room_list = response.data.data;
+                self.props.refreshRoomList(room_list);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
 
     render() {
         var content = [];

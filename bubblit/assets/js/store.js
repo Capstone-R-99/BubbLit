@@ -32,6 +32,10 @@ export default createStore(function (state, action) {
     if (action.type === 'CHAT') {
         return { ...state, contents: action.contents, participants: action.participants }
     }
+    if (action.type === 'REFRESH_ROOM_LIST') {
+        //channel 구독해지 및 state 초기화
+        return { ...state, roomList: action.room_list }
+    }
     if (action.type === 'EXIT') {
         //channel 구독해지 및 state 초기화
         return { ...state, mode: 'lobby', channel: '', contents: [[], [], [], [], []], participants: [] }

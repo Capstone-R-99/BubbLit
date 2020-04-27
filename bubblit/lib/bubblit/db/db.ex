@@ -10,14 +10,12 @@ defmodule Bubblit.Db do
     room_record
   end
 
-  def get_or_create_room(id, host_user_id) do
-    room_db = Bubblit.BubbleRooms.get_room(id)
+  def create_room(id, host_user_id) do
+    create_room("#{host_user_id} 번 id 유저의 임시 방(#{id}번)이다냥!", host_user_id)
+  end
 
-    if room_db == nil do
-      create_room("#{host_user_id} 번 id 유저의 임시 방(#{id}번)이다냥!", host_user_id)
-    else
-      room_db
-    end
+  def get_room(id) do
+    Bubblit.BubbleRooms.get_room(id)
   end
 
   def load_room(title, host_user_id) do

@@ -1,5 +1,14 @@
 import { createStore } from 'redux'
 import { Socket } from 'phoenix'
+
+function GetRoomById(roomList, roomId) {
+    var findLambda = (room) => {
+        return room.id == roomId
+    };
+
+    return roomList.find(findLambda);
+}
+
 export default createStore(function (state, action) {
     if (state === undefined) {
         state = {
@@ -27,7 +36,12 @@ export default createStore(function (state, action) {
     if (action.type === 'ENTER_CHAT') {
         // 아래 코드에서 socket을 연결시키고, 방에 들어감과 동시에 channel에 접속시켜준다.
         state.socket.connect();
-        return { ...state, roomList: action.roomlist, mode: action.title, channel: state.socket.channel('room:' + action.title, { nickname: state.userName }) }
+        var room = GetRoomById(state.roomList, action.room_id)
+        return {
+            ...state,
+            mode: room.title,
+            channel: state.socket.channel('room:' + room.id, { nickname: state.userName })
+        }
     }
     if (action.type === 'CHAT') {
         return { ...state, contents: action.contents, participants: action.participants }

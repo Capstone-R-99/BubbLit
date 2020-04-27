@@ -9,16 +9,20 @@ defmodule BubblitWeb.RoomChannel do
 
     case Integer.parse(room_id) do
       {room_id, _remainer} ->
-        room_record = Bubblit.Db.get_or_create_room(room_id, socket.assigns.user_id)
-        Bubblit.Room.DynamicSupervisor.start_child(room_id)
-        send(self(), :after_join)
+        if room_record = Bubblit.Db.get_room(room_id) do
+          Bubblit.Room.DynamicSupervisor.start_child(room_id)
+          send(self(), :after_join)
 
-        socket =
-          assign(socket, :room_record, room_record) |> assign(:id, inspect(socket.transport_pid))
+          socket =
+            assign(socket, :room_record, room_record)
+            |> assign(:id, inspect(socket.transport_pid))
 
-        Logger.info("user id #{socket.assigns.user_id} joined to room id #{room_id}.")
+          Logger.info("user id #{socket.assigns.user_id} joined to room id #{room_id}.")
 
-        {:ok, %{body: "어서와"}, socket}
+          {:ok, %{body: "welcome to room id #{room_id}"}, socket}
+        else
+          {:error, %{reason: "invalid room id #{room_id}"}}
+        end
 
       :error ->
         {:error, %{reason: "invalid channel name"}}

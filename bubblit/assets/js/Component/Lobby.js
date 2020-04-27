@@ -30,9 +30,10 @@ export default class Lobby extends Component {
             }
             else {
                 active.push(<Button action={{ index: i }} onClick={function (e, data) {
-                    // 방정보 갱신은 나중에 하자
-                    //_roomList[data.action.index].current += 1;
-                    this.props.enterRoom(_roomList[data.action.index].title, _roomList);
+                    var room_id = _roomList[data.action.index].id;
+                    console.log(data.action.index);
+                    console.log(room_id);
+                    this.props.enterRoom(room_id);
                 }.bind(this)}>join</Button>)
             }
             content.push(

@@ -143,7 +143,8 @@ export default class ChatModule extends Component {
         return message
     }
     handleUpdate() {
-        console.log(this.scrollbarRef.current.scrollToBottom());
+        //console.log(this.scrollbarRef.current.scrollToBottom());
+        this.scrollbarRef.current.scrollToBottom()
         //this.scrollbarRef.scrollbar.scrollToBottom()
     }
     sendChat() {

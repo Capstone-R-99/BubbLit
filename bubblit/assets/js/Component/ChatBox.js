@@ -4,6 +4,7 @@ import { Rnd } from "react-rnd"
 import { Scrollbars, scrollToBottom } from 'react-custom-scrollbars';
 import '../../css/chatModule.css'
 
+//해야댈거 -> chatmodule에서 chatbox로 필요한거 다 옮기고 연동하고, ref 이용해서 맨 아래로 땡겨주면 ㅇㅋ
 export default class ChatBox extends Component {
     render() {
         return (

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Divider, Input, Button, Icon, Form } from 'semantic-ui-react'
 import { Rnd } from "react-rnd"
+import { Scrollbars } from 'react-custom-scrollbars';
 import '../../css/chatModule.css'
 
 export default class ChatModule extends Component {
@@ -65,7 +66,8 @@ export default class ChatModule extends Component {
         let user_idx = changes.participants.findIndex(find_user_id)
         let modified_contents = changes.contents;
         if (modified_contents[user_idx].length >= 5) {
-            modified_contents[user_idx].shift();
+            //스크롤바 테스트를 위해 잠시 지워둠
+            //modified_contents[user_idx].shift();
         }
 
         changes.contents[user_idx] = modified_contents[user_idx].concat(msg)
@@ -92,7 +94,6 @@ export default class ChatModule extends Component {
 
                     // 아랫부분 동작 원리를 알기위해 장황한 코딩을 했으나, 추후 수정예정임돠
                     onDragStop={(e, d) => {
-                        console.log(temp);
                         var tempx = this.state.x;
                         var tempy = this.state.y;
                         tempx[temp] = d.x;
@@ -104,8 +105,8 @@ export default class ChatModule extends Component {
                         var temph = this.state.height;
                         var tempx = this.state.x;
                         var tempy = this.state.y;
-                        tempw[temp] = ref.style.width;
-                        temph[temp] = ref.style.height;
+                        tempw[temp] = ref.style.width.slice(0, -2);
+                        temph[temp] = ref.style.height.slice(0, -2);
                         tempx[temp] = position.x;
                         tempy[temp] = position.y;
                         this.setState({
@@ -119,12 +120,24 @@ export default class ChatModule extends Component {
                     <div className='general'>
                         <h2>user_id: {i}</h2>
                         <div>
-                            {this.props.contents[temp].map((msg, i) => {
-                                return <div className='message' key={i}>{msg}<br></br></div>
-                            })}
+                            <Scrollbars
+                                className='scrollbar'
+                                onUpdate={() => {
+                                    const scrollbar = document.getElementsByClassName('scrollbar');
+                                    console.log(scrollbar[temp].scrollTop);
+                                    scrollbar[temp].scrollTop = 999999;
+                                }}
+                                style={{ width: this.state.width[temp] - 70, height: this.state.height[temp] - 90 }}>
+                                <div>
+                                    {this.props.contents[temp].map((msg, i) => {
+                                        return <div className='message' key={i}>{msg}<br></br></div>
+                                    })}
+                                </div>
+                            </Scrollbars>
                         </div>
+
                     </div>
-                </Rnd>
+                </Rnd >
             )
         }
         return message
@@ -149,7 +162,7 @@ export default class ChatModule extends Component {
         return (
             <div>
                 {this.chatboxRenderer()}
-                <div >
+                <div>
                     <Rnd enableResizing='false' size={{ width: '400', height: '30' }}>
                         <Form onSubmit={function (e, data) { this.sendChat() }.bind(this)}>
                             <Form.Input
@@ -165,7 +178,7 @@ export default class ChatModule extends Component {
                         >Exit Room</Button>
                     </Rnd>
                 </div>
-            </div >
+            </div>
         )
     }
 }

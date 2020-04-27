@@ -3,6 +3,8 @@ import { Button, Grid, Divider } from 'semantic-ui-react'
 import store from '../store'
 import Lobby from '../Container/Lobby'
 import Room from '../Container/Room'
+import CreateRoom from './CreateRoom'
+
 
 class Home extends Component {
 
@@ -22,7 +24,7 @@ class Home extends Component {
 
     mode() {
         if (this.state.mode === 'lobby') {
-            return <Lobby></Lobby>;
+            return <div><Lobby></Lobby> <CreateRoom></CreateRoom></div>;
         }
         else {
             return <Room></Room>;

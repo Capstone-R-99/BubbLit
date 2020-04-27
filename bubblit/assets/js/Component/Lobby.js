@@ -27,7 +27,7 @@ export default class Lobby extends Component {
             var active = [];
             var room = _roomList[i];
             if (room.current >= room.limit) {
-                active.push(<Button active='false'>full</Button>)
+                active.push(<Button active={false}>full</Button>)
             }
             else {
                 active.push(<Button action={{ index: i }} onClick={function (e, data) {

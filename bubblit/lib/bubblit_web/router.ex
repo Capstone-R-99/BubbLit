@@ -13,6 +13,7 @@ defmodule BubblitWeb.Router do
 
   pipeline :api do
     plug(:accepts, ["json"])
+    plug(:fetch_session)
   end
 
   scope "/", BubblitWeb do
@@ -30,9 +31,23 @@ defmodule BubblitWeb.Router do
     delete "/logout", SessionController, :delete
 
     # 왠진 모르겠는데 이게 없으면 그냥 index가 안되더라...
+    get "/", PageController, :index
+
+    # 왠진 모르겠는데 이게 없으면 그냥 index가 안되더라...
     get "/main", PageController, :index
 
-    get "/*path", PageController, :index
+    # get "/*path", PageController, :index
+  end
+
+  scope "/api", BubblitWeb do
+    pipe_through [:api]
+    resources "/room/get", RoomController, only: [:index, :show]
+  end
+
+  scope "/api", BubblitWeb do
+    pipe_through [:api, BubblitWeb.Plugs.Auth, :put_user_token]
+
+    resources "/room/make", RoomController, except: [:index, :show]
   end
 
   defp put_user_token(conn, _) do

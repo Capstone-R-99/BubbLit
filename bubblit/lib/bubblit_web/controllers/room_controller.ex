@@ -6,13 +6,17 @@ defmodule BubblitWeb.RoomController do
 
   action_fallback BubblitWeb.FallbackController
 
+  # 전체적으로 권한 체크 필요.
+
   def index(conn, _params) do
     rooms = BubbleRooms.list_rooms()
     render(conn, "index.json", rooms: rooms)
   end
 
-  def create(conn, %{"room" => room_params}) do
-    with {:ok, %Room{} = room} <- BubbleRooms.create_room(room_params) do
+  def create(conn, %{"title" => room} = room_params) do
+    with user_id = Plug.Conn.get_session(conn, :current_user_id),
+         room_params = Map.put(room_params, "host_user_id", user_id),
+         {:ok, %Room{} = room} <- BubbleRooms.create_room(room_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.room_path(conn, :show, room))

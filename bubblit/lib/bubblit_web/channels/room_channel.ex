@@ -53,6 +53,21 @@ defmodule BubblitWeb.RoomChannel do
     {:noreply, socket}
   end
 
+  def handle_in("img_link", %{"body" => body}, socket) do
+    # 특정 유저가 이미지 링크를 업로드, 해당 이미지 링크를 타 유저들에게 브로드캐스트해주는 함수.
+    broadcast!(socket, "img_link", %{body: body, user_id: socket.assigns.user_id})
+
+    {:noreply, socket}
+  end
+
+  def handle_in("youtube_link", %{"body" => body}, socket) do
+    # 특정 유저가 유튜브 링크를 업로드, 해당 이미지 링크를 타 유저들에게 브로드캐스트해주는 함수.
+    # 유튜브 링크 손질하는 건 프론트에서 할지, 백에서 할지?
+    broadcast!(socket, "youtube_link", %{body: body, user_id: socket.assigns.user_id})
+
+    {:noreply, socket}
+  end
+
   # def handle_in("update_step", %{"body" => body}, socket) do
   #   Logger.info("update_step을 받음. 근데 길이가 #{String.length(body)}")
   #   id = socket.assigns.record.id

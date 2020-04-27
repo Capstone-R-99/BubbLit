@@ -11,8 +11,6 @@ defmodule BubblitWeb.RoomView do
   end
 
   def render("room.json", %{room: room}) do
-    %{id: room.id,
-      id: room.id,
-      title: room.title}
+    %{id: room.id, title: room.title}
   end
 end

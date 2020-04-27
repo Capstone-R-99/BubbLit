@@ -25,7 +25,8 @@ export default class Lobby extends Component {
         var i = 0;
         while (i < _roomList.length) {
             var active = [];
-            if (_roomList[i].current >= _roomList[i].limit) {
+            var room = _roomList[i];
+            if (room.current >= room.limit) {
                 active.push(<Button active='false'>full</Button>)
             }
             else {
@@ -40,7 +41,7 @@ export default class Lobby extends Component {
                 <Table.Body>
                     <Table.Row>
                         <Table.Cell>
-                            {_roomList[i].id + 1}
+                            {_roomList[i].id}
                         </Table.Cell>
                         <Table.Cell>
                             {_roomList[i].title}

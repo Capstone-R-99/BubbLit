@@ -76,7 +76,7 @@ export default class ChatBox extends Component {
                             //scrollbar[this.props.temp].scrollTop(100);
                             //scrollbar[this.props.temp].scrollbar.scrollToBottom();
                             //}}
-                            style={{ width: this.state.width[this.props.temp] - 10, height: this.state.height[this.props.temp] - 50 }}>
+                            style={{ height: this.state.height[this.props.temp] - 50 }}>
                             {this.props.contents[this.props.temp].map((msg, i) => {
                                 return <div className='message' key={i}>{msg}<br></br></div>
                             })}

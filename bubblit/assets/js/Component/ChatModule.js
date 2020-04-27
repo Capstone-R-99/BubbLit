@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Divider, Input, Button, Icon, Form } from 'semantic-ui-react'
 import { Rnd } from "react-rnd"
-import { Scrollbars } from 'react-custom-scrollbars';
+import { Scrollbars, scrollToBottom } from 'react-custom-scrollbars';
 import '../../css/chatModule.css'
 
 export default class ChatModule extends Component {
@@ -17,6 +17,7 @@ export default class ChatModule extends Component {
         }
         console.log('channelInitializer called');
         this.channelInitializer();
+        this.scrollbarRef = React.createRef();
     }
 
     channelInitializer() {
@@ -119,30 +120,32 @@ export default class ChatModule extends Component {
                 >
                     <div className='general'>
                         <h2>user_id: {i}</h2>
-                        <div>
-                            <Scrollbars
-                                className='scrollbar'
-                                onUpdate={() => {
-                                    const scrollbar = document.getElementsByClassName('scrollbar');
-                                    console.log(scrollbar[temp].scrollTop);
-                                    scrollbar[temp].scrollTop = 999999;
-                                }}
-                                style={{ width: this.state.width[temp] - 70, height: this.state.height[temp] - 90 }}>
-                                <div>
-                                    {this.props.contents[temp].map((msg, i) => {
-                                        return <div className='message' key={i}>{msg}<br></br></div>
-                                    })}
-                                </div>
-                            </Scrollbars>
-                        </div>
-
+                        <Scrollbars
+                            className='scrollbar'
+                            ref={this.scrollbarRef}
+                            onUpdate={this.handleUpdate.bind(this)}
+                            //onUpdate={() => {
+                            //this.scrollBar.scrollToBottom();
+                            //const scrollbar = document.getElementsByClassName('scrollbar');
+                            //console.log(scrollbar[temp]);
+                            //scrollbar[temp].scrollTop(100);
+                            //scrollbar[temp].scrollbar.scrollToBottom();
+                            //}}
+                            style={{ width: this.state.width[temp] - 10, height: this.state.height[temp] - 50 }}>
+                            {this.props.contents[temp].map((msg, i) => {
+                                return <div className='message' key={i}>{msg}<br></br></div>
+                            })}
+                        </Scrollbars>
                     </div>
                 </Rnd >
             )
         }
         return message
     }
-
+    handleUpdate() {
+        console.log(this.scrollbarRef.current.scrollToBottom());
+        //this.scrollbarRef.scrollbar.scrollToBottom()
+    }
     sendChat() {
         if (this.state.inputMessage == '')
             return
@@ -159,6 +162,7 @@ export default class ChatModule extends Component {
     }
 
     render() {
+
         return (
             <div>
                 {this.chatboxRenderer()}

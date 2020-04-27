@@ -1,16 +1,8 @@
 .chatarea {
     font-size: large;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    width: 27%;
-    height: 25%;
     border: 2px solid black;
     border-radius: 5px;
-}
-
-.general {
-    top:10%;
-    left:10%;
-    position: absolute;
 }
 
 .message {

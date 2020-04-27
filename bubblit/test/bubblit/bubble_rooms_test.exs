@@ -156,4 +156,65 @@ defmodule Bubblit.BubbleRoomsTest do
       assert %Ecto.Changeset{} = BubbleRooms.change_room(room)
     end
   end
+
+  describe "rooms" do
+    alias Bubblit.BubbleRooms.Room
+
+    @valid_attrs %{id: 42, title: 42}
+    @update_attrs %{id: 43, title: 43}
+    @invalid_attrs %{id: nil, title: nil}
+
+    def room_fixture(attrs \\ %{}) do
+      {:ok, room} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> BubbleRooms.create_room()
+
+      room
+    end
+
+    test "list_rooms/0 returns all rooms" do
+      room = room_fixture()
+      assert BubbleRooms.list_rooms() == [room]
+    end
+
+    test "get_room!/1 returns the room with given id" do
+      room = room_fixture()
+      assert BubbleRooms.get_room!(room.id) == room
+    end
+
+    test "create_room/1 with valid data creates a room" do
+      assert {:ok, %Room{} = room} = BubbleRooms.create_room(@valid_attrs)
+      assert room.id == 42
+      assert room.title == 42
+    end
+
+    test "create_room/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = BubbleRooms.create_room(@invalid_attrs)
+    end
+
+    test "update_room/2 with valid data updates the room" do
+      room = room_fixture()
+      assert {:ok, %Room{} = room} = BubbleRooms.update_room(room, @update_attrs)
+      assert room.id == 43
+      assert room.title == 43
+    end
+
+    test "update_room/2 with invalid data returns error changeset" do
+      room = room_fixture()
+      assert {:error, %Ecto.Changeset{}} = BubbleRooms.update_room(room, @invalid_attrs)
+      assert room == BubbleRooms.get_room!(room.id)
+    end
+
+    test "delete_room/1 deletes the room" do
+      room = room_fixture()
+      assert {:ok, %Room{}} = BubbleRooms.delete_room(room)
+      assert_raise Ecto.NoResultsError, fn -> BubbleRooms.get_room!(room.id) end
+    end
+
+    test "change_room/1 returns a room changeset" do
+      room = room_fixture()
+      assert %Ecto.Changeset{} = BubbleRooms.change_room(room)
+    end
+  end
 end

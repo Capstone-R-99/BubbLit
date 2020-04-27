@@ -13,7 +13,6 @@ export default class ShareSpace extends Component {
         super(props);
         this.state = {
             imageurl: '',
-            imageurlinput: '',
             docurl: '',
             youtubeurl: '',
             channel: ''
@@ -61,7 +60,8 @@ export default class ShareSpace extends Component {
             { menuItem: 'Log', render: () => <Tab.Pane className="sharespace-tab">ChatLog</Tab.Pane> },
             {
                 menuItem: 'IMG', render: () => <Tab.Pane className="sharespace-tab"><ImagePanel
-                    imgurl={this.state.imageurl} /></Tab.Pane>
+                    imgurl={this.state.imageurl}
+                    channel={this.state.channel} /></Tab.Pane>
             },
         ]
 
@@ -71,13 +71,6 @@ export default class ShareSpace extends Component {
                     menu={{ color: 'blue', attatched: false, tabular: false }}
                     panes={panes}
                 />
-                <input
-                    className="input"
-                    type="text"
-                    value={this.state.imageurlinput}
-                    onChange={this.handleImageUrlInput.bind(this)}
-                />
-                <button onClick={this.handleImageUrlClick.bind(this)}>이미지 변경</button>
             </div>
 
         )

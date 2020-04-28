@@ -31,11 +31,16 @@ class Home extends Component {
         }
     }
 
+    userLogout() {
+        document.getElementById('logout-link').getElementsByTagName('a')[0].click()
+    }
+
     render() {
         var rendered = this.mode();
         return (
             <div>
                 <h1>BubbLIT Prototype😊</h1>
+                <button onClick={this.userLogout.bind(this)}>로그아웃</button>
                 {rendered}
             </div>
         );

@@ -12,12 +12,12 @@
       <script>console.log("sdfdsfsdfds");</script>
       <script>window.userToken = "<%= assigns[:user_token] %>";</script>
     <nav>
-      <div class="nav-wrapper primary-dark-color">
+      <div class="nav-wrapper primary-dark-color" style="display:none;">
         <a href="/" class="brand-logo">Bubblit Login Page</a>
-     
+
         <!-- Dropdown Structure User actions -->
         <ul id="user-actions" class="dropdown-content">
-          <li><%= link "Logout", to: Routes.session_path(@conn, :delete), method: :delete %></li>
+          <li id="logout-link"><%= link "Logout", to: Routes.session_path(@conn, :delete), method: :delete %></li>
         </ul>
 
         <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -29,7 +29,7 @@
       </div>
     </nav>
     <%= render @view_module, @view_template, assigns %>
-      <%# <%= inspect(assigns) %> %>
+      <%# <%= inspect(assigns) %>
       <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

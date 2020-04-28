@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import gitmerge from './../../../static/images/gitmerge.gif'
 
 export default class ImagePanel extends Component {
     // 웹에서 이미지 링크 업로드 or/and 서버에 직접 업로드??

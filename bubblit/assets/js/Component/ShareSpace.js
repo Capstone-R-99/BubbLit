@@ -32,6 +32,11 @@ export default class ShareSpace extends Component {
                         imageurl: payload['body']
                     })
                 })
+                this.state.channel.on("youtube_link", payload => {
+                    this.setState({
+                        youtubeurl: payload['body']
+                    })
+                })
             })
                 .receive("error", resp => { console.log("Unable to join", resp) })
         })
@@ -53,7 +58,11 @@ export default class ShareSpace extends Component {
 
     render() {
         const panes = [
-            { menuItem: 'Youtube', render: () => <Tab.Pane className="sharespace-tab"><YoutubePanel /></Tab.Pane> },
+            {
+                menuItem: 'Youtube', render: () => <Tab.Pane className="sharespace-tab"><YoutubePanel
+                    youtubeurl={this.state.youtubeurl}
+                    channel={this.state.channel} /></Tab.Pane>
+            },
             {
                 menuItem: 'Docs', render: () => <Tab.Pane className="sharespace-tab"><DocsPanel /></Tab.Pane>
             },

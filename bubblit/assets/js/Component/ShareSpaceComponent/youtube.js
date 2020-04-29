@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactPlayer from 'react-player'
 import './../../../css/shareSpace.css'
 
 export default class YoutubePanel extends Component {
@@ -34,11 +35,11 @@ export default class YoutubePanel extends Component {
     render() {
         return (
             <div className="sharespace-tab">
-                <iframe width="100%"
+                <ReactPlayer url={this.props.youtubeurl}
+                    width="100%"
                     height="80%"
-                    src={this.props.youtubeurl}
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                ></iframe>
+                    playing="true"
+                    controls="true" />
                 <input
                     className="input"
                     type="text"

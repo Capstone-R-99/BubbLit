@@ -72,6 +72,13 @@ defmodule BubblitWeb.RoomChannel do
     {:noreply, socket}
   end
 
+  def handle_in("youtube_current_play", %{"body" => body}, socket) do
+    # 유튜브 링크의 현재 재생 시간을 브로드캐스트해주는 함수.
+    broadcast!(socket, "youtube_current_play", %{body: body, user_id: socket.assigns.user_id})
+
+    {:noreply, socket}
+  end
+
   # def handle_in("update_step", %{"body" => body}, socket) do
   #   Logger.info("update_step을 받음. 근데 길이가 #{String.length(body)}")
   #   id = socket.assigns.record.id

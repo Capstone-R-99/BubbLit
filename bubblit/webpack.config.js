@@ -38,6 +38,6 @@ module.exports = (env, options) => ({
   },
   plugins: [
     new MiniCssExtractPlugin({ filename: '../css/app.css' }),
-    new CopyWebpackPlugin([{ from: 'assets/static/', to: '../' }])
+    new CopyWebpackPlugin([{ from: 'assets/static/', to: '../' }]),
   ]
 });

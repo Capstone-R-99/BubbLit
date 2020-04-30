@@ -8,6 +8,21 @@ export default class YoutubePanel extends Component {
         super(props)
         this.state = {
             youtubeurlinput: '',
+            playedSecond: 0
+        }
+    }
+    // props가  constructor나 componentDidMount() 에서 렌더링이 안됨....
+    // 테스트 결과 channel 객체가 생성되는 것보다 이 유튜브 패널 렌더링이 더 빠름.
+    // 따라서, 초반에 channel을 불러봤자 unidentified임...
+    // 그래서 props가 업데이트 될 때 (= Sharespace.state.channel에 채널이 할당될 때)
+    // 구독을 시작함.
+
+    componentDidUpdate(prevProps) {
+        if (this.props.channel !== prevProps.channel) {
+            this.props.channel.on("youtube_current_play", payload => {
+                console.log(payload['body'])
+                this.player.seekTo(parseFloat(payload['body']))
+            })
         }
     }
 
@@ -20,9 +35,6 @@ export default class YoutubePanel extends Component {
 
     handleYoutubeUrlClick(event) {
         event.preventDefault();
-        // 데모는 해야 하니까 단순무식하게 하드코딩 해놨고 하는방법은 고민해보겠음
-        // 현재는 https://www.youtube.com/watch?v=eYXlssuDyi8 이런 링크가 있으면 = 뒤가 영상 ID니까 이거 짤라서 붙이는거임.
-        // 유튜브 영상 켜고 주소창에 떠있는 주소 복붙해서 가능.
         let ytb_id = this.state.youtubeurlinput.split("=")
         let ytb_embed_link = "https://www.youtube.com/embed/" + ytb_id[1]
         this.props.channel.push("youtube_link", { body: ytb_embed_link })
@@ -31,15 +43,33 @@ export default class YoutubePanel extends Component {
         })
     }
 
+    handleProgress(state) {
+        /* 유튜브 재생에 맞춰 실시간으로 현재 재생 시간이 업데이트 됨. */
+        this.setState({
+            playedSecond: state.playedSeconds
+        })
+    }
+
+    handleYoutubeTimeClick() {
+        this.props.channel.push("youtube_current_play", { body: this.state.playedSecond })
+    }
+
+    ref = player => {
+        // ref로 연결함으로서 인스턴스처럼 아래의 ReactPlayer를 부를 수 있음.
+        // ex) this.player.getCurrentTime()
+        this.player = player
+    }
 
     render() {
         return (
             <div className="sharespace-tab">
                 <ReactPlayer url={this.props.youtubeurl}
+                    ref={this.ref}
                     width="100%"
                     height="80%"
-                    playing="true"
-                    controls="true" />
+                    playing={true}
+                    controls={true}
+                    onProgress={this.handleProgress.bind(this)} />
                 <input
                     className="input"
                     type="text"
@@ -47,6 +77,8 @@ export default class YoutubePanel extends Component {
                     onChange={this.handleYoutubeUrlInput.bind(this)}
                 />
                 <button onClick={this.handleYoutubeUrlClick.bind(this)}>유튜브 변경</button>
+                <button onClick={this.handleYoutubeTimeClick.bind(this)}>유튜브 재생시간 변경</button>
+                <font>현재 재생시간 : {this.state.playedSecond}</font>
             </div>
         )
     }

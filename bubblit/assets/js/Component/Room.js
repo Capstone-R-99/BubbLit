@@ -26,11 +26,13 @@ export default class Chat extends Component {
 
     // ResizableBox에 초기 사이즈(width, height)는 숫자만 받음 => %값으로 줄 수 없음.
     // 따라서, window 창 크기를 계산해서 직접 %를 계산해서 줘야 할듯.
+    // Grid가 사실상 유명무실해서 실제로 사용하기 쉽도록 사이즈 맞춤. 
+    // 오른쪽에 여분의 공간 남는건 나중에 생각해보자...
     render() {
         return (
             <div>
                 <h2>Room '{this.props.mode}'</h2>
-                <Grid divided>
+                <Grid columns={2} divided>
                     <ResizableBox
                         width={this.state.windowWidth * 0.4}
                         height={this.state.windowHeight * 0.8}

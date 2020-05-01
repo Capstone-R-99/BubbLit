@@ -8,6 +8,8 @@ import '../../css/chatModule.css'
 export default class ChatModule extends Component {
     constructor(props) {
         super(props);
+        console.log(window.innerWidth)
+        console.log(window.innerHeight)
         this.state = {
             // 방에 나갓다 들어와도 커스텀값이 유지되도록 state로 빼봣음, store로 옮기거나, 수정예정
             width: [400, 400, 400, 400, 400, 400],
@@ -15,6 +17,8 @@ export default class ChatModule extends Component {
             x: [0, 450, 0, 450, 0, 450],
             y: [0, 0, 300, 300, 600, 600],
             inputMessage: '',
+            chatInputboxX: window.innerWidth * 0.4,
+            chatInputboxY: window.innerHeight * 0.8
         }
         console.log('channelInitializer called');
         this.channelInitializer();
@@ -133,28 +137,37 @@ export default class ChatModule extends Component {
         따라서, Form.Input을 Form과 input으로 분리함.
         @참고 : https://stackoverflow.com/questions/53420516/react-ref-binding-results-in-typeerror-cannot-read-property-focus-of-null
 
-        위치조절은 CSS로 부탁함
+        채팅 입력창 위치의 경우, 해당 div 안에서만 최초 위치 설정이 가능함. 따라서 div 설정을 먼저 해야 제대로 옮길 수 있을 거고, 현재는 구석에 뒀음.
         */
         return (
             <div>
                 {this.chatboxRenderer()}
                 <div>
-                    <Rnd enableResizing='false' size={{ width: '400', height: '30' }}>
+                    <Rnd enableResizing='false'
+                        size={{ width: '400', height: '30' }}
+                        position={{ x: this.state.chatInputboxX, y: this.state.chatInputboxY }}
+                        onDragStop={(e, d) => {
+                            this.setState({ chatInputboxX: d.x, chatInputboxY: d.y });
+                        }}>
                         <Form onSubmit={function (e, data) { this.sendChat() }.bind(this)}>
-                            <Form.Field>
-                                <input
-                                    ref={this.chatInput}
-                                    placeholder='drag here to move inputspace!!'
-                                    value={this.state.inputMessage}
-                                    onChange={this.handleInputMessage.bind(this)}
-                                />
-                                <Button type='submit'>Chat</Button>
-                            </Form.Field>
+                            <Form.Group>
+                                <Form.Field>
+                                    <input
+                                        ref={this.chatInput}
+                                        placeholder='drag here to move inputspace!!'
+                                        value={this.state.inputMessage}
+                                        onChange={this.handleInputMessage.bind(this)}
+                                    />
+                                    <Button type='submit'>Chat</Button>
+                                    <Button onClick={function (e, data) {
+                                        this.props.exitRoom(this.props.channel);
+                                    }.bind(this)}
+                                    >Exit Room</Button>
+                                </Form.Field>
+                            </Form.Group>
+
                         </Form>
-                        <Button onClick={function (e, data) {
-                            this.props.exitRoom(this.props.channel);
-                        }.bind(this)}
-                        >Exit Room</Button>
+
                     </Rnd>
                 </div>
             </div>

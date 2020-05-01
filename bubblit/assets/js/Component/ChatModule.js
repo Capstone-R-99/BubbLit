@@ -96,7 +96,7 @@ export default class ChatModule extends Component {
         return message
     }
 
-    sendChat(e) {
+    sendChat() {
         if (this.state.inputMessage == '')
             return
         this.props.sendChat(this.props.channel, this.state.inputMessage);

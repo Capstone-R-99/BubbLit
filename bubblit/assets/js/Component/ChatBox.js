@@ -19,23 +19,38 @@ export default class ChatBox extends Component {
         this.scrollbarRef = React.createRef();
     }
 
+    componentDidMount() {
+        //console.log('new chatbox rendered!');
+        this.handleUpdate();
+    }
+
+    addAllLength(contents) {
+        let sum = 0;
+        for (var cont in contents) {
+            sum += contents[cont];
+        }
+        return sum
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.addAllLength(prevProps.contents) === this.addAllLength(this.props.contents))
+            return;
+        //console.log('chatbox did updated!');
+        this.handleUpdate();
+    }
+
     handleUpdate() {
         if (this.scrollbarRef.current === null)
             return
         else {
-            this.scrollbarRef.current.scrollTop(10000);
+            this.scrollbarRef.current.scrollToBottom();
         }
-        //this.forceUpdate();
-        //this.scrollbarRef.current.scrollToBottom()
-
-
     }
 
     render() {
         return (
             <div>
                 <Rnd
-                    onChange={this.handleUpdate()}
                     className='chatarea'
                     size={{ width: this.state.width[this.props.temp], height: this.state.height[this.props.temp] }}
                     minWidth='200' minHeight='200'
@@ -77,9 +92,6 @@ export default class ChatBox extends Component {
                         <Scrollbars
                             className='scrollbar'
                             ref={this.scrollbarRef}
-                            onUpdate={this.handleUpdate.bind(this)}
-                            //onChange={this.handleUpdate.bind(this)}
-
                             autoHide={true}
                             style={{ height: this.state.height[this.props.temp] - 50 }}>
                             {this.props.contents[this.props.temp].map((msg, i) => {

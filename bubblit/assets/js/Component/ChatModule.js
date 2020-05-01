@@ -18,6 +18,8 @@ export default class ChatModule extends Component {
         }
         console.log('channelInitializer called');
         this.channelInitializer();
+        this.handleEnterKeyPress = this.handleEnterKeyPress.bind(this)
+        this.chatInput = React.createRef()
     }
 
     channelInitializer() {
@@ -106,21 +108,48 @@ export default class ChatModule extends Component {
             inputMessage: event.target.value
         })
     }
+    /*
+    엔터키 입력시에 자동으로 채팅창으로 가도록 eventhandler를 추가함.
+    다른 페이지 갈 때(채팅창이 화면에서 사라질 때) 엔터키를 입력받는 handler를 제거함.  */
+
+    componentDidMount() {
+        document.addEventListener('keydown', this.handleEnterKeyPress);
+    }
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.handleEnterKeyPress);
+    }
+
+
+    handleEnterKeyPress(e) {
+        // e.keycode는 deprecated되었음.
+        if (e.key === "Enter") {
+            this.chatInput.current.focus()
+        }
+    }
 
     render() {
+        /*
+        Enter 키로 상호작용하려면 ref를 추가해야 함. 그런데, Form.Input은 functional한 컴포넌트라 ref를 추가할수 없음.
+        따라서, Form.Input을 Form과 input으로 분리함.
+        @참고 : https://stackoverflow.com/questions/53420516/react-ref-binding-results-in-typeerror-cannot-read-property-focus-of-null
 
+        위치조절은 CSS로 부탁함
+        */
         return (
             <div>
                 {this.chatboxRenderer()}
                 <div>
                     <Rnd enableResizing='false' size={{ width: '400', height: '30' }}>
                         <Form onSubmit={function (e, data) { this.sendChat() }.bind(this)}>
-                            <Form.Input
-                                action={{ icon: 'chat' }}
-                                placeholder='drag here to move inputspace!!'
-                                value={this.state.inputMessage}
-                                onChange={this.handleInputMessage.bind(this)}
-                            ></Form.Input>
+                            <Form.Field>
+                                <input
+                                    ref={this.chatInput}
+                                    placeholder='drag here to move inputspace!!'
+                                    value={this.state.inputMessage}
+                                    onChange={this.handleInputMessage.bind(this)}
+                                />
+                                <Button type='submit'>Chat</Button>
+                            </Form.Field>
                         </Form>
                         <Button onClick={function (e, data) {
                             this.props.exitRoom(this.props.channel);

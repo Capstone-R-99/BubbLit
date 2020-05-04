@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { Gluejar } from '@charliewilco/gluejar'
+import axios from 'axios'
 
 export default class ImagePanel extends Component {
     // 웹에서 이미지 링크 업로드 or/and 서버에 직접 업로드??
@@ -18,13 +20,30 @@ export default class ImagePanel extends Component {
     }
 
     handleImageUrlClick(event) {
-        event.preventDefault();
+        event.preventDefault()
         this.props.channel.push("img_link", { body: this.state.imageurlinput })
         this.setState({
             imageurlinput: ''
         })
     }
 
+    OnPaste(file) {
+        var self = this
+        console.log(file)
+        var url = file.images[0]
+
+        axios.get(url, {
+            responseType: "blob"
+        })
+            .then(function (response) {
+                console.dir(response);
+                let a = response.data;
+                console.log(a)
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }
 
     render() {
         return (
@@ -36,6 +55,12 @@ export default class ImagePanel extends Component {
                     value={this.state.imageurlinput}
                     onChange={this.handleImageUrlInput.bind(this)}
                 />
+                <Gluejar onPaste={this.OnPaste.bind(this)} onError={err => console.error(err)}>
+                    {({ images }) =>
+                        images.length > 0 &&
+                        images.map(image => <img src={image} key={image} alt={`Pasted: ${image}`} />)
+                    }
+                </Gluejar>
                 <button onClick={this.handleImageUrlClick.bind(this)}>이미지 변경</button>
             </div>
         )

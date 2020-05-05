@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Grid } from 'semantic-ui-react'
 import { Resizable, ResizableBox } from 'react-resizable';
 import ChatModule from '../Container/ChatModule'
-import ShareSpace from './ShareSpace'
+import ShareSpace from '../Container/ShareSpace'
 import '../../css/resizableBox.css'
 import '../../css/room.css'
 

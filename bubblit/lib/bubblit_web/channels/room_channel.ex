@@ -57,24 +57,10 @@ defmodule BubblitWeb.RoomChannel do
     {:noreply, socket}
   end
 
-  def handle_in("img_link", %{"body" => body}, socket) do
-    # 특정 유저가 이미지 링크를 업로드, 해당 이미지 링크를 타 유저들에게 브로드캐스트해주는 함수.
-    broadcast!(socket, "img_link", %{body: body, user_id: socket.assigns.user_id})
-
-    {:noreply, socket}
-  end
-
-  def handle_in("youtube_link", %{"body" => body}, socket) do
-    # 특정 유저가 유튜브 링크를 업로드, 해당 이미지 링크를 타 유저들에게 브로드캐스트해주는 함수.
+  def handle_in("tab_action", %{"type" => type, "body" => body}, socket) do
+    # type => img_link youtube_link youtube_current_play
     # 유튜브 링크 손질하는 건 프론트에서 할지, 백에서 할지?
-    broadcast!(socket, "youtube_link", %{body: body, user_id: socket.assigns.user_id})
-
-    {:noreply, socket}
-  end
-
-  def handle_in("youtube_current_play", %{"body" => body}, socket) do
-    # 유튜브 링크의 현재 재생 시간을 브로드캐스트해주는 함수.
-    broadcast!(socket, "youtube_current_play", %{body: body, user_id: socket.assigns.user_id})
+    broadcast!(socket, "tab_action", %{"type" => type, body: body, user_id: socket.assigns.user_id})
 
     {:noreply, socket}
   end

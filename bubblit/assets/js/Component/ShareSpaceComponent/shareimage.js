@@ -9,6 +9,7 @@ export default class ImagePanel extends Component {
         super(props)
         this.state = {
             imageurlinput: '',
+            broadcastAction: this.props.broadcastAction
         }
     }
 
@@ -20,8 +21,8 @@ export default class ImagePanel extends Component {
     }
 
     handleImageUrlClick(event) {
-        event.preventDefault()
-        this.props.channel.push("img_link", { body: this.state.imageurlinput })
+        this.state.broadcastAction(this.state.imageurlinput)
+
         this.setState({
             imageurlinput: ''
         })

@@ -18,10 +18,16 @@ export default class YoutubePanel extends Component {
     // 구독을 시작함.
 
     componentDidUpdate(prevProps) {
+        console.log(this.props.channel, prevProps.channel)
         if (this.props.channel !== prevProps.channel) {
-            this.props.channel.on("youtube_current_play", payload => {
-                console.log(payload['body'])
-                this.player.seekTo(parseFloat(payload['body']))
+            this.props.channel.on("tab_action", payload => {
+                // [TODO] ShareSpace에서 tab_action을 컨트롤해서 주는게 좋을거같다.
+                // Click도 마찬가지
+                // 귀찮으니 여기서도 받는다.
+                if(payload['type'] == "youtube_current_play"){
+                    console.log("youtube_current_play -> ", payload['body'])
+                    this.player.seekTo(parseFloat(payload['body']))
+                }
             })
         }
     }
@@ -35,7 +41,7 @@ export default class YoutubePanel extends Component {
 
     handleYoutubeUrlClick(event) {
         event.preventDefault();
-        this.props.channel.push("youtube_link", { body: this.state.youtubeurlinput })
+        this.props.channel.push("tab_action", { type:"youtube_link", body: this.state.youtubeurlinput })
         this.setState({
             youtubeurlinput: ''
         })

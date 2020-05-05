@@ -13,7 +13,8 @@ export default class ShareSpace extends Component {
             imageurl: '',
             docurl: '',
             youtubeurl: '',
-            channel: this.props.channel
+            youtubeplaytime: '',
+            channel: this.props.channel,
         }
     }
 
@@ -69,7 +70,8 @@ export default class ShareSpace extends Component {
             {
                 menuItem: 'Youtube', render: () => <Tab.Pane className="sharespace-tab"><YoutubePanel
                     youtubeurl={this.state.youtubeurl}
-                    channel={this.props.channel} /></Tab.Pane>
+                    channel={this.props.channel}
+                    youtubeplaytime={this.state.youtubeplaytime} /></Tab.Pane>
             },
             {
                 menuItem: 'Docs', render: () => <Tab.Pane className="sharespace-tab"><DocsPanel /></Tab.Pane>

@@ -11,27 +11,25 @@ export default class YoutubePanel extends Component {
             playedSecond: 0
         }
     }
-    // props가  constructor나 componentDidMount() 에서 렌더링이 안됨....
-    // 테스트 결과 channel 객체가 생성되는 것보다 이 유튜브 패널 렌더링이 더 빠름.
-    // 따라서, 초반에 channel을 불러봤자 unidentified임...
-    // 그래서 props가 업데이트 될 때 (= Sharespace.state.channel에 채널이 할당될 때)
-    // 구독을 시작함.
 
-    componentDidUpdate(prevProps) {
-        console.log(this.props.channel, prevProps.channel)
-        if (this.props.channel !== prevProps.channel) {
-            this.props.channel.on("tab_action", payload => {
-                // [TODO] ShareSpace에서 tab_action을 컨트롤해서 주는게 좋을거같다.
-                // Click도 마찬가지
-                // 귀찮으니 여기서도 받는다.
-                if(payload['type'] == "youtube_current_play"){
-                    console.log("youtube_current_play -> ", payload['body'])
-                    this.player.seekTo(parseFloat(payload['body']))
-                }
-            })
+    componentWillUpdate(nextProps, nextState) {
+        console.dir(nextProps)
+        if (this.props.youtubeplaytime != nextProps.youtubeplaytime) {
+            // [TODO] Time 에는 언제 보냈는지하고, 그때 몇초였는지가 필요.
+            // 10분 13초에 영상이 1분 2초였다. 
+            // 그러면 10분 33초에 들어온사람은 영상을 1분 22초부터 틀어준다
+            // 갱신시간으로부터 20초 지났기때문에.
+            let time = parseFloat(nextProps.youtubeplaytime);
+            console.log("youtube_current_play -> ", time)
+
+            if(this.player != null){
+                console.log("tried to seek to ", time)
+                this.player.seekTo(time)
+            } else {
+                console.error("NO Player but tried to seek playtime")
+            }
         }
     }
-
 
     handleYoutubeUrlInput(event) {
         this.setState({
@@ -41,21 +39,25 @@ export default class YoutubePanel extends Component {
 
     handleYoutubeUrlClick(event) {
         event.preventDefault();
-        this.props.channel.push("tab_action", { type:"youtube_link", body: this.state.youtubeurlinput })
+        this.props.channel.push("tab_action", { type: "youtube_link", body: this.state.youtubeurlinput })
         this.setState({
             youtubeurlinput: ''
         })
     }
 
-    handleProgress(state) {
+    handleProgress(event) {
         /* 유튜브 재생에 맞춰 실시간으로 현재 재생 시간이 업데이트 됨. */
         this.setState({
-            playedSecond: state.playedSeconds
+            playedSeconds: event.playedSeconds
+        }, () => {
+            // [TODO] 한사람만 보내야함.
+            // [TODO] 나중에 들어온 사람을 위해서 일정 주기로 보내야함.
+            // this.handleYoutubeTimeClick();
         })
     }
 
     handleYoutubeTimeClick() {
-        this.props.channel.push("youtube_current_play", { body: this.state.playedSecond })
+        this.props.channel.push("tab_action", { type: "youtube_current_play", body: this.state.playedSeconds })
     }
 
     ref = player => {

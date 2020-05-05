@@ -152,7 +152,7 @@ export default class ChatBox extends Component {
                     }}
                 >
                     <div className='general'>
-                        <h2>user_id: {this.props.temp}</h2>
+                        <h2>{this.props.name}</h2>
                         <Scrollbars
                             className='scrollbar'
                             ref={this.scrollbarRef}

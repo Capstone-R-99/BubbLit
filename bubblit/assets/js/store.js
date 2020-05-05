@@ -21,11 +21,11 @@ export default createStore(function (state, action) {
 
             // { id: 0, title: '1st Room', host: 'kynel', isPrivate: 'O', limit: 10, current: 6 },
             roomList: [],
-            current_room_id: 0, 
+            current_room_id: 0,
 
             //ChatModule
             contents: [[], [], [], [], [], []],
-            participants: [],
+            participants: []
         }
         return state;
     }
@@ -38,11 +38,12 @@ export default createStore(function (state, action) {
             ...state,
             current_room_id: action.room_id,
             mode: room.title,
+            users: action.users,
             channel: state.socket.channel('room:' + room.id, { nickname: state.userName })
         }
     }
     if (action.type === 'CHAT') {
-        return { ...state, contents: action.contents, participants: action.participants }
+        return { ...state, contents: action.contents, participants: action.participants, users: action.users }
     }
     if (action.type === 'REFRESH_ROOM_LIST') {
         //channel 구독해지 및 state 초기화

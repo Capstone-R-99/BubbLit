@@ -41,19 +41,27 @@ export default class ChatModule extends Component {
                         let msg = history['content'];
                         this.addMessageInChanges(changes, user_id, msg);
                     })
+
+                    changes['users'] = payload.users;
                     //여기에서 보내는 함수 호출함
                     this.props.sendChanges(changes);
                 })
-                })
-            .receive('error', response => { console.log('Unable to join', response) })
-        // new_msg 받을때 처리
-                this.props.channel.on("new_msg", payload => {
-            var changes = { 'participants': this.props.participants, 'contents': { ...this.props.contents } };
-                    let user_id = payload['user_id'];
-                    let msg = payload['body'];
-            changes = this.addMessageInChanges(changes, user_id, msg);
+                this.props.channel.on('user_join', payload => {
+                    console.log('user_join', payload);
+                    var changes = { 'participants': this.props.participants, 'contents': { ...this.props.contents }, 'users': { ...this.props.users } };
+                    changes['users'][payload.user_id] = { id: payload.uesr_id, name: payload.user_name };
                     this.props.sendChanges(changes);
                 })
+                this.props.channel.on("new_msg", payload => {
+                    var changes = { 'participants': this.props.participants, 'contents': { ...this.props.contents }, 'users': this.props.users };
+                    let user_id = payload['user_id'];
+                    let msg = payload['body'];
+                    this.addMessageInChanges(changes, user_id, msg);
+                    this.props.sendChanges(changes);
+                })
+            })
+            .receive('error', response => { console.log('Unable to join', response) })
+        // new_msg 받을때 처리
         //this.props.channel.push('new_msg', { body: '테스트 메세지임니담', nickname: 'tester' });
     }
 
@@ -81,12 +89,13 @@ export default class ChatModule extends Component {
 
     chatboxRenderer() {
         var message = [];
-        var classNames = this.props.participants;
-        for (var i = 0; i < classNames.length; i++) {
+        var participant = this.props.participants;
+        for (var i = 0; i < participant.length; i++) {
             let temp = i;
-            //classNames.forEach(name => {
+            let user_id = participant[i];
+            let user = this.props.users[user_id];
             message.push(
-                <ChatBox key={i} temp={temp} contents={this.props.contents}></ChatBox>
+                <ChatBox key={i} temp={temp} name={user.name} contents={this.props.contents}></ChatBox>
             )
         }
         return message

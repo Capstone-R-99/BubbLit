@@ -19,10 +19,12 @@ export default class YoutubePanel extends Component {
             // 10분 13초에 영상이 1분 2초였다. 
             // 그러면 10분 33초에 들어온사람은 영상을 1분 22초부터 틀어준다
             // 갱신시간으로부터 20초 지났기때문에.
+            // 좀 해보니까, 로딩때문에 seek을 2번 해줘야할거같음.
+            // 첫번째 seek은 로딩때문에 뿌린사람이랑 어긋남.
             let time = parseFloat(nextProps.youtubeplaytime);
             console.log("youtube_current_play -> ", time)
 
-            if(this.player != null){
+            if (this.player != null) {
                 console.log("tried to seek to ", time)
                 this.player.seekTo(time)
             } else {

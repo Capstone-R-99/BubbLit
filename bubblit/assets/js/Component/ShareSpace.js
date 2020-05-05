@@ -26,16 +26,16 @@ export default class ShareSpace extends Component {
             this.props.channel.on('room_history', payload => {
                 var change = {}
 
-                for( var tab_action_type in payload.tab_action_history ) {
+                for (var tab_action_type in payload.tab_action_history) {
                     let val = payload.tab_action_history[tab_action_type]
 
                     let user_id = val['user_id'];
                     let body = val['body'];
                     Object.assign(change, this.handleTabAction(tab_action_type, body, user_id));
-                  }
+                }
 
-                  this.setState(change)
-             })
+                this.setState(change)
+            })
             this.props.channel.on("tab_action", payload => {
                 var change = this.handleTabAction(payload['type'], payload['body'], payload['user_id'])
 

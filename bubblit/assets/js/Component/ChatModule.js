@@ -8,8 +8,7 @@ import '../../css/chatModule.css'
 export default class ChatModule extends Component {
     constructor(props) {
         super(props);
-        console.log(window.innerWidth)
-        console.log(window.innerHeight)
+        console.log("chatmodule width, height", window.innerWidth, window.innerHeight)
         this.state = {
             // 방에 나갓다 들어와도 커스텀값이 유지되도록 state로 빼봣음, store로 옮기거나, 수정예정
             width: [400, 400, 400, 400, 400, 400],
@@ -36,7 +35,7 @@ export default class ChatModule extends Component {
                 // bubble_history 받을때 처리
                 this.props.channel.on('room_history', payload => {
                     var changes = { 'participants': this.props.participants, 'contents': { ...this.props.contents } };
-                    console.log(payload);
+                    console.log('room_history', payload);
                     payload.bubble_history.reverse().forEach(history => {
                         let user_id = history['user_id'];
                         let msg = history['content'];
@@ -45,16 +44,16 @@ export default class ChatModule extends Component {
                     //여기에서 보내는 함수 호출함
                     this.props.sendChanges(changes);
                 })
-            })
+                })
             .receive('error', response => { console.log('Unable to join', response) })
         // new_msg 받을때 처리
-        this.props.channel.on("new_msg", payload => {
+                this.props.channel.on("new_msg", payload => {
             var changes = { 'participants': this.props.participants, 'contents': { ...this.props.contents } };
-            let user_id = payload['user_id'];
-            let msg = payload['body'];
+                    let user_id = payload['user_id'];
+                    let msg = payload['body'];
             changes = this.addMessageInChanges(changes, user_id, msg);
-            this.props.sendChanges(changes);
-        })
+                    this.props.sendChanges(changes);
+                })
         //this.props.channel.push('new_msg', { body: '테스트 메세지임니담', nickname: 'tester' });
     }
 

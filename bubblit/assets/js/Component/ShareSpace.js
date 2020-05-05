@@ -8,7 +8,6 @@ import './../../css/shareSpace.css'
 import socket from './socket'
 
 export default class ShareSpace extends Component {
-
     constructor(props) {
         super(props);
         this.state = {

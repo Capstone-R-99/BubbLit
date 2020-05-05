@@ -31,6 +31,7 @@ export default createStore(function (state, action) {
     }
     if (action.type === 'ENTER_CHAT') {
         // 아래 코드에서 socket을 연결시키고, 방에 들어감과 동시에 channel에 접속시켜준다.
+        // socket component 에서도 connect 하는데,,, 두번 해주는거같음. 방 전환할때 꼭 필요한지 확인 필요.
         state.socket.connect();
         var room = GetRoomById(state.roomList, action.room_id)
         return {

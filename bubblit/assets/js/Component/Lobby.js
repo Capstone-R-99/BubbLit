@@ -27,10 +27,10 @@ export default class Lobby extends Component {
             var active = [];
             var room = _roomList[i];
             if (room.current >= room.limit) {
-                active.push(<Button active={false}>full</Button>)
+                active.push(<Button key={i} active="false">full</Button>)
             }
             else {
-                active.push(<Button action={{ index: i }} onClick={function (e, data) {
+                active.push(<Button key={i} action={{ index: i }} onClick={function (e, data) {
                     var room_id = _roomList[data.action.index].id;
                     console.log(data.action.index);
                     console.log(room_id);
@@ -38,7 +38,7 @@ export default class Lobby extends Component {
                 }.bind(this)}>join</Button>)
             }
             content.push(
-                <Table.Body>
+                <Table.Body key={i}>
                     <Table.Row>
                         <Table.Cell>
                             {_roomList[i].id}

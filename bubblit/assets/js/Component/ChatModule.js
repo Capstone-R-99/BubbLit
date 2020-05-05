@@ -89,7 +89,7 @@ export default class ChatModule extends Component {
             let temp = i;
             //classNames.forEach(name => {
             message.push(
-                <ChatBox temp={temp} contents={this.props.contents}></ChatBox>
+                <ChatBox key={i} temp={temp} contents={this.props.contents}></ChatBox>
             )
         }
         return message
@@ -142,7 +142,7 @@ export default class ChatModule extends Component {
             <div>
                 {this.chatboxRenderer()}
                 <div>
-                    <Rnd enableResizing='false'
+                    <Rnd enableResizing="False"
                         size={{ width: '400', height: '30' }}
                         position={{ x: this.state.chatInputboxX, y: this.state.chatInputboxY }}
                         onDragStop={(e, d) => {

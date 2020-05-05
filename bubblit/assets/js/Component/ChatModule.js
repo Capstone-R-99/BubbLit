@@ -40,7 +40,7 @@ export default class ChatModule extends Component {
                     payload.bubble_history.reverse().forEach(history => {
                         let user_id = history['user_id'];
                         let msg = history['content'];
-                        changes = this.addMessageInChanges(changes, user_id, msg);
+                        this.addMessageInChanges(changes, user_id, msg);
                     })
                     //여기에서 보내는 함수 호출함
                     this.props.sendChanges(changes);
@@ -77,8 +77,6 @@ export default class ChatModule extends Component {
         // }
 
         changes.contents[user_idx] = modified_contents[user_idx].concat(msg)
-
-        return changes
     }
 
 

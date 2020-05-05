@@ -31,7 +31,6 @@ export default class ChatModule extends Component {
         // join 할때 처리
         joined
             .receive('ok', response => {
-                alert('channel join!');
                 console.log(response);
                 console.log('joined successfully at ' + response)
                 // bubble_history 받을때 처리

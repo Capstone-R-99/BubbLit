@@ -35,9 +35,7 @@ export default class YoutubePanel extends Component {
 
     handleYoutubeUrlClick(event) {
         event.preventDefault();
-        let ytb_id = this.state.youtubeurlinput.split("=")
-        let ytb_embed_link = "https://www.youtube.com/embed/" + ytb_id[1]
-        this.props.channel.push("youtube_link", { body: ytb_embed_link })
+        this.props.channel.push("youtube_link", { body: this.state.youtubeurlinput })
         this.setState({
             youtubeurlinput: ''
         })

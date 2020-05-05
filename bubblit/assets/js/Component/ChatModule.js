@@ -34,10 +34,10 @@ export default class ChatModule extends Component {
                 console.log(response);
                 console.log('joined successfully at ' + response)
                 // bubble_history 받을때 처리
-                this.props.channel.on('bubble_history', payload => {
+                this.props.channel.on('room_history', payload => {
                     var changes = { 'participants': this.props.participants, 'contents': { ...this.props.contents } };
                     console.log(payload);
-                    payload.history.reverse().forEach(history => {
+                    payload.bubble_history.reverse().forEach(history => {
                         let user_id = history['user_id'];
                         let msg = history['content'];
                         changes = this.addMessageInChanges(changes, user_id, msg);

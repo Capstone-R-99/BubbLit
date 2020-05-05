@@ -22,25 +22,39 @@ export default class ShareSpace extends Component {
         // 실제 store 구독은 각 pane 컴포넌트별로 해야 할 듯. props는 바뀌어선 안 되는 거니까...
         console.log(this.props.channel)
         if (this.props.channel != null) {
-                this.props.channel.on("tab_action", payload => {
-                    this.setState(this.handleTabAction(payload['type'], payload['body'],payload['user_id']))
-                    // this.setState({
-                    //     imageurl: payload['body']
-                    // })
-                })
+            this.props.channel.on('room_history', payload => {
+                var change = {}
+
+                for( var tab_action_type in payload.tab_action_history ) {
+                    let val = payload.tab_action_history[tab_action_type]
+
+                    let user_id = val['user_id'];
+                    let body = val['body'];
+                    Object.assign(change, this.handleTabAction(tab_action_type, body, user_id));
+                  }
+
+                  this.setState(change)
+             })
+            this.props.channel.on("tab_action", payload => {
+                var change = this.handleTabAction(payload['type'], payload['body'], payload['user_id'])
+
+                this.setState(change)
+            })
         }
     }
 
     handleTabAction(type, body, user_id) {
-        switch(type){
+        switch (type) {
             case "img_link":
-                return {imageurl: body}
+                return { imageurl: body }
             case "youtube_link":
-                return {youtubeurl: body}
+                return { youtubeurl: body }
+            case "youtube_current_play":
+                return { youtubeplaytime: body }
         }
     }
 
-    sendTabAction(type, body){
+    sendTabAction(type, body) {
         this.props.channel.push(type, { body: body })
     }
 
@@ -60,8 +74,8 @@ export default class ShareSpace extends Component {
             {
                 menuItem: 'Docs', render: () => <Tab.Pane className="sharespace-tab"><DocsPanel /></Tab.Pane>
             },
-            { 
-                menuItem: 'Log', render: () => <Tab.Pane className="sharespace-tab">ChatLog</Tab.Pane> 
+            {
+                menuItem: 'Log', render: () => <Tab.Pane className="sharespace-tab">ChatLog</Tab.Pane>
             },
             {
                 menuItem: 'IMG', render: () => <Tab.Pane className="sharespace-tab"><ImagePanel

@@ -8,7 +8,7 @@ defmodule Bubblit.Room.Monitor do
     # 역순 저장임.
     history = Bubblit.Db.read_bubble_log(room_id) |> Enum.reverse()
 
-    initial_state = %{history: history, room_id: room_id}
+    initial_state = %{history: history, tab_action_dic: %{}, room_id: room_id}
     Agent.start_link(fn -> initial_state end, name: via_tuple(room_id))
   end
 
@@ -24,8 +24,20 @@ defmodule Bubblit.Room.Monitor do
     Agent.get(via_tuple(room_id), fn state -> handle_get_messages(state) end)
   end
 
+  def add_tab_action(room_id, user_id, type, message) do
+    Agent.update(via_tuple(room_id), fn state -> handle_add_tab_action(state, user_id, type, message) end)
+  end
+
+  def get_tab_actions(room_id) do
+    Agent.get(via_tuple(room_id), fn state -> handle_get_tab_actions(state) end)
+  end
+
   def handle_get_messages(state) do
     Map.get(state, :history, [])
+  end
+
+  def handle_get_tab_actions(state) do
+    Map.get(state, :tab_action_dic, %{})
   end
 
   def handle_add_message(state, user_id, message) do
@@ -34,6 +46,13 @@ defmodule Bubblit.Room.Monitor do
     history = [bubble | Map.get(state, :history, [])]
 
     Map.put(state, :history, history)
+  end
+
+  def handle_add_tab_action(state, user_id, tab_action_type, tab_action_body) do
+    Util.log("user_id #{user_id} add_tab_action type #{tab_action_type} body #{tab_action_body}")
+    tab_action_dic = Map.put(state.tab_action_dic, tab_action_type, %{user_id: user_id, body: tab_action_body})
+
+    Map.put(state, :tab_action_dic, tab_action_dic)
   end
 
   # 여기 아래는 참고용

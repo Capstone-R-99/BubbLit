@@ -43,24 +43,34 @@ defmodule BubblitWeb.RoomChannel do
 
     bubble_history = Bubblit.Room.Monitor.get_messages(socket.assigns.room_record.id)
 
-    push(socket, "bubble_history", %{history: bubble_history})
+    tab_action_history = Bubblit.Room.Monitor.get_tab_actions(socket.assigns.room_record.id)
+
+    history = %{bubble_history: bubble_history, tab_action_history: tab_action_history}
+    push(socket, "room_history", history)
 
     {:noreply, socket}
   end
 
   # 그냥 메세지 브로드캐스트할때 닉네임 추가했음.
   def handle_in("new_msg", %{"body" => body}, socket) do
-    Bubblit.Room.Monitor.add_message(socket.assigns.room_record.id, socket.assigns.user_id, body)
+    room_id = socket.assigns.room_record.id
+    user_id = socket.assigns.user_id
 
-    broadcast!(socket, "new_msg", %{body: body, user_id: socket.assigns.user_id})
+    Bubblit.Room.Monitor.add_message(room_id, user_id, body)
+
+    broadcast!(socket, "new_msg", %{body: body, user_id: user_id})
 
     {:noreply, socket}
   end
 
+  # type => img_link youtube_link youtube_current_play
+  # 유튜브 링크 손질하는 건 프론트에서 할지, 백에서 할지?
   def handle_in("tab_action", %{"type" => type, "body" => body}, socket) do
-    # type => img_link youtube_link youtube_current_play
-    # 유튜브 링크 손질하는 건 프론트에서 할지, 백에서 할지?
-    broadcast!(socket, "tab_action", %{"type" => type, body: body, user_id: socket.assigns.user_id})
+    room_id = socket.assigns.room_record.id
+    user_id = socket.assigns.user_id
+    Bubblit.Room.Monitor.add_tab_action(room_id, user_id, type, body)
+
+    broadcast!(socket, "tab_action", %{"type" => type, body: body, user_id: user_id})
 
     {:noreply, socket}
   end

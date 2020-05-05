@@ -5,7 +5,6 @@ import YoutubePanel from './ShareSpaceComponent/youtube'
 import DocsPanel from './ShareSpaceComponent/googledocs'
 import ImagePanel from './ShareSpaceComponent/shareimage'
 import './../../css/shareSpace.css'
-import socket from './socket'
 
 export default class ShareSpace extends Component {
     constructor(props) {
@@ -14,16 +13,14 @@ export default class ShareSpace extends Component {
             imageurl: '',
             docurl: '',
             youtubeurl: '',
-            channel: ''
+            channel: this.props.channel 
         }
     }
 
     componentDidMount() {
         // 이미지/유튜브 브로드캐스팅 테스트용 코드. 추후 redux로 이전해야 함.
         // 실제 store 구독은 각 pane 컴포넌트별로 해야 할 듯. props는 바뀌어선 안 되는 거니까...
-        this.setState({
-            channel: socket.channel('room:1')
-        }, () => {
+        if(this.state.channel != null) {
             this.state.channel.join().receive("ok", response => {
                 console.log("채널 접속 성공")
                 this.state.channel.on("img_link", payload => {
@@ -36,9 +33,8 @@ export default class ShareSpace extends Component {
                         youtubeurl: payload['body']
                     })
                 })
-            })
-                .receive("error", resp => { console.log("Unable to join", resp) })
-        })
+            }).receive("error", resp => { console.log("Unable to join", resp) })
+        }
     }
 
     handleImageUrlInput(event) {
@@ -76,7 +72,7 @@ export default class ShareSpace extends Component {
         return (
             <div className="sharespace-div">
                 <Tab className="sharespace-tab"
-                    menu={{ color: 'blue', attatched: false, tabular: false }}
+                    menu={{ color: 'blue', attatched: "false", tabular: false }}
                     panes={panes}
                 />
             </div>

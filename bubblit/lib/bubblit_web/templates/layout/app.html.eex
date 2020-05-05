@@ -9,8 +9,7 @@
     <%= csrf_meta_tag() %>
   </head>
   <body>
-      <script>console.log("sdfdsfsdfds");</script>
-      <script>window.userToken = "<%= assigns[:user_token] %>";</script>
+    <script>window.userToken = "<%= assigns[:user_token] %>";</script>
     <nav>
       <div class="nav-wrapper primary-dark-color" style="display:none;">
         <a href="/" class="brand-logo">Bubblit Login Page</a>
@@ -30,6 +29,6 @@
     </nav>
     <%= render @view_module, @view_template, assigns %>
       <%# <%= inspect(assigns) %>
-      <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

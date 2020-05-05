@@ -26,7 +26,10 @@ import Home from './Component/Home'
 // configuration and injects the app into a DOM element.
 //ReactDOM.render(<ChatTestModule />, document.getElementById('react-juno'))
 
-ReactDOM.render(
-    <Provider store={store}>
-        <Home />
-    </Provider>, document.getElementById('react-app'))
+var react_app = document.getElementById('react-app');
+if (react_app != null) {
+    ReactDOM.render(
+        <Provider store={store}>
+            <Home />
+        </Provider>, react_app)
+}

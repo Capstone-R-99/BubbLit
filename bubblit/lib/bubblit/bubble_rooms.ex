@@ -6,6 +6,7 @@ defmodule Bubblit.BubbleRooms do
   import Ecto.Query, warn: false
   alias Bubblit.Repo
 
+  alias Bubblit.Accounts.User
   alias Bubblit.BubbleRooms.BubbleLog
 
   @doc """
@@ -24,7 +25,11 @@ defmodule Bubblit.BubbleRooms do
   def list_bubble_logs(room_id) do
     query =
       from l in BubbleLog,
-        where: l.room_id == ^room_id
+        preload: [:user],
+        join: u in User,
+        on: u.id == l.user_id,
+        where: l.room_id == ^room_id,
+        select: {l, u}
 
     Repo.all(query)
   end

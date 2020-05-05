@@ -30,8 +30,13 @@ defmodule BubblitWeb.RoomChannel do
   end
 
   def handle_info(:after_join, socket) do
+    user_id = socket.assigns.user_id
+    user = socket.assigns.user
+
+    room_id = socket.assigns.room_record.id
+
     Logger.info(
-      "user id #{socket.assigns.user_id} after join to room id #{socket.assigns.room_record.id}."
+      "user id #{user_id} after join to room id #{room_id}."
     )
 
     {:ok, _} =
@@ -41,12 +46,12 @@ defmodule BubblitWeb.RoomChannel do
 
     push(socket, "presence_state", Presence.list(socket))
 
-    bubble_history = Bubblit.Room.Monitor.get_messages(socket.assigns.room_record.id)
+    after_join_dic = Bubblit.Room.Monitor.get_after_join(room_id)
 
-    tab_action_history = Bubblit.Room.Monitor.get_tab_actions(socket.assigns.room_record.id)
+    push(socket, "room_history", after_join_dic)
 
-    history = %{bubble_history: bubble_history, tab_action_history: tab_action_history}
-    push(socket, "room_history", history)
+    Bubblit.Room.Monitor.add_user(room_id, user_id, user)
+    broadcast!(socket, "user_join", %{user_name: user.name, user_id: user_id})
 
     {:noreply, socket}
   end

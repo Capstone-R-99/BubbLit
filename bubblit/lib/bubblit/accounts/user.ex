@@ -3,6 +3,7 @@ defmodule Bubblit.Accounts.User do
   import Ecto.Changeset
   alias Bubblit.Accounts.{User, Encryption}
 
+  @derive {Jason.Encoder, only: [:id, :name]}
   schema "users" do
     field :encrypted_password, :string
     field :name, :string

@@ -37,6 +37,15 @@ defmodule Bubblit.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_users(room_id) do
+    query =
+      from u in User,
+        where: u.id in ^room_id,
+        select: u
+
+    Repo.all(query)
+  end
+
   @doc """
   Creates a user.
 

@@ -49,7 +49,8 @@ export default class ChatModule extends Component {
                 this.props.channel.on('user_join', payload => {
                     console.log('user_join', payload);
                     var changes = { 'participants': this.props.participants, 'contents': { ...this.props.contents }, 'users': { ...this.props.users } };
-                    changes['users'][payload.user_id] = { id: payload.uesr_id, name: payload.user_name };
+                    changes['users'][payload.user_id] = { id: payload.user_id, name: payload.user_name };
+                    this.addMessageInChanges(changes, payload.user_id, null);
                     this.props.sendChanges(changes);
                 })
                 this.props.channel.on("new_msg", payload => {
@@ -76,8 +77,9 @@ export default class ChatModule extends Component {
             return element == user_id
         }
 
-        let user_idx = changes.participants.findIndex(find_user_id)
-        let modified_contents = changes.contents;
+        if (msg == null) {
+            return;
+        }
         // if (modified_contents[user_idx].length >= 5) {
         //     //스크롤바 테스트를 위해 잠시 지워둠
         //     //modified_contents[user_idx].shift();

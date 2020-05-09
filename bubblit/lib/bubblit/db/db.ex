@@ -4,18 +4,15 @@ defmodule Bubblit.Db do
 
   def create_room(title, host_user_id) do
     # 일단 Default 세팅으로 가보자.
-    attrs = %{title: title, host_user_id: host_user_id, config_value: ""}
+    attrs = %{title: title, host_user_id: host_user_id, config_value: "", users: [host_user_id]}
+
     {:ok, room_record} = Bubblit.BubbleRooms.create_room(attrs)
 
-    room_record
-  end
-
-  def create_room(id, host_user_id) do
-    create_room("#{host_user_id} 번 id 유저의 임시 방(#{id}번)이다냥!", host_user_id)
+    room_record |> convert_room_users()
   end
 
   def get_room(id) do
-    Bubblit.BubbleRooms.get_room(id)
+    Bubblit.BubbleRooms.get_room(id) |> convert_room_users
   end
 
   def load_room(title, host_user_id) do
@@ -23,7 +20,25 @@ defmodule Bubblit.Db do
     attrs = %{title: title, host_user_id: host_user_id, config_value: ""}
     {:ok, room_record} = Bubblit.BubbleRooms.create_room(attrs)
 
-    room_record
+    room_record |> convert_room_users()
+  end
+
+  def update_room(room, attrs) do
+    {:ok, room_record} = Bubblit.BubbleRooms.update_room(room, attrs)
+    room_record |> convert_room_users()
+  end
+
+  def list_rooms() do
+    Bubblit.BubbleRooms.list_rooms() |> Enum.map(fn x -> convert_room_users(x) end)
+  end
+
+  def get_room!(id) do
+    Bubblit.BubbleRooms.get_room!(id) |> convert_room_users()
+  end
+
+  def convert_room_users(room_record) do
+    user_list = Bubblit.BubbleRooms.Room.room_user_to_list(room_record.users)
+    put_in(room_record.users, user_list)
   end
 
   def change_room_config(room_record, config_value) do

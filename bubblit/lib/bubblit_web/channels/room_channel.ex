@@ -5,23 +5,33 @@ defmodule BubblitWeb.RoomChannel do
   require Logger
 
   def join("room:" <> room_id, _params, socket) do
+    user_id = socket.assigns.user_id
+    user = socket.assigns.user
+
     Logger.info("lobby room joined #{room_id} #{inspect(socket)}")
 
     case Integer.parse(room_id) do
       {room_id, _remainer} ->
         if room_record = Bubblit.Db.get_room(room_id) do
           Bubblit.Room.DynamicSupervisor.start_child(room_id)
-          send(self(), :after_join)
 
-          socket =
-            assign(socket, :room_record, room_record)
-            |> assign(:id, inspect(socket.transport_pid))
+          case Bubblit.Room.Monitor.get_after_join(room_id, user_id, user) do
+            {:ok, after_join_dic} ->
+              send(self(), {:after_join, after_join_dic})
 
-          Logger.info("user id #{socket.assigns.user_id} joined to room id #{room_id}.")
+              socket =
+                assign(socket, :room_record, room_record)
+                |> assign(:id, inspect(socket.transport_pid))
 
-          {:ok, %{body: "welcome to room id #{room_id}"}, socket}
+              Logger.info("user id #{socket.assigns.user_id} joined to room id #{room_id}.")
+
+              {:ok, %{body: "welcome to room_id #{room_id}"}, socket}
+
+            {:error, msg} ->
+              {:error, %{reason: "#{msg} in room_id #{room_id}"}}
+          end
         else
-          {:error, %{reason: "invalid room id #{room_id}"}}
+          {:error, %{reason: "invalid room_id #{room_id}"}}
         end
 
       :error ->
@@ -29,15 +39,13 @@ defmodule BubblitWeb.RoomChannel do
     end
   end
 
-  def handle_info(:after_join, socket) do
+  def handle_info({:after_join, after_join_dic}, socket) do
     user_id = socket.assigns.user_id
     user = socket.assigns.user
 
     room_id = socket.assigns.room_record.id
 
-    Logger.info(
-      "user id #{user_id} after join to room id #{room_id}."
-    )
+    Logger.info("user id #{user_id} after join to room id #{room_id}.")
 
     {:ok, _} =
       Presence.track(socket, socket.assigns.user_id, %{
@@ -46,11 +54,8 @@ defmodule BubblitWeb.RoomChannel do
 
     push(socket, "presence_state", Presence.list(socket))
 
-    after_join_dic = Bubblit.Room.Monitor.get_after_join(room_id)
-
     push(socket, "room_history", after_join_dic)
 
-    Bubblit.Room.Monitor.add_user(room_id, user_id, user)
     broadcast!(socket, "user_join", %{user_name: user.name, user_id: user_id})
 
     {:noreply, socket}

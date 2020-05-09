@@ -59,6 +59,9 @@ export default class Lobby extends Component {
                             {_roomList[i].current}
                         </Table.Cell>
                         <Table.Cell>
+                            {_roomList[i].users}
+                        </Table.Cell>
+                        <Table.Cell>
                             {active}
                         </Table.Cell>
                     </Table.Row>
@@ -78,6 +81,7 @@ export default class Lobby extends Component {
                             <Table.HeaderCell>isPrivate</Table.HeaderCell>
                             <Table.HeaderCell>limit</Table.HeaderCell>
                             <Table.HeaderCell>current</Table.HeaderCell>
+                            <Table.HeaderCell>users</Table.HeaderCell>
                             <Table.HeaderCell>JOIN</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>

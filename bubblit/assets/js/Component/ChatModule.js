@@ -85,6 +85,8 @@ export default class ChatModule extends Component {
         //     //modified_contents[user_idx].shift();
         // }
 
+        let user_idx = changes.participants.findIndex(find_user_id)
+        let modified_contents = changes.contents;
         changes.contents[user_idx] = modified_contents[user_idx].concat(msg)
     }
 

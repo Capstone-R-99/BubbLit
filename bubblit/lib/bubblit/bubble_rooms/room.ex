@@ -23,8 +23,43 @@ defmodule Bubblit.BubbleRooms.Room do
   @cast [:title, :host_user_id, :config_value, :is_private, :is_anonymous, :users]
   @validate_required [:title, :host_user_id]
   def changeset(room, attrs) do
+    attrs = room_user_attrs(attrs)
+
     room
+    |> change_users_to_str()
     |> cast(attrs, @cast)
     |> validate_required(@validate_required)
+  end
+
+  def change_users_to_str(room) do
+    user_list = room_user_to_str(room.users)
+    put_in(room.users, user_list)
+  end
+
+  def room_user_attrs(attrs) do
+    users = Map.get(attrs, :users, nil)
+
+    if users do
+      users = room_user_to_str(users)
+      put_in(attrs.users, users)
+    else
+      attrs
+    end
+  end
+
+  def room_user_to_list(str) do
+    if str == nil or str == "" do
+      []
+    else
+      String.split(str, ",")
+      |> Enum.map(fn x ->
+        {id, ""} = Integer.parse(x)
+        id
+      end)
+    end
+  end
+
+  def room_user_to_str(list) do
+    Enum.join(list, ",")
   end
 end

@@ -36,6 +36,10 @@ defmodule Bubblit.Room.Monitor do
     end)
   end
 
+  def get_me(room_id) do
+    Agent.get(via_tuple(room_id), fn state -> state end)
+  end
+
   def get_after_join(room_id, user_id, user) do
     Agent.get_and_update(via_tuple(room_id), fn state ->
       handle_getate_after_join(state, user_id, user)

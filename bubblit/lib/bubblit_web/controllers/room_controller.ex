@@ -9,11 +9,11 @@ defmodule BubblitWeb.RoomController do
   # 전체적으로 권한 체크 필요.
 
   def index(conn, _params) do
-    rooms = BubbleRooms.list_rooms()
+    rooms = Bubblit.Db.list_rooms()
     render(conn, "index.json", rooms: rooms)
   end
 
-  def create(conn, %{"title" => room} = room_params) do
+  def create(conn, %{"title" => _title} = room_params) do
     with user_id = Plug.Conn.get_session(conn, :current_user_id),
          room_params = Map.put(room_params, "host_user_id", user_id),
          {:ok, %Room{} = room} <- BubbleRooms.create_room(room_params) do
@@ -25,14 +25,14 @@ defmodule BubblitWeb.RoomController do
   end
 
   def show(conn, %{"id" => id}) do
-    room = BubbleRooms.get_room!(id)
+    room = Bubblit.Db.get_room!(id)
     render(conn, "show.json", room: room)
   end
 
   def update(conn, %{"id" => id, "room" => room_params}) do
-    room = BubbleRooms.get_room!(id)
+    room = Bubblit.Db.get_room!(id)
 
-    with {:ok, %Room{} = room} <- BubbleRooms.update_room(room, room_params) do
+    with {:ok, %Room{} = room} <- Bubblit.Db.update_room(room, room_params) do
       render(conn, "show.json", room: room)
     end
   end

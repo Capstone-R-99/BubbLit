@@ -37,7 +37,7 @@ export default class ChatModule extends Component {
                 console.log('joined successfully at ' + response)
                 // bubble_history 받을때 처리
                 this.props.channel.on('room_after_join', payload => {
-                    var changes = { 'participants': payload.users, 'contents': { ...this.props.contents } };
+                    var changes = { 'participants': payload.room_users, 'contents': { ...this.props.contents } };
                     console.log('room_after_join', payload);
                     payload.bubble_history.reverse().forEach(history => {
                         let user_id = history['user_id'];

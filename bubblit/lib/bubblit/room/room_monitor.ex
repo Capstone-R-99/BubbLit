@@ -12,9 +12,17 @@ defmodule Bubblit.Room.Monitor do
 
     users_in_history = users |> Enum.map(fn user -> {user.id, user} end) |> Enum.into(%{})
 
+    room_member_user =
+      room_record.users
+      |> Enum.map(fn x -> Bubblit.Accounts.get_user!(x) end)
+      |> Enum.map(fn user -> {user.id, user} end)
+      |> Enum.into(%{})
+
+    Util.log("room_member_user Mere #{inspect(Map.merge(users_in_history, room_member_user))}")
+
     initial_state = %{
       history: history,
-      users: users_in_history,
+      users: Map.merge(users_in_history, room_member_user),
       tab_action_dic: %{},
       room_record: room_record
     }
@@ -73,15 +81,9 @@ defmodule Bubblit.Room.Monitor do
     user_list = state[:room_record].users
     Util.log("user_list #{inspect(user_list)}")
 
-    ret = %{
-      bubble_history: Map.get(state, :history, []),
-      users: Map.get(state, :users, []),
-      tab_action_history: Map.get(state, :tab_action_dic, %{})
-    }
-
     cond do
       user_id in state.room_record.users ->
-        {{:ok, ret}, state}
+        {{:ok, make_ret(state)}, state}
 
       length(user_list) >= 6 ->
         {{:error, "User number is Max"}, state}
@@ -94,8 +96,17 @@ defmodule Bubblit.Room.Monitor do
 
         state = put_in(state.room_record, new_room) |> refresh_user(user_id, user)
 
-        {{:ok, ret}, state}
+        {{:ok, make_ret(state)}, state}
     end
+  end
+
+  defp make_ret(state) do
+    %{
+      bubble_history: Map.get(state, :history, []),
+      room_users: state[:room_record].users,
+      users: Map.get(state, :users, []),
+      tab_action_history: Map.get(state, :tab_action_dic, %{})
+    }
   end
 
   def refresh_user(state, user_id, user) do

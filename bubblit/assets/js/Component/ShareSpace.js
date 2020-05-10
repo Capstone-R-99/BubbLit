@@ -104,8 +104,8 @@ export default class ShareSpace extends Component {
                 menuItem: 'Docs', render: () => <Tab.Pane className="sharespace-tab"><DocsPanel /></Tab.Pane>
             },
             {
-                menuItem: 'Log', render: () => <Tab.Pane className="sharespace-tab"><LogPanel 
-                    history={this.props.history }/></Tab.Pane>
+                menuItem: 'Log', render: () => <Tab.Pane className="sharespace-tab"><LogPanel
+                    history={this.props.history} /></Tab.Pane>
             },
             {
                 menuItem: 'IMG', render: () => <Tab.Pane className="sharespace-tab"><ImagePanel
@@ -123,6 +123,7 @@ export default class ShareSpace extends Component {
                     panes={panes}
                     activeIndex={this.state.tabIndex}
                     onTabChange={this.handleTabChange.bind(this)}
+                    renderActiveOnly={false}
                 />
             </div>
 

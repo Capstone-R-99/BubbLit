@@ -16,7 +16,7 @@ export default class ShareSpace extends Component {
             youtubeurl: '',
             youtubeplaytime: '',
             channel: this.props.channel,
-            tabIndex: 1
+            tabIndex: 0
         }
     }
 

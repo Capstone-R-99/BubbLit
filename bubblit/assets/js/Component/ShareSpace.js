@@ -62,7 +62,7 @@ export default class ShareSpace extends Component {
                 this.setState({
                     tabIndex: tabs['image']
                 })
-                return { imageurl: "api/room/get_image/"+ this.props.current_room_id + "?" + new Date().getTime() }
+                return { imageurl: "api/room/get_image/" + this.props.current_room_id + "?" + new Date().getTime() }
             case "youtube_link":
                 this.setState({
                     tabIndex: tabs['youtube']
@@ -111,8 +111,8 @@ export default class ShareSpace extends Component {
                 menuItem: 'IMG', render: () => <Tab.Pane className="sharespace-tab"><ImagePanel
                     broadcastAction={this.handleImageUploadSuccess.bind(this)}
                     imgurl={this.state.imageurl}
-                    channel={this.props.channel} 
-                    room_id={this.props.current_room_id}/></Tab.Pane>
+                    channel={this.props.channel}
+                    room_id={this.props.current_room_id} /></Tab.Pane>
             },
         ]
 
@@ -123,7 +123,7 @@ export default class ShareSpace extends Component {
                     panes={panes}
                     activeIndex={this.state.tabIndex}
                     onTabChange={this.handleTabChange.bind(this)}
-                    renderActiveOnly={false}
+                    renderActiveOnly={"false"}
                 />
             </div>
 

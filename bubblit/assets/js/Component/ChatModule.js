@@ -4,6 +4,7 @@ import { Rnd } from "react-rnd"
 import { Scrollbars, scrollToBottom } from 'react-custom-scrollbars';
 import ChatBox from './ChatBox'
 import '../../css/chatModule.css'
+import { Link } from 'react-router-dom';
 
 export default class ChatModule extends Component {
     constructor(props) {
@@ -137,6 +138,7 @@ export default class ChatModule extends Component {
     }
     componentWillUnmount() {
         document.removeEventListener('keydown', this.handleEnterKeyPress);
+        this.props.exitRoom(this.props.channel)
     }
 
 
@@ -176,10 +178,7 @@ export default class ChatModule extends Component {
                                         onChange={this.handleInputMessage.bind(this)}
                                     />
                                     <Button type='submit'>Chat</Button>
-                                    <Button onClick={function (e, data) {
-                                        this.props.exitRoom(this.props.channel);
-                                    }.bind(this)}
-                                    >Exit Room</Button>
+                                    <Link to="/"><Button>Exit Room</Button></Link>
                                 </Form.Field>
                             </Form.Group>
 

@@ -8,21 +8,6 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom'
 
 class Home extends Component {
 
-    constructor(props) {
-        super(props);
-        // this.state = {
-        //     mode: store.getState().mode,
-        //     lobby: store.getState().lobby,
-        //     chatRoom: store.getState().chatRoom,
-        //     userName: ""
-        // };
-        // store.subscribe(function () {
-        //     this.setState({ mode: store.getState().mode });
-        //     this.setState({ lobby: store.getState().lobby });
-        //     this.setState({ chatRoom: store.getState().chatRoom });
-        // }.bind(this));
-    }
-
     render() {
         // Login :  /login
         // Lobby : /임.

@@ -16,6 +16,7 @@ export default class ShareSpace extends Component {
             youtubeurl: '',
             youtubeplaytime: '',
             channel: this.props.channel,
+            tabIndex: 1
         }
     }
 
@@ -39,19 +40,37 @@ export default class ShareSpace extends Component {
             })
             this.props.channel.on("tab_action", payload => {
                 var change = this.handleTabAction(payload['type'], payload['body'], payload['user_id'])
-
                 this.setState(change)
             })
         }
     }
 
     handleTabAction(type, body, user_id) {
+        // 탭 이름과 index를 매칭함.
+        // 전역변수처럼 빼내는건 좀 아닌거같아서 일단 여기다가 두겠음.
+        let tabs = {
+            'youtube': 0,
+            'docs': 1,
+            'chatlog': 2,
+            'image': 3,
+        }
+
+
         switch (type) {
             case "img_link":
+                this.setState({
+                    tabIndex: tabs['image']
+                })
                 return { imageurl: body }
             case "youtube_link":
+                this.setState({
+                    tabIndex: tabs['youtube']
+                })
                 return { youtubeurl: body }
             case "youtube_current_play":
+                this.setState({
+                    tabIndex: tabs['youtube']
+                })
                 return { youtubeplaytime: body }
         }
     }
@@ -64,6 +83,12 @@ export default class ShareSpace extends Component {
         // Glurjar 적용중이라 실제 작동은 안하는듯
         console.log("handleImageUrlClick")
         this.sendTabAction("img_link", this.state.imageurlinput)
+    }
+
+    handleTabChange(e, data) {
+        this.setState({
+            tabIndex: data.activeIndex
+        })
     }
 
     render() {
@@ -93,6 +118,8 @@ export default class ShareSpace extends Component {
                 <Tab className="sharespace-tab"
                     menu={{ color: 'blue', attatched: "false", tabular: false }}
                     panes={panes}
+                    activeIndex={this.state.tabIndex}
+                    onTabChange={this.handleTabChange.bind(this)}
                 />
             </div>
 

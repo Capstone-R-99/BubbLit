@@ -21,8 +21,7 @@
 
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <%= if signed_in?(@conn) do %>
-              <li><a href='#' >Some place</a></li>
-              <li><a class="dropdown-trigger" href="#!" data-target="user-actions"> <%= @current_user.name %> <i class="material-icons right">arrow_drop_down</i></a></li>
+              <li><a id="current-username" class="dropdown-trigger" href="#!" data-target="user-actions"> <%= @current_user.name %> <i class="material-icons right">arrow_drop_down</i></a></li>
             <% end %>
         </ul>
       </div>

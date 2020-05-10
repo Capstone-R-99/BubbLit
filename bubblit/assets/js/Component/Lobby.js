@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Button, Table } from 'semantic-ui-react'
 import axios from 'axios'
+import CreateRoom from './CreateRoom'
+import { Link } from 'react-router-dom'
 
 
 export default class Lobby extends Component {
@@ -18,6 +20,11 @@ export default class Lobby extends Component {
             });
     }
 
+
+    userLogout() {
+        document.getElementById('logout-link').getElementsByTagName('a')[0].click()
+    }
+
     render() {
         var content = [];
         var _props = this.props;
@@ -30,12 +37,15 @@ export default class Lobby extends Component {
                 active.push(<Button key={i} active="false">full</Button>)
             }
             else {
-                active.push(<Button key={i} action={{ index: i }} onClick={function (e, data) {
-                    var room_id = _roomList[data.action.index].id;
-                    console.log(data.action.index);
-                    console.log(room_id);
-                    this.props.enterRoom(room_id);
-                }.bind(this)}>join</Button>)
+                active.push(
+                    <Link to="/room"><Button key={i} action={{ index: i }} onClick={function (e, data) {
+                        var room_id = _roomList[data.action.index].id;
+                        console.log(data.action.index);
+                        console.log(room_id);
+                        this.props.enterRoom(room_id);
+                    }.bind(this)}>join</Button>
+                    </Link>
+                )
             }
             content.push(
                 <Table.Body key={i}>
@@ -72,6 +82,8 @@ export default class Lobby extends Component {
 
         return (
             <div>
+                <h1>BubbLIT</h1>
+                <button onClick={this.userLogout.bind(this)}>로그아웃</button>
                 <Table>
                     <Table.Header>
                         <Table.Row>
@@ -87,6 +99,7 @@ export default class Lobby extends Component {
                     </Table.Header>
                     {content}
                 </Table>
+                <CreateRoom />
             </div>
         )
 

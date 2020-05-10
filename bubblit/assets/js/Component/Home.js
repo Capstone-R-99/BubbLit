@@ -3,7 +3,7 @@ import { Button, Grid, Divider } from 'semantic-ui-react'
 import store from '../store'
 import Lobby from '../Container/Lobby'
 import Room from '../Container/Room'
-import CreateRoom from './CreateRoom'
+import { Route, Switch, BrowserRouter } from 'react-router-dom'
 
 
 class Home extends Component {
@@ -22,27 +22,17 @@ class Home extends Component {
         }.bind(this));
     }
 
-    mode() {
-        if (this.state.mode === 'lobby') {
-            return <div><Lobby></Lobby> <CreateRoom></CreateRoom></div>;
-        }
-        else {
-            return <Room></Room>;
-        }
-    }
-
-    userLogout() {
-        document.getElementById('logout-link').getElementsByTagName('a')[0].click()
-    }
-
     render() {
-        var rendered = this.mode();
+        // Login :  /login
+        // Lobby : /임.
         return (
-            <div>
-                <h1>BubbLIT Prototype😊</h1>
-                <button onClick={this.userLogout.bind(this)}>로그아웃</button>
-                {rendered}
-            </div>
+            <BrowserRouter>
+                <Switch>
+                    <Route path="/" component={Lobby} />
+                    <Route path="/Room" component={Room} />
+                </Switch>
+            </BrowserRouter>
+
         );
     }
 }

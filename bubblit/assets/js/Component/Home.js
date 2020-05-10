@@ -10,16 +10,17 @@ class Home extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            mode: store.getState().mode,
-            lobby: store.getState().lobby,
-            chatRoom: store.getState().chatRoom,
-        };
-        store.subscribe(function () {
-            this.setState({ mode: store.getState().mode });
-            this.setState({ lobby: store.getState().lobby });
-            this.setState({ chatRoom: store.getState().chatRoom });
-        }.bind(this));
+        // this.state = {
+        //     mode: store.getState().mode,
+        //     lobby: store.getState().lobby,
+        //     chatRoom: store.getState().chatRoom,
+        //     userName: ""
+        // };
+        // store.subscribe(function () {
+        //     this.setState({ mode: store.getState().mode });
+        //     this.setState({ lobby: store.getState().lobby });
+        //     this.setState({ chatRoom: store.getState().chatRoom });
+        // }.bind(this));
     }
 
     render() {
@@ -28,11 +29,10 @@ class Home extends Component {
         return (
             <BrowserRouter>
                 <Switch>
-                    <Route path="/" component={Lobby} />
-                    <Route path="/Room" component={Room} />
+                    <Route exact path="/" component={Lobby} />
+                    <Route path="/room" component={Room} />
                 </Switch>
             </BrowserRouter>
-
         );
     }
 }

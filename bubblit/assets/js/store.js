@@ -62,4 +62,9 @@ export default createStore(function (state, action) {
         //history 값을 업데이트
         return { ...state, history: action.history }
     }
+
+    if (action.type === 'SET_USER_NAME') {
+        return { ...state, userName: action.userName }
+    }
+
 }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())

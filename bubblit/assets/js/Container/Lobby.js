@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 
 function mapReduxStateToReactProps(state) {
     return {
-        roomList: state.roomList
+        roomList: state.roomList,
+        userName: state.userName
     }
 }
 
@@ -14,6 +15,9 @@ function mapReduxDispatchToReactProps(dispatch) {
         },
         refreshRoomList: function (room_list) {
             dispatch({ type: 'REFRESH_ROOM_LIST', room_list: room_list })
+        },
+        setUserName: function (userName) {
+            dispatch({ type: 'SET_USER_NAME', userName: userName })
         }
     }
 }

@@ -6,7 +6,11 @@ import { Link } from 'react-router-dom'
 
 
 export default class Lobby extends Component {
+
     componentDidMount() {
+        var _userName = document.getElementById('current-username').innerHTML
+        console.log(_userName)
+        this.props.setUserName(_userName)
         // then 안에서 this를 쓰기위함...
         var self = this;
         axios.get('/api/room/get/')
@@ -38,13 +42,14 @@ export default class Lobby extends Component {
             }
             else {
                 active.push(
-                    <Link to="/room"><Button key={i} action={{ index: i }} onClick={function (e, data) {
-                        var room_id = _roomList[data.action.index].id;
-                        console.log(data.action.index);
-                        console.log(room_id);
-                        this.props.enterRoom(room_id);
-                    }.bind(this)}>join</Button>
-                    </Link>
+                    <Link to="/room">go</Link>
+                    // <Link to="/room"><Button key={i} action={{ index: i }} onClick={function (e, data) {
+                    //     var room_id = _roomList[data.action.index].id;
+                    //     console.log(data.action.index);
+                    //     console.log(room_id);
+                    //     // this.props.enterRoom(room_id);
+                    // }.bind(this)}>join</Button>
+                    // </Link>
                 )
             }
             content.push(
@@ -82,7 +87,7 @@ export default class Lobby extends Component {
 
         return (
             <div>
-                <h1>BubbLIT</h1>
+                <h1>Welcome TO BubbLIT, {this.props.userName} !</h1>
                 <button onClick={this.userLogout.bind(this)}>로그아웃</button>
                 <Table>
                     <Table.Header>

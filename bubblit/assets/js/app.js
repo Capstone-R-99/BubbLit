@@ -31,6 +31,7 @@ if (react_app != null) {
     ReactDOM.render(
         <Provider store={store}>
             <Home />
+
         </Provider>
         , react_app)
 }

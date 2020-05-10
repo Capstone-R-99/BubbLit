@@ -67,8 +67,8 @@ export default class ImagePanel extends Component {
         //     images.map(image => <img src={image} key={image} alt={`Pasted: ${image}`} />)
         // }
         return (
-            <div className="outerfit">
-                <img src={this.props.imgurl} />
+            <div className="imagetab-image-div">
+                <img class="imagetab-image" src={this.props.imgurl} />
                 <Gluejar onPaste={this.OnPaste.bind(this)} onError={err => console.error(err)}>
 
                 </Gluejar>

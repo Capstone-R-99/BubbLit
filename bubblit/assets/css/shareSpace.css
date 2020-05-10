@@ -11,3 +11,15 @@
     box-sizing: border-box;
     height: 100%;
 }
+
+.imagetab-image-div {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.imagetab-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

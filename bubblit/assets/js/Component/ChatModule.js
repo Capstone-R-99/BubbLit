@@ -122,7 +122,7 @@ export default class ChatModule extends Component {
             let user_id = participant[i];
             let user = this.props.users[user_id];
             message.push(
-                <ChatBox key={i} temp={temp} name={user.name} contents={this.props.contents}></ChatBox>
+                <ChatBox isOnline={user_id in this.state.presences} key={i} temp={temp} name={user.name} contents={this.props.contents}></ChatBox>
             )
         }
         return message

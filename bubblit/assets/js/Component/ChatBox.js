@@ -109,6 +109,18 @@ export default class ChatBox extends Component {
         }
     }
 
+    ShowIsOnline(param) {
+        const isOnline = param.props.isOnline;
+        console.log("isOnline", isOnline)
+        if (isOnline == undefined) {
+            return "";
+        }
+        if (isOnline) {
+            return <p>Online</p>;
+        }
+        return <p>Offline</p>;
+    }
+
     render() {
         return (
             <div>
@@ -152,23 +164,24 @@ export default class ChatBox extends Component {
                     }}
                 >
                     <div className='general'
-                    style={{marginLeft: 10}}>
+                        style={{ marginLeft: 10 }}>
                         <strong>{this.props.name}</strong>
+                        <this.ShowIsOnline props={this.props} />
                         <Scrollbars
                             className='scrollbar'
                             ref={this.scrollbarRef}
                             autoHide={true}
                             style={{ height: this.state.height[this.props.temp] - 42 }}>
-                                <div style={{marginTop:20}}>
+                            <div style={{ marginTop: 20 }}>
                                 {this.props.contents[this.props.temp].map((msg, i) => {
                                     return <div
                                         key={i}
-                                        style={{ marginTop: 0, marginLeft:0, marginRight:10, marginBottom:0, padding: 0, backgroundColor: '#FFFFFF' }}
+                                        style={{ marginTop: 0, marginLeft: 0, marginRight: 10, marginBottom: 0, padding: 0, backgroundColor: '#FFFFFF' }}
                                         className='message'>
                                         {msg}
-                                        </div>
+                                    </div>
                                 })}
-                                </div>
+                            </div>
                         </Scrollbars>
                     </div>
                 </Rnd >

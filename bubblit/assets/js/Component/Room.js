@@ -31,7 +31,7 @@ export default class Chat extends Component {
     render() {
         return (
             <div>
-                <h2>Room '{this.props.mode}'</h2>
+                <h2>Room '{this.props.roomTitle}'</h2>
                 <Grid columns={2} divided>
                     <ResizableBox
                         width={this.state.windowWidth * 0.4}

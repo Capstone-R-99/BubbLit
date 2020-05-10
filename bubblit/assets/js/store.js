@@ -16,7 +16,7 @@ export default createStore(function (state, action) {
             socket: socket,
             // 채널은 아래의 'ENTER_CHAT' dispatch때 생성해줌
             channel: '',
-            mode: 'lobby',
+            roomTitle: '',
             userName: 'kynel',
 
             // { id: 0, title: '1st Room', host: 'kynel', isPrivate: 'O', limit: 10, current: 6 },
@@ -38,7 +38,7 @@ export default createStore(function (state, action) {
         return {
             ...state,
             current_room_id: action.room_id,
-            mode: room.title,
+            roomTitle: room.title,
             users: action.users,
             channel: state.socket.channel('room:' + room.id, { nickname: state.userName })
         }
@@ -52,7 +52,7 @@ export default createStore(function (state, action) {
     }
     if (action.type === 'EXIT') {
         //channel 구독해지 및 state 초기화
-        return { ...state, mode: 'lobby', channel: '', contents: [[], [], [], [], []], participants: [] }
+        return { ...state, channel: '', contents: [[], [], [], [], []], participants: [] }
     }
     if (action.type === 'SET_HISTORY') {
         //history 값을 변경

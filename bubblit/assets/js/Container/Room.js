@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 
 function mapReduxStateToReactProps(state) {
     return {
-        mode: state.mode,
         chatRoom: state.chatRoom,
         chatDB: state.chatDB
     }

@@ -42,14 +42,13 @@ export default class Lobby extends Component {
             }
             else {
                 active.push(
-                    <Link to="/room">go</Link>
-                    // <Link to="/room"><Button key={i} action={{ index: i }} onClick={function (e, data) {
-                    //     var room_id = _roomList[data.action.index].id;
-                    //     console.log(data.action.index);
-                    //     console.log(room_id);
-                    //     // this.props.enterRoom(room_id);
-                    // }.bind(this)}>join</Button>
-                    // </Link>
+                    <Link to="/room"><Button key={i} action={{ index: i }} onClick={function (e, data) {
+                        var room_id = _roomList[data.action.index].id;
+                        console.log(data.action.index);
+                        console.log(room_id);
+                        this.props.enterRoom(room_id);
+                    }.bind(this)}>join</Button>
+                    </Link>
                 )
             }
             content.push(

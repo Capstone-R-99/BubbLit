@@ -26,17 +26,20 @@ export default class LogPanel extends Component {
 
     historyRenderer() {
         let contents = [];
-        this.props.history.bubble_history.forEach(element=> {
+        if (this.props.history.bubble_history == undefined) {
+            return [];
+        }
+        this.props.history.bubble_history.forEach(element => {
             contents.push(
                 <Comment key={element.id}>
-                <Comment.Content>
-                  <Comment.Author as='a'>{element.user_id}</Comment.Author>
-                  <Comment.Metadata>
-                    <div>{element.inserted_at}</div>
-                  </Comment.Metadata>
-                  <Comment.Text>{element.content}</Comment.Text>
-                </Comment.Content>
-              </Comment>
+                    <Comment.Content>
+                        <Comment.Author as='a'>{element.user_id}</Comment.Author>
+                        <Comment.Metadata>
+                            <div>{element.inserted_at}</div>
+                        </Comment.Metadata>
+                        <Comment.Text>{element.content}</Comment.Text>
+                    </Comment.Content>
+                </Comment>
             );
         })
         return contents;
@@ -44,7 +47,7 @@ export default class LogPanel extends Component {
 
     render() {
         console.log("logpanel's history: ", this.props.history.bubble_history);
-        
+
         return (
             <div>
                 <Scrollbars

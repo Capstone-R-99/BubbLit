@@ -95,24 +95,36 @@ export default class ShareSpace extends Component {
     render() {
         const panes = [
             {
-                menuItem: 'Youtube', render: () => <Tab.Pane className="sharespace-tab"><YoutubePanel
-                    youtubeurl={this.state.youtubeurl}
-                    channel={this.props.channel}
-                    youtubeplaytime={this.state.youtubeplaytime} /></Tab.Pane>
+                menuItem: 'Youtube',
+                pane: {
+                    key: 'tab1', content: <Tab.Pane className="sharespace-tab"><YoutubePanel
+                        youtubeurl={this.state.youtubeurl}
+                        channel={this.props.channel}
+                        youtubeplaytime={this.state.youtubeplaytime} /></Tab.Pane>, size: 'massive'
+                }
             },
             {
-                menuItem: 'Docs', render: () => <Tab.Pane className="sharespace-tab"><DocsPanel /></Tab.Pane>
+                menuItem: 'Docs',
+                pane: { key: 'tab2', content: <Tab.Pane className="sharespace-tab"><DocsPanel /></Tab.Pane>, size: 'massive' }
+
             },
             {
-                menuItem: 'Log', render: () => <Tab.Pane className="sharespace-tab"><LogPanel
-                    history={this.props.history} /></Tab.Pane>
+                menuItem: 'Log',
+                pane: {
+                    key: 'tab3', content: <Tab.Pane className="sharespace-tab"><LogPanel
+                        history={this.props.history} /></Tab.Pane>, size: 'massive'
+                }
             },
             {
-                menuItem: 'IMG', render: () => <Tab.Pane className="sharespace-tab"><ImagePanel
-                    broadcastAction={this.handleImageUploadSuccess.bind(this)}
-                    imgurl={this.state.imageurl}
-                    channel={this.props.channel}
-                    room_id={this.props.current_room_id} /></Tab.Pane>
+                menuItem: 'IMG',
+                pane: {
+                    key: 'tab4', content: <Tab.Pane className="sharespace-tab"><ImagePanel
+                        broadcastAction={this.handleImageUploadSuccess.bind(this)}
+                        imgurl={this.state.imageurl}
+                        channel={this.props.channel}
+                        room_id={this.props.current_room_id} /></Tab.Pane>, size: 'massive'
+                }
+
             },
         ]
 
@@ -123,7 +135,7 @@ export default class ShareSpace extends Component {
                     panes={panes}
                     activeIndex={this.state.tabIndex}
                     onTabChange={this.handleTabChange.bind(this)}
-                    renderActiveOnly={"false"}
+                    renderActiveOnly={false}
                 />
             </div>
 

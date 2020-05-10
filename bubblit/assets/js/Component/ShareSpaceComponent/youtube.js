@@ -13,7 +13,7 @@ export default class YoutubePanel extends Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
-        console.dir(nextProps)
+        // console.dir(nextProps)
         if (this.props.youtubeplaytime != nextProps.youtubeplaytime) {
             // [TODO] Time 에는 언제 보냈는지하고, 그때 몇초였는지가 필요.
             // 10분 13초에 영상이 1분 2초였다. 
@@ -70,7 +70,7 @@ export default class YoutubePanel extends Component {
 
     render() {
         return (
-            <div className="sharespace-tab">
+            <div className="outerfit">
                 <ReactPlayer url={this.props.youtubeurl}
                     ref={this.ref}
                     width="100%"

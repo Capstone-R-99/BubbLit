@@ -97,32 +97,39 @@ export default class ShareSpace extends Component {
             {
                 menuItem: 'Youtube',
                 pane: {
-                    key: 'tab1', content: <Tab.Pane className="sharespace-tab"><YoutubePanel
+                    key: 'tab1',
+                    content: <Tab.Pane className="outerfit"><YoutubePanel
                         youtubeurl={this.state.youtubeurl}
                         channel={this.props.channel}
-                        youtubeplaytime={this.state.youtubeplaytime} /></Tab.Pane>, size: 'massive'
+                        youtubeplaytime={this.state.youtubeplaytime} /></Tab.Pane>,
+                    className: 'sharespace-tab'
                 }
             },
             {
                 menuItem: 'Docs',
-                pane: { key: 'tab2', content: <Tab.Pane className="sharespace-tab"><DocsPanel /></Tab.Pane>, size: 'massive' }
+                pane: {
+                    key: 'tab2', content: <Tab.Pane className="outerfit"><DocsPanel /></Tab.Pane>,
+                    className: 'sharespace-tab'
+                }
 
             },
             {
                 menuItem: 'Log',
                 pane: {
-                    key: 'tab3', content: <Tab.Pane className="sharespace-tab"><LogPanel
-                        history={this.props.history} /></Tab.Pane>, size: 'massive'
+                    key: 'tab3', content: <Tab.Pane className="outerfit"><LogPanel
+                        history={this.props.history} /></Tab.Pane>,
+                    className: 'sharespace-tab'
                 }
             },
             {
                 menuItem: 'IMG',
                 pane: {
-                    key: 'tab4', content: <Tab.Pane className="sharespace-tab"><ImagePanel
+                    key: 'tab4', content: <Tab.Pane className="outerfit"><ImagePanel
                         broadcastAction={this.handleImageUploadSuccess.bind(this)}
                         imgurl={this.state.imageurl}
                         channel={this.props.channel}
-                        room_id={this.props.current_room_id} /></Tab.Pane>, size: 'massive'
+                        room_id={this.props.current_room_id} /></Tab.Pane>,
+                    className: 'sharespace-tab'
                 }
 
             },
@@ -130,7 +137,7 @@ export default class ShareSpace extends Component {
 
         return (
             <div className="sharespace-div">
-                <Tab className="sharespace-tab"
+                <Tab className="outerfit"
                     menu={{ color: 'blue', attatched: "false", tabular: false }}
                     panes={panes}
                     activeIndex={this.state.tabIndex}

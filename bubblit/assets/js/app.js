@@ -21,6 +21,7 @@ import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import store from './store'
 import Home from './Component/Home'
+import { BrowserRouter } from 'react-router-dom';
 
 // This code starts up the React app when it runs in a browser. It sets up the routing
 // configuration and injects the app into a DOM element.
@@ -30,8 +31,9 @@ var react_app = document.getElementById('react-app');
 if (react_app != null) {
     ReactDOM.render(
         <Provider store={store}>
-            <Home />
-
+            <BrowserRouter>
+                <Home />
+            </BrowserRouter>
         </Provider>
         , react_app)
 }

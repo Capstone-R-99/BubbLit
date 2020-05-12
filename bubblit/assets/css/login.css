@@ -12,20 +12,12 @@
     color: rgb(255, 255, 255);
 }
 
-.ui.button.login_button {
-    margin-left: 5px;
-}
-
-.ui.button.register_button {
-    margin-left: 5px;
-}
-
 .login_card {
     /* display: inline; */
     /* top: 40%;
     left: 40%; */
-    width: 50%;
-    height: 50%;
+    width: 30%;
+    height: 60%;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -34,4 +26,49 @@
     border-style: solid;
     border-color: rgb(255, 255, 255);
     border-image: initial;
+}
+
+.card-content {
+    height: 100%;
+    display:inline-block;
+}
+
+.login-title {
+    font-size: 3.5em;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+} 
+
+
+.login-form{
+    width: inherit;
+    display: inline-grid;
+}
+
+.login-input {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    display: inline-grid;
+    height: auto;
+}
+
+.login-input font {
+    font-size: 2em;
+    font-family: 'IBM Plex Mono',monospace;
+    margin-bottom: 0.3em;
+}
+
+.login-input input {
+    font-size: 2em;
+    height: 2em;
+    overflow: overlay;
+    overflow-y: auto;
+}
+
+.login-button button, a {
+    width: 100%;
+}
+
+.login-button  {
+    margin-top: 10%;
+    margin-bottom: 5%;
 }

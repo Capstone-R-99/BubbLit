@@ -1,20 +1,21 @@
 
 <div class="login_page">
   <div class='card login_card'>
-    <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-    <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
     <div class='card-content'>
-      <span class='card-title'>LOGIN</span>
-        <div class='row card-form'>
-        <%= form_for @conn, Routes.session_path(@conn, :new), [as: :session], fn f -> %>
-        <div>
-          <div><%= text_input f, :name, placeholder: "name" %></div>
-          <div><%= password_input f, :password, placeholder: "Password" %></div>
-          <div><%= submit "Submit", class: "ui tiny primary button login_button" %></div>
-          <div><%= link "Register", to: Routes.user_path(@conn, :new), class: "ui tiny primary button register_button" %></div>
-        </div>
+    <h1 class="login-title">BubbLIT</h1>
+        <%= form_for @conn, Routes.session_path(@conn, :new), [as: :session, class: "login-form ui"], fn f -> %>
+          <div class="login-input">
+          <font> Your Name </font>
+          <%= text_input f, :name, placeholder: "name" %>
+          </div>
+          <div class="login-input">
+          <font> Your Password </font>
+          <%= password_input f, :password, placeholder: "Password" %></div>
+          <div class="login-button"><%= submit "Login", class: "ui massive primary button login_button" %></div>
+          <div class="login-button"><%= link "Register", to: Routes.user_path(@conn, :new), class: "ui massive primary button register_button" %></div>
         <% end %>
-        </div>
     </div>
   </div>
+    <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+    <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 </div>

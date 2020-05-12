@@ -19,7 +19,7 @@ defmodule BubblitWeb.SessionController do
 
       :error ->
         conn
-        |> put_flash(:error, "There was a problem with your name/password")
+        |> put_flash(:error, "Fail to login with your name/password.")
         |> render("new.html")
     end
   end

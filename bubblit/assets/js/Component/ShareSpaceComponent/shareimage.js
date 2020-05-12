@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Gluejar } from '@charliewilco/gluejar'
 import axios from 'axios'
 import { uploadFileRequest } from './upload_file_request'
+import './../../../css/shareSpace.css'
 
 export default class ImagePanel extends Component {
     // 웹에서 이미지 링크 업로드 or/and 서버에 직접 업로드??
@@ -61,14 +62,10 @@ export default class ImagePanel extends Component {
     }
 
     render() {
-        // 문제 생길시 Gluejar 안에 넣으면 복구됨.
-        //     {({ images }) =>
-        //     images.length > 0 &&
-        //     images.map(image => <img src={image} key={image} alt={`Pasted: ${image}`} />)
-        // }
+
         return (
             <div className="imagetab-image-div">
-                <img class="imagetab-image" src={this.props.imgurl} />
+                <img className="imagetab-image" src={this.props.imgurl} />
                 <Gluejar onPaste={this.OnPaste.bind(this)} onError={err => console.error(err)}>
 
                 </Gluejar>

@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 function mapReduxStateToReactProps(state) {
     return {
         roomList: state.roomList,
-        userName: state.userName
+        userName: state.userName,
+        current_room_id: state.current_room_id
     }
 }
 

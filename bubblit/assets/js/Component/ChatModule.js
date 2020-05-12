@@ -21,7 +21,15 @@ export default class ChatModule extends Component {
             presences: {}
         }
         console.log('channelInitializer called');
-        this.channelInitializer();
+
+        // 뒤로가기 됐을때를 대비해, 강제로 enterRoom 다시 실행시킴
+        // [TODO] 두 과정을 하나로 통합시켜야 함. 하나의 일이 두 과정으로 분리되어 서로 다른 곳에서 실행되고 있어서 이렇게 할 수밖에 없다...
+        let channelinit = async () => {
+            await this.props.enterRoom(this.props.current_room_id)
+            await this.channelInitializer();
+        }
+        channelinit()
+        // this.channelInitializer();
         this.handleEnterKeyPress = this.handleEnterKeyPress.bind(this)
         this.chatInput = React.createRef()
     }

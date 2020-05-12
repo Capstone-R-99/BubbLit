@@ -8,8 +8,8 @@ import { Link } from 'react-router-dom'
 export default class Lobby extends Component {
 
     componentDidMount() {
+
         var _userName = document.getElementById('current-username').innerHTML
-        console.log(_userName)
         this.props.setUserName(_userName)
         // then 안에서 this를 쓰기위함...
         var self = this;
@@ -23,7 +23,6 @@ export default class Lobby extends Component {
                 console.log(error);
             });
     }
-
 
     userLogout() {
         document.getElementById('logout-link').getElementsByTagName('a')[0].click()
@@ -44,8 +43,7 @@ export default class Lobby extends Component {
                 active.push(
                     <Link to="/room"><Button secondary key={i} action={{ index: i }} onClick={function (e, data) {
                         var room_id = _roomList[data.action.index].id;
-                        console.log(data.action.index);
-                        console.log(room_id);
+                        // [TODO] enterRoom 대신 room_id만 set해주는 redux 함수를 만들어야 할듯.
                         this.props.enterRoom(room_id);
                     }.bind(this)}>join</Button>
                     </Link>

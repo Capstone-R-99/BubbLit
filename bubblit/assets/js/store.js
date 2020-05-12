@@ -52,7 +52,7 @@ export default createStore(function (state, action) {
     }
     if (action.type === 'EXIT') {
         //channel 구독해지 및 state 초기화
-        return { ...state, channel: '', contents: [[], [], [], [], []], participants: [] }
+        return { ...state, contents: [[], [], [], [], []], participants: [] }
     }
     if (action.type === 'SET_HISTORY') {
         //history 값을 변경

@@ -31,11 +31,6 @@ defmodule BubblitWeb.Router do
     delete "/logout", SessionController, :delete
 
     get "/", PageController, :index
-
-    # 리액트 싱글 페이지 라우팅 작동 안되서 만든 임시코드
-    get "/main", PageController, :f__k_react
-    get "/room", PageController, :f__k_react
-    # get "/*path", PageController, :index
   end
 
   scope "/api", BubblitWeb do

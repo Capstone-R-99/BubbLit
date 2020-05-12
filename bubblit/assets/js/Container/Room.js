@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 function mapReduxStateToReactProps(state) {
     return {
         chatRoom: state.chatRoom,
-        chatDB: state.chatDB
+        chatDB: state.chatDB,
+        roomTitle: state.roomTitle
     }
 }
 

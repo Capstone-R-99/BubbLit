@@ -95,7 +95,7 @@ export default class ShareSpace extends Component {
     render() {
         const panes = [
             {
-                menuItem: 'Youtube',
+                menuItem: 'Media',
                 pane: {
                     key: 'tab1',
                     content: <Tab.Pane className="outerfit"><YoutubePanel

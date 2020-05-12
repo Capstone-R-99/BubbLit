@@ -84,9 +84,10 @@ export default class YoutubePanel extends Component {
                     value={this.state.youtubeurlinput}
                     onChange={this.handleYoutubeUrlInput.bind(this)}
                 />
-                <button onClick={this.handleYoutubeUrlClick.bind(this)}>유튜브 변경</button>
-                <button onClick={this.handleYoutubeTimeClick.bind(this)}>유튜브 재생시간 변경</button>
-                <font>현재 재생시간 : {this.state.playedSecond}</font>
+                <button onClick={this.handleYoutubeUrlClick.bind(this)}>미디어 링크 변경</button>
+                <button onClick={this.handleYoutubeTimeClick.bind(this)}>미디어 재생시간 동기화</button>
+                <br />
+                <font>지원 미디어: 트위치(라이브 스트리밍), 유튜브, 사운드 클라우드, 페이스북 등</font>
             </div>
         )
     }

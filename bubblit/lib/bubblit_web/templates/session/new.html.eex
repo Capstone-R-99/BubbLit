@@ -11,8 +11,8 @@
           <div class="login-input">
           <font> Your Password </font>
           <%= password_input f, :password, placeholder: "Password" %></div>
-          <div class="login-button"><%= submit "Login", class: "ui massive button login_button" %></div>
-          <div class="login-button"><%= link "Register", to: Routes.user_path(@conn, :new), class: "ui massive button register_button" %></div>
+          <div class="login-button"><%= submit "Login", class: "ui massive button login-button" %></div>
+          <div class="login-button"><%= link "Register", to: Routes.user_path(@conn, :new), class: "ui massive button login-button" %></div>
         <% end %>
     </div>
   </div>

@@ -1,6 +1,6 @@
 
-<div class="login_page">
-  <div class='card login_card'>
+<div class="login-page">
+  <div class='card login-card'>
     <div class='card-content'>
     <h1 class="login-title">BubbLIT</h1>
         <%= form_for @conn, Routes.session_path(@conn, :new), [as: :session, class: "login-form ui"], fn f -> %>
@@ -11,11 +11,11 @@
           <div class="login-input">
           <font> Your Password </font>
           <%= password_input f, :password, placeholder: "Password" %></div>
-          <div class="login-button"><%= submit "Login", class: "ui massive primary button login_button" %></div>
-          <div class="login-button"><%= link "Register", to: Routes.user_path(@conn, :new), class: "ui massive primary button register_button" %></div>
+          <div class="login-button"><%= submit "Login", class: "ui massive button login_button" %></div>
+          <div class="login-button"><%= link "Register", to: Routes.user_path(@conn, :new), class: "ui massive button register_button" %></div>
         <% end %>
     </div>
   </div>
-    <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-    <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+    <p class="alert alert-info login-screen-message-info" role="alert"><%= get_flash(@conn, :info) %></p>
+    <p class="alert alert-danger login-screen-message-alert" role="alert"><%= get_flash(@conn, :error) %></p>
 </div>

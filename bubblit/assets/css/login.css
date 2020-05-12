@@ -1,4 +1,4 @@
-.login_page {
+.login-page {
     border-width: 8px;
     border-style: solid;
     border-color: rgb(102, 51, 255);
@@ -12,10 +12,7 @@
     color: rgb(255, 255, 255);
 }
 
-.login_card {
-    /* display: inline; */
-    /* top: 40%;
-    left: 40%; */
+.login-card {
     width: 30%;
     height: 60%;
     left: 50%;
@@ -28,14 +25,24 @@
     border-image: initial;
 }
 
+.login-screen-message-info {
+    font-size: 1.8em;
+    color: green
+}
+
+.login-screen-message-alert {
+    font-size: 1.8em;
+    color: red
+}
+
 .card-content {
     height: 100%;
     display:inline-block;
 }
 
 .login-title {
-    font-size: 3.5em;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 2.5em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 } 
 
 
@@ -47,28 +54,48 @@
 .login-input {
     margin-top: 5%;
     margin-bottom: 5%;
+    padding-left: 2%;
+    padding-right: 2%;
     display: inline-grid;
-    height: auto;
 }
 
 .login-input font {
     font-size: 2em;
     font-family: 'IBM Plex Mono',monospace;
     margin-bottom: 0.3em;
+    text-align: left;
 }
 
 .login-input input {
     font-size: 2em;
     height: 2em;
     overflow: overlay;
-    overflow-y: auto;
+}
+
+/* background 덮어스기용 */
+.ui.button {
+    background: rgb(102, 51, 255);
+}
+
+.ui.button:hover {
+    background: rgb(61, 24, 170);
+}
+
+.ui.button:active {
+    background: rgb(62, 0, 248);
 }
 
 .login-button button, a {
     width: 100%;
+    /* background: rgb(102, 51, 255); */
+    
 }
 
 .login-button  {
     margin-top: 10%;
     margin-bottom: 5%;
+}
+
+.register-content {
+    height: 80%;
 }

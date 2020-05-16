@@ -15,6 +15,7 @@ export default class ShareSpace extends Component {
             docurl: '',
             youtubeurl: '',
             youtubeplaytime: '',
+            youtubeIsPlay: true,
             channel: this.props.channel,
             tabIndex: 0
         }
@@ -73,6 +74,11 @@ export default class ShareSpace extends Component {
                     tabIndex: tabs['youtube']
                 })
                 return { youtubeplaytime: body }
+            case "youtube_is_play":
+                this.setState({
+                    tabIndex: tabs['youtube']
+                })
+                return { youtubeIsPlay: body }
         }
     }
 
@@ -98,7 +104,9 @@ export default class ShareSpace extends Component {
                 <YoutubePanel
                     youtubeurl={this.state.youtubeurl}
                     channel={this.props.channel}
-                    youtubeplaytime={this.state.youtubeplaytime} />
+                    youtubeplaytime={this.state.youtubeplaytime}
+                    isPlay={this.state.youtubeIsPlay}
+                    sendTabAction={this.sendTabAction.bind(this)} />
             </Tab.Pane>;
 
         let docs_content =

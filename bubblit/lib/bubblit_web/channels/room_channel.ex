@@ -74,8 +74,7 @@ defmodule BubblitWeb.RoomChannel do
     {:noreply, socket}
   end
 
-  # type => img_link youtube_link youtube_current_play
-  # 유튜브 링크 손질하는 건 프론트에서 할지, 백에서 할지?
+  # type => img_link / youtube_link / youtube_current_play / youtube_is_play
   def handle_in("tab_action", %{"type" => type, "body" => body}, socket) do
     room_id = socket.assigns.room_record.id
     user_id = socket.assigns.user_id

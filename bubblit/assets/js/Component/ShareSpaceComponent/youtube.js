@@ -48,6 +48,7 @@ export default class YoutubePanel extends Component {
     }
 
     handleProgress(event) {
+        console.log("onprogress 불러옴")
         /* 유튜브 재생에 맞춰 실시간으로 현재 재생 시간이 업데이트 됨. */
         this.setState({
             playedSeconds: event.playedSeconds
@@ -59,7 +60,19 @@ export default class YoutubePanel extends Component {
     }
 
     handleYoutubeTimeClick() {
-        this.props.channel.push("tab_action", { type: "youtube_current_play", body: this.state.playedSeconds })
+        this.props.sendTabAction("youtube_current_play", this.state.playedSeconds)
+    }
+
+    handlePause() {
+        console.log("영상 중지")
+        this.props.sendTabAction("youtube_is_play", false)
+    }
+
+    handleStart() {
+        // Resume 및 첫 Start 때도 작동함. onStart callback시 자동으로 실행됨.
+        // youtube_is_pause와 youtube_is_true를 둘 다 두는 것보단 그냥 youtube_is_pause에서 T/F로 가는게 효율적일 듯. 
+        console.log("영상 재시작")
+        this.props.sendTabAction("youtube_is_play", true)
     }
 
     ref = player => {
@@ -75,9 +88,12 @@ export default class YoutubePanel extends Component {
                     ref={this.ref}
                     width="100%"
                     height="80%"
-                    playing={true}
+                    playing={this.props.isPlay}
                     controls={true}
-                    onProgress={this.handleProgress.bind(this)} />
+                    onProgress={this.handleProgress.bind(this)}
+                    progressInterval={3000}
+                    onPause={this.handlePause.bind(this)}
+                    onPlay={this.handleStart.bind(this)} />
                 <input
                     className="input"
                     type="text"

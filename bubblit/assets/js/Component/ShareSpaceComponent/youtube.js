@@ -83,7 +83,6 @@ export default class YoutubePanel extends Component {
     handleStart() {
         console.log("재생")
         // Resume 및 첫 Start 때도 작동함. onStart callback시 자동으로 실행됨.
-        // youtube_is_pause와 youtube_is_true를 둘 다 두는 것보단 그냥 youtube_is_pause에서 T/F로 가는게 효율적일 듯.
         if (this.state.isShareProgress) {
             this.props.sendTabAction("youtube_current_play", this.player.getCurrentTime())
             this.props.sendTabAction("youtube_is_play", true)

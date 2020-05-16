@@ -80,6 +80,8 @@ export default class ChatModule extends Component {
                     this.props.appendHistory(new_history);
                 })
 
+                // [TODO] Presence 관련 코드들 Room.js로 옮겨주세요... ShareSpace에서도 필요할듯.
+
                 this.props.channel.on("presence_state", state => {
                     this.state.presences = Presence.syncState(this.state.presences, state)
                     console.log("presence_state", this.state.presences)

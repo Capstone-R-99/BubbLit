@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Tab } from 'semantic-ui-react'
-import Cat from '../../static/images/cat.jpg'
 import YoutubePanel from './ShareSpaceComponent/youtube'
 import DocsPanel from './ShareSpaceComponent/googledocs'
 import ImagePanel from './ShareSpaceComponent/shareimage'
@@ -22,8 +21,6 @@ export default class ShareSpace extends Component {
     }
 
     componentDidMount() {
-        // 이미지/유튜브 브로드캐스팅 테스트용 코드. 추후 redux로 이전해야 함.
-        // 실제 store 구독은 각 pane 컴포넌트별로 해야 할 듯. props는 바뀌어선 안 되는 거니까...
         console.log(this.props.channel)
         if (this.props.channel != null) {
             this.props.channel.on('room_after_join', payload => {
@@ -41,6 +38,7 @@ export default class ShareSpace extends Component {
             })
             this.props.channel.on("tab_action", payload => {
                 console.dir("tab action", payload)
+                console.dir(payload)
                 var change = this.handleTabAction(payload['type'], payload['body'], payload['user_id'])
                 this.setState(change)
             })
@@ -73,7 +71,9 @@ export default class ShareSpace extends Component {
                 this.setState({
                     tabIndex: tabs['youtube']
                 })
-                return { youtubeplaytime: body }
+                return {
+                    youtubeplaytime: body,
+                }
             case "youtube_is_play":
                 this.setState({
                     tabIndex: tabs['youtube']

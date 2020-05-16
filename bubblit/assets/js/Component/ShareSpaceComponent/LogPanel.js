@@ -49,8 +49,8 @@ export default class LogPanel extends Component {
     }
 
     render() {
-        console.log("logpanel's history: ", this.props.history.bubble_history);
-        console.log('in history users: ', this.props.users);
+        // console.log("logpanel's history: ", this.props.history.bubble_history);
+        // console.log('in history users: ', this.props.users);
         return (
             < div >
                 <Scrollbars

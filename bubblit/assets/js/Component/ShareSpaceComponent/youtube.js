@@ -10,7 +10,9 @@ export default class YoutubePanel extends Component {
         this.state = {
             youtubeurlinput: '',
             isShareProgress: true,
-            isPlay: true
+            isPlay: true,
+            isMediaHost: false,
+            isISharedMedia: false
         }
     }
 
@@ -27,7 +29,7 @@ export default class YoutubePanel extends Component {
                 // 좀 해보니까, 로딩때문에 seek을 2번 해줘야할거같음.
                 // 첫번째 seek은 로딩때문에 뿌린사람이랑 어긋남.
 
-                // 위에꺼 걍 5초주기로 렌더링해주면 될듯
+                // 위에꺼 걍 5초주기로 호스트가 뿌려주면 될듯
                 let time = parseFloat(nextProps.youtubeplaytime);
                 // console.log("youtube_current_play -> ", time)
 
@@ -42,10 +44,19 @@ export default class YoutubePanel extends Component {
 
         // isPlay 변경시 로직
         if (this.state.isPlay != nextProps.isPlay) {
-            console.log("이걸로 변경", nextProps.isPlay)
             this.setState({
                 isPlay: nextProps.isPlay
             })
+        }
+
+        // 유튜브 링크 변경시 로직
+        if (this.props.youtubeurl != nextProps.youtubeurl) {
+            if (this.state.isISharedMedia) {
+                this.setState({
+                    isMediaHost: true,
+                    isISharedMedia: false
+                })
+            }
         }
     }
 
@@ -57,21 +68,24 @@ export default class YoutubePanel extends Component {
 
     handleYoutubeUrlClick(event) {
         event.preventDefault();
-        this.props.channel.push("tab_action", { type: "youtube_link", body: this.state.youtubeurlinput })
+        var _youtubeurlinpt = this.state.youtubeurlinput
+        // 반드시 아래의 tab_action보다 먼저 일어나야 하므로 먼저 할당함.
+        // [TODO] isMediaHost를 로컬에서 변경하지 않고, 브로드캐스트 된 정보에서 유저id를 이용하여 설정하도록 하자.
         this.setState({
+            isISharedMedia: true,
             youtubeurlinput: ''
+        }, () => {
+            this.props.channel.push("tab_action", { type: "youtube_link", body: _youtubeurlinpt })
         })
     }
 
     handleProgress(event) {
-        // [TODO] 호스트가 정해지면 이걸 한명만 보내도록 해야함.
-        // this.handleYoutubeTimeProgress();
+        // 내가 호스트면 현재 진행상황을 보냄.
+        // 이걸 안보내면 새로 들어온 사람의 동기화가 안되니, 호스트는 체크박스 풀어도 이거 강제로 보내진다...
+        if (this.state.isMediaHost) {
+            this.props.sendTabAction("youtube_current_play", this.player.getCurrentTime())
+        }
     }
-
-    // 영상을 동기화할 한명이 정해지면 그 때 주석풀고 사용하면 됨.
-    // handleYoutubeTimeProgress() {
-    //     this.props.sendTabAction("youtube_current_play", this.player.getCurrentTime())
-    // }
 
     handlePause() {
         console.log("멈춤")
@@ -82,7 +96,9 @@ export default class YoutubePanel extends Component {
 
     handleStart() {
         console.log("재생")
+        console.log(this.player.getCurrentTime())
         // Resume 및 첫 Start 때도 작동함. onStart callback시 자동으로 실행됨.
+        // ...자동으로 실행되는줄 알았는데 Resume 전(버퍼링 끝나기 전)에 상대로부터 정지요청 들어오면 그대로 정지해서 Start 작동 안함.
         if (this.state.isShareProgress) {
             this.props.sendTabAction("youtube_current_play", this.player.getCurrentTime())
             this.props.sendTabAction("youtube_is_play", true)
@@ -111,8 +127,6 @@ export default class YoutubePanel extends Component {
                     height="80%"
                     playing={this.state.isPlay}
                     controls={true}
-                    onProgress={this.handleProgress.bind(this)}
-                    progressInterval={5000}
                     onPause={this.handlePause.bind(this)}
                     onPlay={this.handleStart.bind(this)} />
                 <input

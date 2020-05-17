@@ -24,17 +24,17 @@ jobs:
         mysql user: 'test'
         mysql password: 'gitactiontest'
     - uses: actions/checkout@v2
-    
+
     - uses: actions/cache@v1
       id: deps-cache
       with:
-        path: ./bubblit/deps
+        path: deps
         key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
 
     - uses: actions/cache@v1
       id: build-cache
       with:
-        path: ./bubblit/_build
+        path: _build
         key: ${{ runner.os }}-build-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
 
     - name: Setup elixir

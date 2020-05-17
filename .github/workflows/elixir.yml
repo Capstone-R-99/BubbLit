@@ -24,6 +24,19 @@ jobs:
         mysql user: 'test'
         mysql password: 'gitactiontest'
     - uses: actions/checkout@v2
+    
+    - uses: actions/cache@v1
+      id: deps-cache
+      with:
+        path: ./bubblit/deps
+        key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+
+    - uses: actions/cache@v1
+      id: build-cache
+      with:
+        path: ./bubblit/_build
+        key: ${{ runner.os }}-build-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+
     - name: Setup elixir
       uses: actions/setup-elixir@v1.2.1
       with:
@@ -33,6 +46,7 @@ jobs:
     - name: Install Dependencies
       run: mix deps.get
       working-directory: ${{env.working-directory}}
+    - run: npm install
     - name: Test run
       run: mix test
       working-directory: ${{env.working-directory}}

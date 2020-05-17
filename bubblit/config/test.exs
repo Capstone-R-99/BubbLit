@@ -10,7 +10,7 @@ config :bubblit, BubblitWeb.Endpoint,
 config :logger, level: :warn
 
 if System.get_env("GITHUB_ACTIONS") do
-  config :bubblechat, Bubblit.Repo,
+  config :bubblit, Bubblit.Repo,
     username: "test",
     password: "gitactiontest",
     database: "bubblechat_dev",

@@ -39,16 +39,27 @@ jobs:
         path: bubblit/_build
         key: ${{ runner.os }}-build-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
 
+    - uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
     - name: Setup elixir
       uses: actions/setup-elixir@v1.2.1
       with:
         elixir-version: 1.9.4 # Define the elixir version [required]
         otp-version: 22.2 # Define the OTP version [required]
         install-hex: true
+        
     - name: Install Dependencies
       run: mix deps.get
       working-directory: ${{env.working-directory}}
+
     - run: npm install
+      working-directory: ${{env.working-directory}}
+
     - name: Test run
       run: mix test
       working-directory: ${{env.working-directory}}

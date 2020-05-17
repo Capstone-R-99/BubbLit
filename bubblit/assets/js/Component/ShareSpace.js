@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Tab } from 'semantic-ui-react'
-import YoutubePanel from './ShareSpaceComponent/youtube'
+import MediaPanel from './ShareSpaceComponent/MediaPanel'
 import DocsPanel from './ShareSpaceComponent/googledocs'
 import ImagePanel from './ShareSpaceComponent/shareimage'
 import LogPanel from './ShareSpaceComponent/LogPanel'
@@ -12,9 +12,9 @@ export default class ShareSpace extends Component {
         this.state = {
             imageurl: '',
             docurl: '',
-            youtubeurl: '',
-            youtubeplaytime: '',
-            youtubeIsPlay: true,
+            mediaurl: '',
+            mediaPlayTime: '',
+            mediaIsPlay: true,
             channel: this.props.channel,
             tabIndex: 0
         }
@@ -49,7 +49,7 @@ export default class ShareSpace extends Component {
         // 탭 이름과 index를 매칭함.
         // 전역변수처럼 빼내는건 좀 아닌거같아서 일단 여기다가 두겠음.
         let tabs = {
-            'youtube': 0,
+            'media': 0,
             'docs': 1,
             'chatlog': 2,
             'image': 3,
@@ -62,23 +62,23 @@ export default class ShareSpace extends Component {
                     tabIndex: tabs['image']
                 })
                 return { imageurl: "api/room/get_image/" + this.props.current_room_id + "?" + new Date().getTime() }
-            case "youtube_link":
+            case "media_link":
                 this.setState({
-                    tabIndex: tabs['youtube']
+                    tabIndex: tabs['media']
                 })
-                return { youtubeurl: body }
-            case "youtube_current_play":
+                return { mediaurl: body }
+            case "media_current_play":
                 this.setState({
-                    tabIndex: tabs['youtube']
+                    tabIndex: tabs['media']
                 })
                 return {
-                    youtubeplaytime: body,
+                    mediaPlayTime: body,
                 }
-            case "youtube_is_play":
+            case "media_is_play":
                 this.setState({
-                    tabIndex: tabs['youtube']
+                    tabIndex: tabs['media']
                 })
-                return { youtubeIsPlay: body }
+                return { mediaIsPlay: body }
         }
     }
 
@@ -99,25 +99,25 @@ export default class ShareSpace extends Component {
     }
 
     render() {
-        let youtube_content =
+        let mediaContent =
             <Tab.Pane className="outerfit">
-                <YoutubePanel
-                    youtubeurl={this.state.youtubeurl}
+                <MediaPanel
+                    mediaurl={this.state.mediaurl}
                     channel={this.props.channel}
-                    youtubeplaytime={this.state.youtubeplaytime}
-                    isPlay={this.state.youtubeIsPlay}
+                    mediaPlayTime={this.state.mediaPlayTime}
+                    isPlay={this.state.mediaIsPlay}
                     sendTabAction={this.sendTabAction.bind(this)} />
             </Tab.Pane>;
 
-        let docs_content =
+        let docsContent =
             <Tab.Pane className="outerfit"><DocsPanel /></Tab.Pane>;
 
-        let log_content =
+        let logContent =
             <Tab.Pane className="outerfit">
                 <LogPanel history={this.props.history} users={this.props.users} />
             </Tab.Pane>
 
-        let img_content =
+        let imgContent =
             <Tab.Pane className="outerfit">
                 <ImagePanel
                     broadcastAction={this.handleImageUploadSuccess.bind(this)}
@@ -130,20 +130,20 @@ export default class ShareSpace extends Component {
         const panes = [
             {
                 menuItem: 'Media',
-                pane: { key: 'tab1', content: youtube_content, className: 'sharespace-tab' }
+                pane: { key: 'tab1', content: mediaContent, className: 'sharespace-tab' }
             },
             {
                 menuItem: 'Docs',
-                pane: { key: 'tab2', content: docs_content, className: 'sharespace-tab' }
+                pane: { key: 'tab2', content: docsContent, className: 'sharespace-tab' }
 
             },
             {
                 menuItem: 'Log',
-                pane: { key: 'tab3', content: log_content, className: 'sharespace-tab' }
+                pane: { key: 'tab3', content: logContent, className: 'sharespace-tab' }
             },
             {
                 menuItem: 'IMG',
-                pane: { key: 'tab4', content: img_content, className: 'sharespace-tab' }
+                pane: { key: 'tab4', content: imgContent, className: 'sharespace-tab' }
             },
         ]
 

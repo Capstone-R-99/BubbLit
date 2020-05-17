@@ -211,4 +211,100 @@ defmodule Bubblit.BubbleRooms do
   def change_room(%Room{} = room, attrs) do
     Room.changeset(room, attrs)
   end
+
+  alias Bubblit.BubbleRooms.RoomAction
+
+  @doc """
+  Returns the list of room_actions.
+
+  ## Examples
+
+      iex> list_room_actions()
+      [%RoomAction{}, ...]
+
+  """
+  def list_room_actions do
+    Repo.all(RoomAction)
+  end
+
+  @doc """
+  Gets a single room_action.
+
+  Raises `Ecto.NoResultsError` if the Room action does not exist.
+
+  ## Examples
+
+      iex> get_room_action!(123)
+      %RoomAction{}
+
+      iex> get_room_action!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_room_action!(id), do: Repo.get!(RoomAction, id)
+
+  @doc """
+  Creates a room_action.
+
+  ## Examples
+
+      iex> create_room_action(%{field: value})
+      {:ok, %RoomAction{}}
+
+      iex> create_room_action(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_room_action(attrs \\ %{}) do
+    %RoomAction{}
+    |> RoomAction.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a room_action.
+
+  ## Examples
+
+      iex> update_room_action(room_action, %{field: new_value})
+      {:ok, %RoomAction{}}
+
+      iex> update_room_action(room_action, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_room_action(%RoomAction{} = room_action, attrs) do
+    room_action
+    |> RoomAction.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a room_action.
+
+  ## Examples
+
+      iex> delete_room_action(room_action)
+      {:ok, %RoomAction{}}
+
+      iex> delete_room_action(room_action)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_room_action(%RoomAction{} = room_action) do
+    Repo.delete(room_action)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking room_action changes.
+
+  ## Examples
+
+      iex> change_room_action(room_action)
+      %Ecto.Changeset{source: %RoomAction{}}
+
+  """
+  def change_room_action(%RoomAction{} = room_action) do
+    RoomAction.changeset(room_action, %{})
+  end
 end

@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       working-directory: ./bubblit
-    
+      MIX_ENV: test
     steps:
     - uses: mirromutth/mysql-action@v1.1
       with:

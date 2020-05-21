@@ -30,7 +30,6 @@ export default class ChatModule extends Component {
             inputMessage: '',
             inputspacePosX: window.innerWidth * INPUTSPACE_RELATIVE_POS.x,
             inputspacePosY: window.innerHeight * INPUTSPACE_RELATIVE_POS.y,
-            presences: {},
 
             // 채팅박스 위치, 가로 세로 길이, 보기 잦같은데 이거 어캐해야댈지 생각한뒤에 다시바꿈
             chatboxInfo: {
@@ -63,7 +62,7 @@ export default class ChatModule extends Component {
 
             message.push(
                 <ChatBox
-                    isOnline={user_id in this.state.presences}
+                    isOnline={user_id in this.props.presenses}
                     is_my_box={myName == user_info.name}
                     key={i} name={user_info.name}
                     chatboxInfo={this.state.chatboxInfo[i]}

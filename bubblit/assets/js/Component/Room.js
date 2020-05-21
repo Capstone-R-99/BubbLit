@@ -15,6 +15,8 @@ class Room extends Component {
             userID: 1,
             shareSpace_width: window.innerWidth * 0.5,
             shareSpace_height: 0.85,
+
+            presences: {},
             isEnter: false
         }
 
@@ -123,7 +125,7 @@ class Room extends Component {
                                 </Rnd>
                             </Grid.Column>
                             <Grid.Column>
-                                <ChatModule></ChatModule>
+                                <ChatModule presenses={this.state.presences}></ChatModule>
                             </Grid.Column>
                         </Grid>
                     </div>

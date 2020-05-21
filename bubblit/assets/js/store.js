@@ -12,14 +12,6 @@ function concatToRoomUsers(roomUsers, user_id) {
     return roomUsers
 }
 
-function GetRoomById(roomList, roomId) {
-    var findLambda = (room) => {
-        return room.id == roomId
-    };
-
-    return roomList.find(findLambda);
-}
-
 function addMessageInChanges(changes, user_id, msg) {
     let find_user_id = (element) => {
         return element == user_id
@@ -53,9 +45,9 @@ function addMessageInBubbleHistory(bubble_history, bubble_log) {
 const default_socket = socket;
 
 const init_state = {
-    // 초기화할때 소켓을 생성만 해둠, 밑에 ENTER_CHAT 이벤트때 전달받은 세부 정보로 소켓을 connect함
+    // 초기화할때 소켓을 생성만 해둠, 밑에 SET_ROOM_ID 이벤트때 전달받은 세부 정보로 소켓을 connect함
     socket: default_socket,
-    // 채널은 아래의 'ENTER_CHAT' dispatch때 생성해줌
+    // 채널은 아래의 'SET_ROOM_ID' dispatch때 생성해줌
     channel: '',
     roomTitle: '',
     userName: 'kynel',
@@ -73,8 +65,9 @@ const init_state = {
     roomInfo: {
         bubble_history: [],
         tab_action_history: [],
-        room_users: [],
-        users: [],
+        room_users: [], // 방에 현재 들어와 있는 유저들의 목록
+        users: [], // 방에 들어온 적이 있는(지금 방에서 없을수도 있음)
+        room_title: '',
     },
 }
 
@@ -92,19 +85,18 @@ export default createStore(function (state, action) {
     if (state === undefined) {
         return { ...init_state };
     }
-    if (action.type === 'ENTER_CHAT') {
+    if (action.type === 'SET_ROOM_ID') {
         // 아래 코드에서 socket을 연결시키고, 방에 들어감과 동시에 channel에 접속시켜준다.
-        // socket component 에서도 connect 하는데,,, 두번 해주는거같음. 방 전환할때 꼭 필요한지 확인 필요.
         state = { ...state, ...room_init_state }
-
         state.socket.connect();
-        var room = GetRoomById(state.roomList, action.room_id)
         return {
             ...state,
             current_room_id: action.room_id,
-            roomTitle: room.title,
-            users: action.users,
-            channel: state.socket.channel('room:' + room.id, { nickname: state.userName })
+        }
+    }
+    if (action.type === 'ENTER_ROOM') {
+        return {
+            channel: state.socket.channel('room:' + action.room_id, { nickname: state.userName })
         }
     }
     if (action.type === 'REFRESH_ROOM_LIST') {
@@ -154,6 +146,7 @@ export default createStore(function (state, action) {
         modifiedRoomInfo.tab_action_history = action.tab_action_history;
         modifiedRoomInfo.room_users = action.room_users;
         modifiedRoomInfo.users = action.users;
+        modifiedRoomInfo.room_title = action.room_title;
 
         return { ...state, roomInfo: modifiedRoomInfo }
     }

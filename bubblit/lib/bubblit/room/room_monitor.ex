@@ -105,7 +105,9 @@ defmodule Bubblit.Room.Monitor do
       bubble_history: Map.get(state, :history, []),
       room_users: state[:room_record].users,
       users: Map.get(state, :users, []),
-      tab_action_history: Map.get(state, :tab_action_dic, %{})
+      tab_action_history: Map.get(state, :tab_action_dic, %{}),
+      # 작성중
+      room_title: state[:title]
     }
   end
 

@@ -26,6 +26,10 @@ export default class LogPanel extends Component {
 
     historyRenderer() {
         let contents = [];
+        if (this.props.history == undefined) {
+            return [];
+        }
+
         if (this.props.history.bubble_history == undefined) {
             return [];
         }

@@ -12,9 +12,7 @@ function mapReduxStateToReactProps(state) {
 
 function mapReduxDispatchToReactProps(dispatch) {
     return {
-        // enterRoom: function (room_id) {
-        //     dispatch({ type: 'ENTER_CHAT', room_id: room_id })
-        // },
+
     }
 }
 

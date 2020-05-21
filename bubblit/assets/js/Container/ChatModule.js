@@ -25,9 +25,6 @@ function mapReduxDispatchToReactProps(dispatch) {
         appendHistory: function (new_history) {
             dispatch({ type: 'INSERT_HISTORY', history: new_history });
         },
-        enterRoom: function (room_id) {
-            dispatch({ type: 'ENTER_CHAT', room_id: room_id })
-        },
         setHistory: function (payload) {
             dispatch({ type: 'SET_HISTORY', history: payload })
         },
@@ -39,15 +36,6 @@ function mapReduxDispatchToReactProps(dispatch) {
                 user_id: user_id,
                 body: body,
             })
-        },
-        initializeRoomHistory: function (payload) {
-            dispatch({
-                type: 'INITIALIZE_ROOM_INFO',
-                bubble_history: payload['bubble_history'],
-                room_users: payload['room_users'],
-                tab_action_history: payload['tab_action_history'],
-                users: payload['users'],
-            });
         },
         userJoin: function (user_id, user_name) {
             dispatch({ type: 'USER_JOIN', user_id: user_id, user_name: user_name })

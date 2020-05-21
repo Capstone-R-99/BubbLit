@@ -44,58 +44,17 @@ export default class ChatModule extends Component {
             }
         }
 
-        // 뒤로가기 됐을때를 대비해, 강제로 enterRoom 다시 실행시킴
-        // [TODO] 두 과정을 하나로 통합시켜야 함. 하나의 일이 두 과정으로 분리되어 서로 다른 곳에서 실행되고 있어서 이렇게 할 수밖에 없다...
-        // Join을 사용하지 않은 상태에서 방에 입장할 때에 구조적 문제 발생 -> 추후 
-        let channelinit = async () => {
-            await this.props.enterRoom(this.props.current_room_id)
-            await this.channelInitializer();
-        }
-
-        channelinit()
-
         this.handleEnterKeyPress = this.handleEnterKeyPress.bind(this)
         this.chatInput = React.createRef()
     }
 
-    channelInitializer() {
-        this.props.channel.join()
-            .receive('ok', this.onReceiveOk.bind(this))
-            .receive('error', response => { console.log('Unable to join', response) });
-    }
-
-    onReceiveOk(response) {
-        console.log('joined successfully at ' + response)
-        this.props.channel.on('room_after_join', payload => {
-            this.props.setHistory(payload);
-            this.props.initializeRoomHistory(payload);
-        })
-        this.props.channel.on('user_join', payload => {
-            console.log('user_join', payload);
-            this.props.userJoin(payload.user_id, payload.user_name);
-        })
-        this.props.channel.on("new_msg", payload => {
-            let user_id = payload['user_id'];
-            let msg = payload['body'];
-
-            this.props.addMessage(payload['user_id'], payload['body']);
-        })
-        this.props.channel.on("presence_state", state => {
-            this.state.presences = Presence.syncState(this.state.presences, state)
-            console.log("presence_state", this.state.presences)
-        })
-        this.props.channel.on("presence_diff", diff => {
-            this.state.presences = Presence.syncDiff(this.state.presences, diff)
-            console.log("presence_diff", this.state.presences)
-        })
-
-        // [TODO] Presence 관련 코드들 Room.js로 옮겨주세요... ShareSpace에서도 필요할듯.
-    }
 
     chatboxRenderer() {
         var myName = document.getElementById('current-username').innerHTML
-
         var message = [];
+        if (this.props.roomInfo === undefined) {
+            return <p>Loading...</p>
+        }
 
         for (var i = 0; i < this.props.roomInfo.room_users.length; i++) {
             let user_id = this.props.roomInfo.room_users[i];
@@ -145,7 +104,6 @@ export default class ChatModule extends Component {
     }
     componentWillUnmount() {
         document.removeEventListener('keydown', this.handleEnterKeyPress);
-        this.props.exitRoom(this.props.channel)
     }
 
 

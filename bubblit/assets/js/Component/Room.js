@@ -14,8 +14,70 @@ export default class Chat extends Component {
             shareSpace_width: window.innerWidth * 0.5,
             shareSpace_height: 0.85,
         }
+
+        let channelinit = async () => {
+            await this.props.enterRoom(this.props.current_room_id)
+            await this.channelInitialize();
+        }
+
+        channelinit()
     }
 
+    lobbyRedirect() {
+        alert(response, "방에 접속할 수 없습니다. 로비로 이동합니다.")
+        // 대충 로비로 리다이렉트 시켜주는 코드 쓰기
+        // this.props.history.
+    }
+
+    channelInitialize = () => {
+        this.props.channel.join()
+            .receive('ok', this.onReceiveOk.bind(this))
+            .receive('error', response => { console.log('Unable to join', response) });
+    }
+
+    onReceiveOk(response) {
+        console.log('joined successfully at ' + response)
+        this.props.channel.on('room_after_join', payload => {
+            this.props.setHistory(payload);
+            this.props.initializeRoomHistory(payload);
+        })
+        this.props.channel.on('user_join', payload => {
+            console.log('user_join', payload);
+            this.props.userJoin(payload.user_id, payload.user_name);
+        })
+        this.props.channel.on("new_msg", payload => {
+            let user_id = payload['user_id'];
+            let msg = payload['body'];
+
+            this.props.addMessage(payload['user_id'], payload['body']);
+        })
+        this.props.channel.on("presence_state", state => {
+            this.state.presences = Presence.syncState(this.state.presences, state)
+            console.log("presence_state", this.state.presences)
+        })
+        this.props.channel.on("presence_diff", diff => {
+            this.state.presences = Presence.syncDiff(this.state.presences, diff)
+            console.log("presence_diff", this.state.presences)
+        })
+
+    }
+
+
+    headerRender() {
+        if (this.props.roomInfo == undefined) {
+            return <p>Loading...</p>
+        }
+        else {
+            return <Header className='room-header' as='h1' size='huge'>
+                <Icon name='rocketchat' size='huge' />
+        Room '{this.props.roomInfo.room_title}'
+        </Header>
+        }
+    }
+
+    componentWillUnmount() {
+        this.props.exitRoom(this.props.channel)
+    }
     // ResizableBox에 초기 사이즈(width, height)는 숫자만 받음 => %값으로 줄 수 없음.
     // 따라서, window 창 크기를 계산해서 직접 %를 계산해서 줘야 할듯.
     // Grid가 사실상 유명무실해서 실제로 사용하기 쉽도록 사이즈 맞춤. 
@@ -27,7 +89,7 @@ export default class Chat extends Component {
         return (
             <div>
                 <div className='room' >
-                    <Header className='room-header' as='h1' size='huge'><Icon name='rocketchat' size='huge' />Room '{this.props.roomTitle}'</Header>
+                    {this.headerRender()}
                     <Grid columns={2}>
                         <Grid.Column>
                             <Rnd

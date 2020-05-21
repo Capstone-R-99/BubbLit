@@ -11,8 +11,8 @@ function mapReduxStateToReactProps(state) {
 
 function mapReduxDispatchToReactProps(dispatch) {
     return {
-        enterRoom: function (room_id) {
-            dispatch({ type: 'ENTER_CHAT', room_id: room_id })
+        setRoomID: function (room_id) {
+            dispatch({ type: 'SET_ROOM_ID', room_id: room_id })
         },
         refreshRoomList: function (room_list) {
             dispatch({ type: 'REFRESH_ROOM_LIST', room_list: room_list })

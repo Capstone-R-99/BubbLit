@@ -15,6 +15,7 @@ class Room extends Component {
             userID: 1,
             shareSpace_width: window.innerWidth * 0.5,
             shareSpace_height: 0.85,
+            isEnter: false
         }
 
         let channelinit = async () => {
@@ -27,8 +28,6 @@ class Room extends Component {
 
     lobbyRedirect = () => {
         alert("방에 접속할 수 없습니다. 로비로 이동합니다.")
-        // 대충 로비로 리다이렉트 시켜주는 코드 쓰기
-        this.props.exitRoom()
         this.props.history.push('/')
     }
 
@@ -43,6 +42,9 @@ class Room extends Component {
 
     onReceiveOk(response) {
         console.log('joined successfully at ' + response)
+        this.setState({
+            isEnter: true
+        })
         this.props.channel.on('room_after_join', payload => {
             this.props.setHistory(payload);
             this.props.initializeRoomHistory(payload);
@@ -91,37 +93,44 @@ class Room extends Component {
 
     // React RND로 모듈 바꿈, minwidth, maxwidth를 현재 창 크기의 비율로 맞추고싶은데 우선 놔둠
 
+    // <p>Loading...</p> 부분은 전부 나중에 로딩아이콘 같은걸로 바꾸면 됨(깔끔한 디자인 원하면)
     render() {
-        return (
-            <div>
-                <div className='room' >
-                    {this.headerRender()}
-                    <Grid columns={2}>
-                        <Grid.Column>
-                            <Rnd
-                                className='tab'
-                                disableDragging
-                                minWidth={window.innerWidth * 0.3}
-                                maxWidth={window.innerWidth * 0.6}
-                                default={{
-                                    x: 0,
-                                    y: 0,
-                                    width: window.innerWidth * 0.5,
-                                    height: window.innerHeight * 0.85,
-                                }}
-                                height={this.state.shareSpace_height}
-                            >
-                                <ShareSpace></ShareSpace>
+        if (!this.state.isEnter) {
+            return <p>Loading...</p>
+        }
+        else {
+            return (
+                <div>
+                    <div className='room' >
+                        {this.headerRender()}
+                        <Grid columns={2}>
+                            <Grid.Column>
+                                <Rnd
+                                    className='tab'
+                                    disableDragging
+                                    minWidth={window.innerWidth * 0.3}
+                                    maxWidth={window.innerWidth * 0.6}
+                                    default={{
+                                        x: 0,
+                                        y: 0,
+                                        width: window.innerWidth * 0.5,
+                                        height: window.innerHeight * 0.85,
+                                    }}
+                                    height={this.state.shareSpace_height}
+                                >
+                                    <ShareSpace></ShareSpace>
 
-                            </Rnd>
-                        </Grid.Column>
-                        <Grid.Column>
-                            <ChatModule></ChatModule>
-                        </Grid.Column>
-                    </Grid>
-                </div>
-            </div >
-        )
+                                </Rnd>
+                            </Grid.Column>
+                            <Grid.Column>
+                                <ChatModule></ChatModule>
+                            </Grid.Column>
+                        </Grid>
+                    </div>
+                </div >
+            )
+        }
+
     }
 }
 

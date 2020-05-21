@@ -5,7 +5,6 @@ import { Scrollbars, scrollToBottom } from 'react-custom-scrollbars';
 import ChatBox from './ChatBox'
 import '../../css/chatModule.css'
 import { Link } from 'react-router-dom';
-import { Presence } from "phoenix"
 
 //const DEF_CHATBOX_POS = { x: [0, 450, 0, 450, 0, 450], y: [0, 0, 300, 300, 600, 600] }
 const INPUTSPACE_RELATIVE_POS = { x: 0, y: 0.8 };

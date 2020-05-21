@@ -3,10 +3,12 @@ import { Grid, Header, Icon, Segment } from 'semantic-ui-react'
 import { Rnd } from 'react-rnd'
 import ChatModule from '../Container/ChatModule'
 import ShareSpace from '../Container/ShareSpace'
+import { Presence } from "phoenix"
 import '../../css/room.css'
+import { withRouter } from 'react-router-dom'
 
 
-export default class Chat extends Component {
+class Room extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,16 +25,20 @@ export default class Chat extends Component {
         channelinit()
     }
 
-    lobbyRedirect() {
-        alert(response, "방에 접속할 수 없습니다. 로비로 이동합니다.")
+    lobbyRedirect = () => {
+        alert("방에 접속할 수 없습니다. 로비로 이동합니다.")
         // 대충 로비로 리다이렉트 시켜주는 코드 쓰기
-        // this.props.history.
+        this.props.exitRoom()
+        this.props.history.push('/')
     }
 
     channelInitialize = () => {
         this.props.channel.join()
             .receive('ok', this.onReceiveOk.bind(this))
-            .receive('error', response => { console.log('Unable to join', response) });
+            .receive('error', response => {
+                console.log('Unable to join', response)
+                this.lobbyRedirect()
+            });
     }
 
     onReceiveOk(response) {
@@ -76,7 +82,7 @@ export default class Chat extends Component {
     }
 
     componentWillUnmount() {
-        this.props.exitRoom(this.props.channel)
+        this.props.exitRoom()
     }
     // ResizableBox에 초기 사이즈(width, height)는 숫자만 받음 => %값으로 줄 수 없음.
     // 따라서, window 창 크기를 계산해서 직접 %를 계산해서 줘야 할듯.
@@ -118,3 +124,5 @@ export default class Chat extends Component {
         )
     }
 }
+
+export default withRouter(Room)

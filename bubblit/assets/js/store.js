@@ -104,6 +104,7 @@ export default createStore(function (state, action) {
     }
     if (action.type === 'EXIT') {
         //channel 구독해지 및 state 초기화
+        state.channel.leave()
         return { ...state, contents: [[], [], [], [], []], participants: [] }
     }
     if (action.type === 'SET_HISTORY') {
@@ -140,7 +141,8 @@ export default createStore(function (state, action) {
         action.bubble_history.forEach(element => {
             addMessageInBubbleHistory(init_bubble_history, element)
         })
-
+        console.log('방정보받은거')
+        console.dir(action)
         modifiedRoomInfo.bubble_history = init_bubble_history;
         modifiedRoomInfo.tab_action_history = action.tab_action_history;
         modifiedRoomInfo.room_users = action.room_users;

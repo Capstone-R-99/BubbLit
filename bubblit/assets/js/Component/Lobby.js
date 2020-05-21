@@ -42,7 +42,6 @@ export default class Lobby extends Component {
                 active = (
                     <Link to="/room"><Button secondary key={"active" + i} action={{ index: i }} onClick={function (e, data) {
                         var room_id = _roomList[data.action.index].id;
-                        // [TODO] enterRoom 대신 room_id만 set해주는 redux 함수를 만들어야 할듯.
                         this.props.setRoomID(room_id);
                     }.bind(this)}>join</Button>
                     </Link>

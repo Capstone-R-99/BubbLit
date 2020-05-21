@@ -43,7 +43,7 @@ class Room extends Component {
     }
 
     onReceiveOk(response) {
-        console.log('joined successfully at ' + response)
+        console.log('joined successfully at ', response)
         this.setState({
             isEnter: true
         })
@@ -80,7 +80,7 @@ class Room extends Component {
         else {
             return <Header className='room-header' as='h1' size='huge'>
                 <Icon name='rocketchat' size='huge' />
-        Room '{this.props.roomInfo.room_title}'
+                Room '{this.props.roomInfo.room_title}'
         </Header>
         }
     }

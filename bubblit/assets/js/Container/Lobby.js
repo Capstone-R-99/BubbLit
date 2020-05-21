@@ -5,6 +5,7 @@ function mapReduxStateToReactProps(state) {
     return {
         roomList: state.roomList,
         userName: state.userName,
+        userId: state.userId,
         current_room_id: state.current_room_id
     }
 }
@@ -17,8 +18,8 @@ function mapReduxDispatchToReactProps(dispatch) {
         refreshRoomList: function (room_list) {
             dispatch({ type: 'REFRESH_ROOM_LIST', room_list: room_list })
         },
-        setUserName: function (userName) {
-            dispatch({ type: 'SET_USER_NAME', userName: userName })
+        setUserData: function (userName, userId) {
+            dispatch({ type: 'SET_USER_DATA', userName: userName, userId: userId })
         }
     }
 }

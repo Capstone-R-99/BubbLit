@@ -22,6 +22,7 @@
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <%= if signed_in?(@conn) do %>
               <li><a id="current-username" class="dropdown-trigger" href="#!" data-target="user-actions"><%=@current_user.name %></a></li>
+              <li><a id="current-userid"data-target="user-actions"><%=@current_user.id %></a></li>
             <% end %>
         </ul>
       </div>

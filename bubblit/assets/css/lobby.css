@@ -8,6 +8,10 @@
     font-size: 4em;
 }
 
+.room-entered {
+    background-color: salmon;
+}
+
 .table-cell-text {
     font: outline;
     font-weight: bold;

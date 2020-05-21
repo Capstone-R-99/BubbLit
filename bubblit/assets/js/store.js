@@ -51,6 +51,7 @@ const init_state = {
     channel: '',
     roomTitle: '',
     userName: '',
+    userId: 0,
     roomList: [],
     current_room_id: 0,
     users: '',
@@ -117,8 +118,8 @@ export default createStore(function (state, action) {
         return { ...state, history: action.history }
     }
 
-    if (action.type === 'SET_USER_NAME') {
-        return { ...state, userName: action.userName }
+    if (action.type === 'SET_USER_DATA') {
+        return { ...state, userName: action.userName, userId: action.userId }
     }
 
     // 리팩토링됨

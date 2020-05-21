@@ -10,7 +10,8 @@ export default class Lobby extends Component {
     componentDidMount() {
 
         var _userName = document.getElementById('current-username').innerHTML
-        this.props.setUserName(_userName)
+        var _userid = document.getElementById('current-userid').innerHTML
+        this.props.setUserData(_userName, _userid)
         // then 안에서 this를 쓰기위함...
         var self = this;
         axios.get('/api/room/get/')
@@ -48,16 +49,28 @@ export default class Lobby extends Component {
                 )
             }
             var row = [
-                { key: "id", value: _roomList[i].id },
-                { key: "title", value: _roomList[i].title },
-                // { key: "limit", value: _roomList[i].limit },
-                // { key: "current", value: _roomList[i].current },
-                // { key: "users", value: _roomList[i].users.length },
+                { key: "id", value: room.id },
+                { key: "title", value: room.title },
+                // { key: "limit", value: room.limit },
+                // { key: "current", value: room.current },
+                // { key: "users", value: room.users.length },
                 { key: "active", value: active },
             ]
 
+
+            /*
+            내가 들어간 방은 room-entered
+            내가 들어가있지 않은 방은 room-not-entered임.
+            table의 body 클래스명이 소속 여부에 따라 달라지니까 커스터마이징 하려면 css를 고치면 됨. 
+            */
+            if (room.users.indexOf(Number(this.props.userId)) != -1) {
+                var rowClassname = "room-entered"
+            }
+            else {
+                var rowClassname = "room-not-entered"
+            }
             content.push(
-                <Table.Body key={i.toString() + "table"}>
+                <Table.Body key={i.toString() + "table"} className={rowClassname}>
                     <Table.Row key={i.toString() + "row"}>
                         {row.map((value) => <Table.Cell key={value.key + i}> <p className="table-cell-text">{value.value} </p> </Table.Cell>)}
                     </Table.Row>
@@ -104,8 +117,8 @@ export default class Lobby extends Component {
                                 <Table.HeaderCell>id</Table.HeaderCell>
                                 <Table.HeaderCell>title</Table.HeaderCell>
                                 {/* <Table.HeaderCell>host</Table.HeaderCell>
-                                <Table.HeaderCell>current</Table.HeaderCell> */}
-                                {/* <Table.HeaderCell>users</Table.HeaderCell> */}
+                                <Table.HeaderCell>current</Table.HeaderCell> */
+                                /* <Table.HeaderCell>users</Table.HeaderCell> */}
                                 <Table.HeaderCell>JOIN</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>

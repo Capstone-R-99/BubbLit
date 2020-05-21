@@ -50,9 +50,7 @@ const init_state = {
     // 채널은 아래의 'SET_ROOM_ID' dispatch때 생성해줌
     channel: '',
     roomTitle: '',
-    userName: 'kynel',
-
-    // { id: 0, title: '1st Room', host: 'kynel', isPrivate: 'O', limit: 10, current: 6 },
+    userName: '',
     roomList: [],
     current_room_id: 0,
     users: '',

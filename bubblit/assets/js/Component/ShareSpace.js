@@ -15,7 +15,6 @@ export default class ShareSpace extends Component {
             mediaurl: '',
             mediaPlayTime: '',
             mediaIsPlay: true,
-            channel: this.props.channel,
             tabIndex: 0
         }
     }
@@ -114,7 +113,7 @@ export default class ShareSpace extends Component {
 
         let logContent =
             <Tab.Pane className="outerfit">
-                <LogPanel history={this.props.history} users={this.props.users} />
+                <LogPanel roomInfo={this.props.roomInfo} users={this.props.users} />
             </Tab.Pane>
 
         let imgContent =

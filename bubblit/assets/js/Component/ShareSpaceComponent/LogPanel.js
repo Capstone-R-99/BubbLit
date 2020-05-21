@@ -25,36 +25,36 @@ export default class LogPanel extends Component {
     }
 
     historyRenderer() {
+        console.log("logpanel's history: ", this.props.roomInfo.bubble_history);
+        console.log('in history users: ', this.props.roomInfo.users);
         let contents = [];
-        if (this.props.history == undefined) {
+        if (this.props.roomInfo == undefined) {
             return [];
         }
 
-        if (this.props.history.bubble_history == undefined) {
+        if (this.props.roomInfo.bubble_history == undefined) {
             return [];
         }
-        if (this.props.users === undefined) {
+        if (this.props.roomInfo.users === undefined) {
             return [];
         }
-        // this.props.history.bubble_history.forEach(element => {
-        //     contents.push(
-        //         <Comment key={element.id}>
-        //             <Comment.Content>
-        //                 <Comment.Author as='a'>{this.props.users[element.user_id].name}</Comment.Author>
-        //                 <Comment.Metadata>
-        //                     <div>{element.inserted_at}</div>
-        //                 </Comment.Metadata>
-        //                 <Comment.Text>{element.content}</Comment.Text>
-        //             </Comment.Content>
-        //         </Comment>
-        //     );
-        // })
+        this.props.roomInfo.bubble_history.forEach(element => {
+            contents.push(
+                // <Comment key={element.id}>
+                //     <Comment.Content>
+                //         <Comment.Author as='a'>{this.props.roomInfo.users[element.user_id].name}</Comment.Author>
+                //         <Comment.Metadata>
+                //             <div>{element.inserted_at}</div>
+                //         </Comment.Metadata>
+                //         <Comment.Text>{element.content}</Comment.Text>
+                //     </Comment.Content>
+                // </Comment>
+            );
+        })
         return contents;
     }
 
     render() {
-        // console.log("logpanel's history: ", this.props.history.bubble_history);
-        // console.log('in history users: ', this.props.users);
         return (
             < div >
                 <Scrollbars

@@ -4,6 +4,7 @@ import MediaPanel from './ShareSpaceComponent/MediaPanel'
 import DocsPanel from './ShareSpaceComponent/googledocs'
 import ImagePanel from './ShareSpaceComponent/shareimage'
 import LogPanel from './ShareSpaceComponent/LogPanel'
+import ActionLogPanel from './ShareSpaceComponent/ActionLogPanel'
 import './../../css/shareSpace.css'
 
 export default class ShareSpace extends Component {
@@ -64,7 +65,8 @@ export default class ShareSpace extends Component {
             'media': 0,
             'docs': 1,
             'chatlog': 2,
-            'image': 3,
+            'actionlog': 3,
+            'image': 4,
         }
 
 
@@ -129,6 +131,11 @@ export default class ShareSpace extends Component {
                 <LogPanel roomInfo={this.props.roomInfo} users={this.props.users} />
             </Tab.Pane>
 
+        let actionLogContent =
+            <Tab.Pane className="outerfit">
+                <ActionLogPanel roomInfo={this.props.roomInfo} history={this.state.action_history} />
+            </Tab.Pane>
+
         let imgContent =
             <Tab.Pane className="outerfit">
                 <ImagePanel
@@ -154,8 +161,12 @@ export default class ShareSpace extends Component {
                 pane: { key: 'tab3', content: logContent, className: 'sharespace-tab' }
             },
             {
+                menuItem: '실행기록',
+                pane: { key: 'tab4', content: actionLogContent, className: 'sharespace-tab' }
+            },
+            {
                 menuItem: 'IMG',
-                pane: { key: 'tab4', content: imgContent, className: 'sharespace-tab' }
+                pane: { key: 'tab5', content: imgContent, className: 'sharespace-tab' }
             },
         ]
 

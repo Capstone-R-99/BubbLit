@@ -7,6 +7,14 @@ import '../../css/lobby.css'
 
 export default class Lobby extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            isShowOnlyEntered: false
+        }
+    }
+
+
     componentDidMount() {
 
         var _userName = document.getElementById('current-username').innerHTML
@@ -29,7 +37,14 @@ export default class Lobby extends Component {
         document.getElementById('logout-link').getElementsByTagName('a')[0].click()
     }
 
-    render() {
+    toggleShowRooms() {
+        this.setState({
+            isShowOnlyEntered: !this.state.isShowOnlyEntered
+        })
+    }
+
+    tableContentRender() {
+        console.log(this.state)
         var content = [];
         var _roomList = this.props.roomList;
         var i = 0;
@@ -51,9 +66,9 @@ export default class Lobby extends Component {
             var row = [
                 { key: "id", value: room.id },
                 { key: "title", value: room.title },
-                // { key: "limit", value: room.limit },
-                // { key: "current", value: room.current },
-                // { key: "users", value: room.users.length },
+                { key: "limit", value: room.limit },
+                { key: "current", value: room.current },
+                { key: "users", value: room.users.length },
                 { key: "active", value: active },
             ]
 
@@ -68,6 +83,10 @@ export default class Lobby extends Component {
             }
             else {
                 var rowClassname = "room-not-entered"
+                if (this.state.isShowOnlyEntered) {
+                    i += 1;
+                    continue
+                }
             }
             content.push(
                 <Table.Body key={i.toString() + "table"} className={rowClassname}>
@@ -79,6 +98,28 @@ export default class Lobby extends Component {
             i += 1;
         }
 
+        return content
+    }
+
+    userInfoRender() {
+        return <Header className='username-heder' as='h3'>
+            <div>
+                <Label size='big' basic color='blue'>
+                    <Image avatar spaced='right' src='https://react.semantic-ui.com/images/avatar/small/elliot.jpg' />
+                    {this.props.userName}
+                </Label>
+                <p>내가 속한 방만 표시하기
+                <input type='checkbox' checked={this.state.isShowOnlyEntered}
+                        onClick={this.toggleShowRooms.bind(this)} /></p>
+            </div>
+            <Button className='logout-button' size='tiny' primary onClick={this.userLogout.bind(this)}>Logout</Button>
+            <Popup position='bottom left' trigger={<Button secondary size='tiny'>CreateRoom</Button>} pinned on='click'>
+                <CreateRoom />
+            </Popup>
+        </Header>
+    }
+
+    render() {
         return (
             <div>
                 <div className='lobby' >
@@ -94,37 +135,22 @@ export default class Lobby extends Component {
                             <div>We are Under Construction.</div>
                         </Header>
                         <Menu.Item position='right'>
-                            <Header className='username-heder' as='h3'>
-                                <div>
-                                    <Label size='big' basic color='blue'>
-                                        <Image avatar spaced='right' src='https://react.semantic-ui.com/images/avatar/small/elliot.jpg' />
-                                        {this.props.userName}
-                                    </Label>
-
-                                </div>
-                                <Button className='logout-button' size='tiny' primary onClick={this.userLogout.bind(this)}>Logout</Button>
-                                <Popup position='bottom left' trigger={<Button secondary size='tiny'>CreateRoom</Button>} pinned on='click'>
-                                    <CreateRoom />
-                                </Popup>
-                            </Header>
+                            {this.userInfoRender()}
                         </Menu.Item>
                     </Menu>
-
-
                     <Table className='lobby-room-table inverted'>
                         <Table.Header>
                             <Table.Row key="header">
                                 <Table.HeaderCell>id</Table.HeaderCell>
                                 <Table.HeaderCell>title</Table.HeaderCell>
-                                {/* <Table.HeaderCell>host</Table.HeaderCell>
-                                <Table.HeaderCell>current</Table.HeaderCell> */
-                                /* <Table.HeaderCell>users</Table.HeaderCell> */}
+                                <Table.HeaderCell>host</Table.HeaderCell>
+                                <Table.HeaderCell>current</Table.HeaderCell>
+                                <Table.HeaderCell>users</Table.HeaderCell>
                                 <Table.HeaderCell>JOIN</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
-                        {content}
+                        {this.tableContentRender()}
                     </Table>
-
                 </div>
             </div >
         )

@@ -96,6 +96,7 @@ export default createStore(function (state, action) {
     }
     if (action.type === 'ENTER_ROOM') {
         return {
+            ...state,
             channel: state.socket.channel('room:' + action.room_id, { nickname: state.userName })
         }
     }

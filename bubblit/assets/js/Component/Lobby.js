@@ -30,7 +30,6 @@ export default class Lobby extends Component {
 
     render() {
         var content = [];
-        var _props = this.props;
         var _roomList = this.props.roomList;
         var i = 0;
         while (i < _roomList.length) {

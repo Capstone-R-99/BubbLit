@@ -227,6 +227,18 @@ defmodule Bubblit.BubbleRooms do
     Repo.all(RoomAction)
   end
 
+  def list_room_actions(room_id) do
+    query =
+      from l in RoomAction,
+        # preload: [:user],
+        # join: u in User,
+        # on: u.id == l.user_id,
+        where: l.room_id == ^room_id,
+        select: l
+
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single room_action.
 

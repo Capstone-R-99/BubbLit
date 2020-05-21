@@ -38,9 +38,9 @@ defmodule Bubblit.Room.Monitor do
     Agent.update(via_tuple(room_id), fn state -> handle_add_message(state, user_id, message) end)
   end
 
-  def add_tab_action(room_id, user_id, type, sub_type, message) do
+  def add_tab_action(room_id, user_id, type, message) do
     Agent.update(via_tuple(room_id), fn state ->
-      handle_add_tab_action(state, user_id, type, sub_type, message)
+      handle_add_tab_action(state, user_id, type, message)
     end)
   end
 
@@ -62,14 +62,12 @@ defmodule Bubblit.Room.Monitor do
     Map.put(state, :history, history)
   end
 
-  def handle_add_tab_action(state, user_id, type, sub_type, body) do
+  def handle_add_tab_action(state, user_id, type, body) do
     room_id = state.room_record.id
 
-    Util.log(
-      "room#{room_id} user_id #{user_id} add_tab_action type #{type} sub#{sub_type} body#{body}"
-    )
+    Util.log("room#{room_id} user_id #{user_id} add_tab_action type #{type} body#{body}")
 
-    Bubblit.Db.create_room_action(state.room_record.id, user_id, type, sub_type, body)
+    Bubblit.Db.create_room_action(state.room_record.id, user_id, type, body)
 
     tab_action_dic = Map.put(state.tab_action_dic, type, %{user_id: user_id, body: body})
 

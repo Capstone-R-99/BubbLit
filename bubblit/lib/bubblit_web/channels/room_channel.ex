@@ -79,12 +79,10 @@ defmodule BubblitWeb.RoomChannel do
     room_id = socket.assigns.room_record.id
     user_id = socket.assigns.user_id
 
-    sub_type = Map.get(param, "sub_type", "")
-    Bubblit.Room.Monitor.add_tab_action(room_id, user_id, type, sub_type, body)
+    Bubblit.Room.Monitor.add_tab_action(room_id, user_id, type, body)
 
     broadcast!(socket, "tab_action", %{
       "type" => type,
-      sub_type: sub_type,
       body: body,
       user_id: user_id
     })

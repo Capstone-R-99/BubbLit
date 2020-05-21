@@ -67,13 +67,12 @@ defmodule Bubblit.Db do
     user
   end
 
-  def create_room_action(room_id, user_id, type, sub_type, param \\ "") do
+  def create_room_action(room_id, user_id, type, param \\ "") do
     {:ok, room_action} =
       Bubblit.BubbleRooms.create_room_action(%{
         room_id: room_id,
         user_id: user_id,
         type: type,
-        sub_type: sub_type,
         param: param
       })
 

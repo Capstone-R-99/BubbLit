@@ -78,4 +78,8 @@ defmodule Bubblit.Db do
 
     room_action
   end
+
+  def get_room_actions(room_id) do
+    Bubblit.BubbleRooms.list_room_actions(room_id)
+  end
 end

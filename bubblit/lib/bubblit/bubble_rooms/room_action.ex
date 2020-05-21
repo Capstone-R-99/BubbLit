@@ -2,7 +2,7 @@ defmodule Bubblit.BubbleRooms.RoomAction do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Jason.Encoder, only: [:room_id, :user_id, :type, :param]}
+  @derive {Jason.Encoder, only: [:room_id, :user_id, :type, :param, :inserted_at]}
   schema "room_actions" do
     belongs_to :room, Bubblit.BubbleRooms.Room
     belongs_to :user, Bubblit.Accounts.User

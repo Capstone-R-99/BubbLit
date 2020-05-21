@@ -25,13 +25,17 @@ export default class ShareSpace extends Component {
             this.props.channel.on('room_after_join', payload => {
                 var change = {}
 
-                for (var tab_action_type in payload.tab_action_history) {
-                    let val = payload.tab_action_history[tab_action_type]
+                payload.tab_action_history.reduce((unique, tab_action) => {
+                    if (unique.includes(tab_action.type)) {
+                        return unique;
+                    }
 
-                    let user_id = val['user_id'];
-                    let body = val['body'];
-                    Object.assign(change, this.handleTabAction(tab_action_type, body, user_id));
-                }
+                    let user_id = tab_action.user_id;
+                    let body = tab_action.param;
+                    Object.assign(change, this.handleTabAction(tab_action.type, body, user_id));
+
+                    return [...unique, tab_action.type];
+                }, []); // 초기 Accumulator 는 빈 array 이다
 
                 this.setState(change)
             })

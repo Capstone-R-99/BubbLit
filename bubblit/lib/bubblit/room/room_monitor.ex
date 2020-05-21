@@ -12,6 +12,8 @@ defmodule Bubblit.Room.Monitor do
 
     users_in_history = users |> Enum.map(fn user -> {user.id, user} end) |> Enum.into(%{})
 
+    tab_actinos = Bubblit.Db.get_room_actions(room_id) |> Enum.reverse()
+
     room_member_user =
       room_record.users
       |> Enum.map(fn x -> Bubblit.Accounts.get_user!(x) end)
@@ -23,7 +25,7 @@ defmodule Bubblit.Room.Monitor do
     initial_state = %{
       history: history,
       users: Map.merge(users_in_history, room_member_user),
-      tab_action_dic: %{},
+      tab_actinos: tab_actinos,
       room_record: room_record
     }
 
@@ -67,11 +69,11 @@ defmodule Bubblit.Room.Monitor do
 
     Util.log("room#{room_id} user_id #{user_id} add_tab_action type #{type} body#{body}")
 
-    Bubblit.Db.create_room_action(state.room_record.id, user_id, type, body)
+    room_action = Bubblit.Db.create_room_action(state.room_record.id, user_id, type, body)
 
-    tab_action_dic = Map.put(state.tab_action_dic, type, %{user_id: user_id, body: body})
+    tab_actinos = [room_action | state.tab_actinos]
 
-    Map.put(state, :tab_action_dic, tab_action_dic)
+    Map.put(state, :tab_actinos, tab_actinos)
   end
 
   def handle_getate_after_join(state, user_id, user) do
@@ -104,7 +106,7 @@ defmodule Bubblit.Room.Monitor do
       bubble_history: Map.get(state, :history, []),
       room_users: state[:room_record].users,
       users: Map.get(state, :users, []),
-      tab_action_history: Map.get(state, :tab_action_dic, %{}),
+      tab_action_history: Map.get(state, :tab_actinos, []),
       room_title: state[:room_record].title
     }
   end

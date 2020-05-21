@@ -10,6 +10,7 @@ export default class ShareSpace extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            action_history: [],
             imageurl: '',
             docurl: '',
             mediaurl: '',
@@ -23,26 +24,34 @@ export default class ShareSpace extends Component {
         console.log(this.props.channel)
         if (this.props.channel != null) {
             this.props.channel.on('room_after_join', payload => {
-                var change = {}
+                var change = { action_history: [...payload.tab_action_history] }
+                var actions = []
 
+                console.log(payload.tab_action_history)
                 payload.tab_action_history.reduce((unique, tab_action) => {
                     if (unique.includes(tab_action.type)) {
                         return unique;
                     }
 
+                    actions.push(tab_action)
+                    return [...unique, tab_action.type];
+                }, []);
+
+                actions.reverse()
+
+                actions.forEach(tab_action => {
                     let user_id = tab_action.user_id;
                     let body = tab_action.param;
                     Object.assign(change, this.handleTabAction(tab_action.type, body, user_id));
-
-                    return [...unique, tab_action.type];
-                }, []); // 초기 Accumulator 는 빈 array 이다
+                })
 
                 this.setState(change)
             })
             this.props.channel.on("tab_action", payload => {
                 console.dir("tab action", payload)
-                console.dir(payload)
-                var change = this.handleTabAction(payload['type'], payload['body'], payload['user_id'])
+                var new_action = { user_id: payload['user_id'], type: payload['type'], param: payload['body'] }
+                var change = this.handleTabAction(new_action.type, new_action.param, new_action.user_id)
+                change.action_history = [new_action].concat(this.state.action_history);
                 this.setState(change)
             })
         }

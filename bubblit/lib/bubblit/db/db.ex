@@ -73,7 +73,7 @@ defmodule Bubblit.Db do
         room_id: room_id,
         user_id: user_id,
         type: type,
-        param: param
+        param: "#{param}"
       })
 
     room_action

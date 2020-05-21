@@ -75,13 +75,13 @@ export default class ShareSpace extends Component {
                     tabIndex: tabs['media']
                 })
                 return {
-                    mediaPlayTime: body,
+                    mediaPlayTime: parseFloat(body),
                 }
             case "media_is_play":
                 this.setState({
                     tabIndex: tabs['media']
                 })
-                return { mediaIsPlay: body }
+                return { mediaIsPlay: (body === 'true') }
         }
     }
 

@@ -110,7 +110,7 @@ export default class Lobby extends Component {
                 </Label>
                 <p>내가 속한 방만 표시하기
                 <input type='checkbox' checked={this.state.isShowOnlyEntered}
-                        onClick={this.toggleShowRooms.bind(this)} /></p>
+                        onChange={this.toggleShowRooms.bind(this)} /></p>
             </div>
             <Button className='logout-button' size='tiny' primary onClick={this.userLogout.bind(this)}>Logout</Button>
             <Popup position='bottom left' trigger={<Button secondary size='tiny'>CreateRoom</Button>} pinned on='click'>

@@ -122,10 +122,10 @@ export default class ShareSpace extends Component {
             return (<div>{this.state.restrict_control}
                 <Button key={"underMyControl"} onClick={function (e, data) {
                     this.sendTabAction("restrict_control", "true")
-                }.bind(this)}>SetControl</Button>
+                }.bind(this)}>방장만 조작 가능</Button>
                 <Button key={"underMyUnsetControl"} onClick={function (e, data) {
                     this.sendTabAction("restrict_control", "false")
-                }.bind(this)}>UnSetControl</Button></div>
+                }.bind(this)}>모두가 조작 가능</Button></div>
             )
         }
         else {

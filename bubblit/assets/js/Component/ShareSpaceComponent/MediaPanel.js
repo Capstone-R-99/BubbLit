@@ -10,17 +10,16 @@ export default class MediaPanel extends Component {
         this.state = {
             mediaURLInput: '',
             isShareProgress: true,
-            isPlay: true,
             isMediaHost: false,
-            isISharedMedia: false
+            isISharedMedia: false,
+            isPlay: true
         }
     }
 
     componentWillUpdate(nextProps, nextState) {
-
         // mediaplaytime 변경시 로직
-        if (this.props.mediaPlaytime != nextProps.mediaPlaytime) {
-            if ((Math.abs(this.player.getCurrentTime() - parseFloat(nextProps.mediaPlaytime)) >= 4) &&
+        if (this.props.mediaPlayTime != nextProps.mediaPlayTime) {
+            if ((Math.abs(this.player.getCurrentTime() - parseFloat(nextProps.mediaPlayTime)) >= 4) &&
                 this.state.isShareProgress) {
                 // [TODO] Time 에는 언제 보냈는지하고, 그때 몇초였는지가 필요.
                 // 10분 13초에 영상이 1분 2초였다. 
@@ -30,7 +29,7 @@ export default class MediaPanel extends Component {
                 // 첫번째 seek은 로딩때문에 뿌린사람이랑 어긋남.
 
                 // 위에꺼 걍 5초주기로 호스트가 뿌려주면 될듯
-                let time = parseFloat(nextProps.mediaPlaytime);
+                let time = parseFloat(nextProps.mediaPlayTime);
 
                 if (this.player != null) {
                     console.log("tried to seek to ", time)
@@ -42,7 +41,9 @@ export default class MediaPanel extends Component {
         }
 
         // isPlay 변경시 로직
-        if (this.state.isPlay != nextProps.isPlay) {
+        // props.isPlay랑 state.isPlay 따로 두는 이유: 플레이어를 사용자가 정지/재생할시 props를 직접 변경시키는 구조가 되면 안 되기 때문에...
+        // isPlay가 내 생각대로 움직이지 않는 것 같음. 이걸 강제로 true로 한다고 플레이어가 시작하진 않는 것 같다.
+        if (nextProps.isPlay != this.props.isPlay) {
             this.setState({
                 isPlay: nextProps.isPlay
             })
@@ -74,7 +75,7 @@ export default class MediaPanel extends Component {
             isISharedMedia: true,
             mediaURLInput: ''
         }, () => {
-            this.props.sendTabAction("tab_action", _mediaURLInput)
+            this.props.sendTabAction("media_link", _mediaURLInput)
         })
     }
 
@@ -87,10 +88,9 @@ export default class MediaPanel extends Component {
     }
 
     handlePause() {
-        console.log("멈춤")
-        if (this.state.isShareProgress) {
-            this.props.sendTabAction("media_is_play", false)
-        }
+        this.setState({
+            isPlay: false
+        })
     }
 
     handleStart() {
@@ -99,7 +99,15 @@ export default class MediaPanel extends Component {
         // ...자동으로 실행되는줄 알았는데 Resume 전(버퍼링 끝나기 전)에 상대로부터 정지요청 들어오면 그대로 정지해서 Start 작동 안함.
         if (this.state.isShareProgress) {
             this.props.sendTabAction("media_current_play", this.player.getCurrentTime())
-            this.props.sendTabAction("media_is_play", true)
+        }
+        this.setState({
+            isPlay: true
+        })
+    }
+
+    handleMediaPauseClick() {
+        if (this.state.isShareProgress) {
+            this.props.sendTabAction("media_is_play", !this.state.isPlay)
         }
     }
 
@@ -116,7 +124,25 @@ export default class MediaPanel extends Component {
         this.player = player
     }
 
+    forceStart = () => {
+        // 처음 방 들어오고 강제로 스타트
+        this.setState({
+            isPlay: true
+        })
+    }
+
+
+    mediaPauseButton() {
+        let handleMediaPauseClick = () => {
+            if (this.state.isShareProgress) {
+                this.props.sendTabAction("media_is_play", !this.state.isPlay)
+            }
+        }
+        return <Button onClick={handleMediaPauseClick}>{this.state.isPlay ? "미디어 정지하기" : "미디어 재개하기"}</Button>
+    }
+
     render() {
+
         return (
             <div className="outerfit">
                 <ReactPlayer url={this.props.mediaurl}
@@ -125,6 +151,7 @@ export default class MediaPanel extends Component {
                     height="80%"
                     playing={this.state.isPlay}
                     controls={true}
+                    onReady={this.forceStart}
                     onPause={this.handlePause.bind(this)}
                     onPlay={this.handleStart.bind(this)} />
                 <input
@@ -134,6 +161,7 @@ export default class MediaPanel extends Component {
                     onChange={this.handleMediaUrlInput.bind(this)}
                 />
                 <Button onClick={this.handleMediaUrlClick.bind(this)}>미디어 링크 변경</Button>
+                {this.mediaPauseButton()}
                 <br />
                 미디어 재생시간 공유하기
                 <input type='checkbox' checked={this.state.isShareProgress}

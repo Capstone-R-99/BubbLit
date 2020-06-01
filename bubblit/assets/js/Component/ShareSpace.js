@@ -50,7 +50,7 @@ export default class ShareSpace extends Component {
                 this.setState(change)
             })
             this.props.channel.on("tab_action", payload => {
-                console.dir("tab action", payload)
+                console.dir("tab action")
                 var new_action = { user_id: payload['user_id'], type: payload['type'], param: payload['body'] }
                 var change = this.handleTabAction(new_action.type, new_action.param, new_action.user_id)
                 change.action_history = [new_action].concat(this.state.action_history);

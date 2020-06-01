@@ -20,7 +20,7 @@ export default class MediaPanel extends Component {
 
         // mediaplaytime 변경시 로직
         if (this.props.mediaPlaytime != nextProps.mediaPlaytime) {
-            if ((Math.abs(this.player.getCurrentTime() - parseFloat(nextProps.mediaPlaytime)) >= 6) &&
+            if ((Math.abs(this.player.getCurrentTime() - parseFloat(nextProps.mediaPlaytime)) >= 4) &&
                 this.state.isShareProgress) {
                 // [TODO] Time 에는 언제 보냈는지하고, 그때 몇초였는지가 필요.
                 // 10분 13초에 영상이 1분 2초였다. 
@@ -74,7 +74,7 @@ export default class MediaPanel extends Component {
             isISharedMedia: true,
             mediaURLInput: ''
         }, () => {
-            this.props.channel.push("tab_action", { type: "media_link", body: _mediaURLInput })
+            this.props.sendTabAction("tab_action", _mediaURLInput)
         })
     }
 
@@ -95,7 +95,6 @@ export default class MediaPanel extends Component {
 
     handleStart() {
         console.log("재생")
-        console.log(this.player.getCurrentTime())
         // Resume 및 첫 Start 때도 작동함. onStart callback시 자동으로 실행됨.
         // ...자동으로 실행되는줄 알았는데 Resume 전(버퍼링 끝나기 전)에 상대로부터 정지요청 들어오면 그대로 정지해서 Start 작동 안함.
         if (this.state.isShareProgress) {

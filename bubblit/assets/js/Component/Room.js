@@ -50,6 +50,8 @@ class Room extends Component {
         this.props.channel.on('room_after_join', payload => {
             this.props.setHistory(payload);
             this.props.initializeRoomHistory(payload);
+            console.log("room_after_join:")
+            console.dir(payload)
         })
         this.props.channel.on('user_join', payload => {
             console.log('user_join', payload);

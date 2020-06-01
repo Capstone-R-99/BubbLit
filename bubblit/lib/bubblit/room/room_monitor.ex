@@ -116,7 +116,8 @@ defmodule Bubblit.Room.Monitor do
       room_users: state[:room_record].users,
       users: Map.get(state, :users, []),
       tab_action_history: Map.get(state, :tab_actinos, []),
-      room_title: state[:room_record].title
+      room_title: state[:room_record].title,
+      host_user: state[:room_record].host_user_id
     }
   end
 

@@ -52,17 +52,10 @@ class Room extends Component {
             this.props.initializeRoomHistory(payload);
             // Host 유저인지 체크.
             if (this.props.userId == payload.host_user) {
-                console.log("호스트?")
-                console.log(payload.host_user)
-                console.log(this.props.userId)
-                console.log(this.props.userId == payload.host_user)
                 this.setState({
                     isHost: true
                 })
             }
-
-            console.log("room_after_join:")
-            console.dir(payload)
         })
         this.props.channel.on('user_join', payload => {
             console.log('user_join', payload);
@@ -87,14 +80,18 @@ class Room extends Component {
 
 
     headerRender() {
+
         if (this.props.roomInfo == undefined) {
             return <p>Loading...</p>
         }
         else {
+            let host_id = this.props.roomInfo.host_user
+            let hostname = this.props.roomInfo.users[host_id] == undefined ? '' : this.props.roomInfo.users[host_id].name
+
             return <Header className='room-header' as='h1' size='huge'>
                 <Icon name='rocketchat' size='huge' />
-                Room '{this.props.roomInfo.room_title}'
-        </Header>
+                Room '{this.props.roomInfo.room_title}' 호스트: {hostname}
+            </Header>
         }
     }
 

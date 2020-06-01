@@ -49,7 +49,6 @@ const init_state = {
     socket: default_socket,
     // 채널은 아래의 'SET_ROOM_ID' dispatch때 생성해줌
     channel: '',
-    roomTitle: '',
     userName: '',
     userId: 0,
     roomList: [],

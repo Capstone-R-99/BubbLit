@@ -39,6 +39,8 @@ function mapReduxDispatchToReactProps(dispatch) {
                 room_users: payload['room_users'],
                 tab_action_history: payload['tab_action_history'],
                 users: payload['users'],
+                room_title: payload['room_title'],
+                host_user: payload['host_user']
             });
         },
         userJoin: function (user_id, user_name) {

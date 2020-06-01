@@ -15,9 +15,9 @@ class Room extends Component {
             userID: 1,
             shareSpace_width: window.innerWidth * 0.5,
             shareSpace_height: 0.85,
-
             presences: {},
-            isEnter: false
+            isEnter: false,
+            isHost: false
         }
 
         let channelinit = async () => {
@@ -50,6 +50,17 @@ class Room extends Component {
         this.props.channel.on('room_after_join', payload => {
             this.props.setHistory(payload);
             this.props.initializeRoomHistory(payload);
+            // Host 유저인지 체크.
+            if (this.props.userId == payload.host_user) {
+                console.log("호스트?")
+                console.log(payload.host_user)
+                console.log(this.props.userId)
+                console.log(this.props.userId == payload.host_user)
+                this.setState({
+                    isHost: true
+                })
+            }
+
             console.log("room_after_join:")
             console.dir(payload)
         })
@@ -122,7 +133,7 @@ class Room extends Component {
                                     }}
                                     height={this.state.shareSpace_height}
                                 >
-                                    <ShareSpace></ShareSpace>
+                                    <ShareSpace isHost={this.state.isHost}></ShareSpace>
 
                                 </Rnd>
                             </Grid.Column>

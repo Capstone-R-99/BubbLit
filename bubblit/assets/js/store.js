@@ -68,6 +68,7 @@ const init_state = {
         users: [], // 방에 들어온 적이 있는(지금 방에서 없을수도 있음)
         room_title: '',
         chat_timeline: [], // bubble_history -> 시간순 정렬, ShareSpace의 LogPannel로 전달됨
+        host_user: ''
     },
 }
 
@@ -150,6 +151,7 @@ export default createStore(function (state, action) {
         modifiedRoomInfo.users = action.users;
         modifiedRoomInfo.room_title = action.room_title;
         modifiedRoomInfo.chat_timeline = action.bubble_history.reverse(); //로그 기능에서 사용을 위해 reverse 해줌
+        modifiedRoomInfo.host_user = action.host_user
 
         return { ...state, roomInfo: modifiedRoomInfo }
     }

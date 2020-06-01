@@ -10,6 +10,7 @@ function mapReduxStateToReactProps(state) {
         history: state.history,
         current_room_id: state.current_room_id,
         roomInfo: state.roomInfo,
+        userId: state.userId
     }
 }
 

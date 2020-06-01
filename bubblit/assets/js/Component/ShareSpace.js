@@ -117,6 +117,22 @@ export default class ShareSpace extends Component {
         })
     }
 
+    controlPanelRender() {
+        if (this.props.isHost == true) {
+            return (<div>{this.state.restrict_control}
+                <Button key={"underMyControl"} onClick={function (e, data) {
+                    this.sendTabAction("restrict_control", "true")
+                }.bind(this)}>SetControl</Button>
+                <Button key={"underMyUnsetControl"} onClick={function (e, data) {
+                    this.sendTabAction("restrict_control", "false")
+                }.bind(this)}>UnSetControl</Button></div>
+            )
+        }
+        else {
+            return <div></div>
+        }
+    }
+
     render() {
         let mediaContent =
             <Tab.Pane className="outerfit">
@@ -177,13 +193,7 @@ export default class ShareSpace extends Component {
 
         return (
             <div className="sharespace-div">
-                <div>{this.state.restrict_control}</div>
-                <Button key={"underMyControl"} onClick={function (e, data) {
-                    this.sendTabAction("restrict_control", "true")
-                }.bind(this)}>SetControl</Button>
-                <Button key={"underMyUnsetControl"} onClick={function (e, data) {
-                    this.sendTabAction("restrict_control", "false")
-                }.bind(this)}>UnSetControl</Button>
+                {this.controlPanelRender()}
                 <Tab className="outerfit"
                     menu={{ size: 'huge', color: 'blue', inverted: true, attatched: "false", tabular: false }}
                     panes={panes}

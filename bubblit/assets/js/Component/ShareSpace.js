@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Tab, Button } from 'semantic-ui-react'
 import MediaPanel from './ShareSpaceComponent/MediaPanel'
-import DocsPanel from './ShareSpaceComponent/googledocs'
+import CustomPanel from './ShareSpaceComponent/CustomPanel'
 import ImagePanel from './ShareSpaceComponent/shareimage'
 import LogPanel from './ShareSpaceComponent/LogPanel'
 import ActionLogPanel from './ShareSpaceComponent/ActionLogPanel'
@@ -14,7 +14,7 @@ export default class ShareSpace extends Component {
             action_history: [],
             restrict_control: "true",
             imageurl: '',
-            docurl: '',
+            customUrl: '',
             mediaurl: '',
             mediaPlayTime: '',
             mediaIsPlay: true,
@@ -64,7 +64,7 @@ export default class ShareSpace extends Component {
         // 전역변수처럼 빼내는건 좀 아닌거같아서 일단 여기다가 두겠음.
         let tabs = {
             'media': 0,
-            'docs': 1,
+            'custom': 1,
             'chatlog': 2,
             'actionlog': 3,
             'image': 4,
@@ -97,6 +97,13 @@ export default class ShareSpace extends Component {
             case "restrict_control":
                 return {
                     restrict_control: body
+                }
+            case "custom_link":
+                this.setState({
+                    tabIndex: tabs['custom']
+                })
+                return {
+                    customUrl: body
                 }
         }
     }
@@ -144,8 +151,10 @@ export default class ShareSpace extends Component {
                     sendTabAction={this.sendTabAction.bind(this)} />
             </Tab.Pane>;
 
-        let docsContent =
-            <Tab.Pane className="outerfit"><DocsPanel /></Tab.Pane>;
+        let customContent =
+            <Tab.Pane className="outerfit"><CustomPanel
+                customUrl={this.state.customUrl}
+                sendTabAction={this.sendTabAction.bind(this)} /></Tab.Pane>;
 
         let logContent =
             <Tab.Pane className="outerfit">
@@ -173,8 +182,8 @@ export default class ShareSpace extends Component {
                 pane: { key: 'tab1', content: mediaContent, className: 'sharespace-tab' }
             },
             {
-                menuItem: 'Docs',
-                pane: { key: 'tab2', content: docsContent, className: 'sharespace-tab' }
+                menuItem: 'Custom',
+                pane: { key: 'tab2', content: customContent, className: 'sharespace-tab' }
 
             },
             {

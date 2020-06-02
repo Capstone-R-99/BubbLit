@@ -30,20 +30,21 @@ export default class CustomPanel extends Component {
 
     render() {
         return (
-            <div className="outerfit">
-                <input
-                    className="input"
-                    type="text"
-                    value={this.state.customURLInput}
-                    onChange={this.handleCustomUrlInput.bind(this)}
-                />
-                <Button onClick={this.handleCustomUrlClick.bind(this)}>커스텀 링크 변경</Button>
-                <iframe width="100%"
-                    height="100%"
-                    src={this.props.customUrl}
-                    frameborder="1"></iframe>
+            // <div className="outerfit">
+            //     <input
+            //         className="input"
+            //         type="text"
+            //         value={this.state.customURLInput}
+            //         onChange={this.handleCustomUrlInput.bind(this)}
+            //     />
+            //     <Button onClick={this.handleCustomUrlClick.bind(this)}>커스텀 링크 변경</Button>
+            //     <iframe width="100%"
+            //         height="100%"
+            //         src={this.props.customUrl}
+            //         frameborder="1"></iframe>
 
-            </div>
+            // </div>
+            <div>개발중입니다!</div>
 
         )
     }

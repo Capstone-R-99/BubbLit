@@ -12,7 +12,7 @@ export default class MediaPanel extends Component {
             isShareProgress: true,
             isMediaHost: false,
             isISharedMedia: false,
-            isPlay: true
+            isPlay: true,
         }
     }
 
@@ -31,9 +31,10 @@ export default class MediaPanel extends Component {
                 // 위에꺼 걍 5초주기로 호스트가 뿌려주면 될듯
                 let time = parseFloat(nextProps.mediaPlayTime);
 
-                if (this.player != null) {
+                if (this.player != undefined) {
                     console.log("tried to seek to ", time)
                     this.player.seekTo(time)
+
                 } else {
                     console.error("NO Player but tried to seek playtime")
                 }
@@ -43,7 +44,7 @@ export default class MediaPanel extends Component {
         // isPlay 변경시 로직
         // props.isPlay랑 state.isPlay 따로 두는 이유: 플레이어를 사용자가 정지/재생할시 props를 직접 변경시키는 구조가 되면 안 되기 때문에...
         // isPlay가 내 생각대로 움직이지 않는 것 같음. 이걸 강제로 true로 한다고 플레이어가 시작하진 않는 것 같다.
-        if (nextProps.isPlay != this.props.isPlay) {
+        if (nextProps.isPlay != this.state.isPlay) {
             this.setState({
                 isPlay: nextProps.isPlay
             })
@@ -167,10 +168,9 @@ export default class MediaPanel extends Component {
                 <input type='checkbox' checked={this.state.isShareProgress}
                     onChange={this.toggleShareProgressChange.bind(this)} />
                 <br />
-                <font>지원 미디어: 트위치(라이브 스트리밍), 유튜브, 사운드 클라우드, 페이스북 등</font>
-
-                <div>미디어의 링크를 올린 다음, 미디어 링크 변경 버튼을 클릭해 다른사람에게 공유해보세요.</div>
-                <div>미디어 재생시간 동기화 버튼을 클릭해, 다른사람들을 자신이 보고 있는 시간으로 이동시키세요.</div>
+                <p>* 지원 미디어: 트위치(라이브 스트리밍), 유튜브, 사운드 클라우드, 페이스북 등</p>
+                <p>* 미디어의 링크를 올린 다음, 미디어 링크 변경 버튼을 클릭해 다른사람에게 공유해보세요.</p>
+                <p>* 모든 사람들의 재생을 정지시키려면 미디어 정지하기 버튼을 눌러주세요.</p>
             </div>
         )
     }

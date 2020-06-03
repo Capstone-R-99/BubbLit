@@ -87,7 +87,7 @@ defmodule BubblitWeb.RoomChannel do
     {:noreply, socket}
   end
 
-  # type => img_link / media_link / media_current_play / media_is_play
+  # type => img_link / media_link / media_share_time / media_is_play
   def handle_in("tab_action", %{"type" => type, "body" => body}, socket) do
     room_record = socket.assigns.room_record
     room_id = socket.assigns.room_record.id

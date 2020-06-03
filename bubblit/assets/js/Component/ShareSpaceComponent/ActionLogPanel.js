@@ -42,7 +42,7 @@ export default class ActionLogPanel extends Component {
                 return <div>{name + "님이 이미지를 공유하였습니다"} <a href={"api/room/get_image/" + param} target="_blank">보기</a> </div>;
             case "media_link":
                 return name + "님이 " + param + " 미디어를 공유하였습니다.";
-            case "media_current_play":
+            case "media_share_time":
                 return name + "님이 미디어 재생시간을" + parseFloat(param).toFixed(2) + "로 변경하였습니다.";
             case "media_is_play":
                 if (param == "false") {
@@ -87,6 +87,7 @@ export default class ActionLogPanel extends Component {
             let name = roomInfo.users[item.user_id].name
             let time = new Date(item.inserted_at)
             let timeStr = time.toLocaleTimeString(navigator.language, { hour12: false, hour: '2-digit', minute: '2-digit' });
+            // console.log(item.inserted_at, "->", timeStr)
 
             contents.push(
                 <Comment key={index}>

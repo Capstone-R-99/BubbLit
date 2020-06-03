@@ -17,7 +17,8 @@ export default class ShareSpace extends Component {
             imageurl: '',
             customUrl: '',
             mediaurl: '',
-            mediaPlayTime: '',
+            mediaPlayTimeShare: '',
+            mediaCurrentPlayTime: '',
             mediaIsPlay: true,
             tabIndex: 0,
             redirect: false
@@ -60,8 +61,11 @@ export default class ShareSpace extends Component {
                 var new_action = { user_id: payload['user_id'], type: payload['type'], param: payload['body'], inserted_at: new Date().toISOString() }
                 console.log("tab action recieved", new_action)
                 var change = this.handleTabAction(new_action.type, new_action.param, new_action.user_id)
-                change.action_history = [new_action].concat(this.state.action_history);
-                this.setState(change)
+                // 액션 히스토리에 추가할 필요 없는 action들은 null을 반환함.
+                if (change != null) {
+                    change.action_history = [new_action].concat(this.state.action_history);
+                    this.setState(change)
+                }
             })
             this.props.channel.on('get_room_code', payload => {
                 alert(payload.body)
@@ -76,8 +80,11 @@ export default class ShareSpace extends Component {
     }
 
     handleTabAction(type, body, user_id) {
+        /*
+        액션 히스토리에 등록해야 하는 액션은 state를 반환하고, 
+        그렇지 않은 액션은 case 안에서 setState를 마친 후 null을 반환하도록 함.
+         */
         // 탭 이름과 index를 매칭함.
-        // 전역변수처럼 빼내는건 좀 아닌거같아서 일단 여기다가 두겠음.
         let tabs = {
             'media': 0,
             'custom': 1,
@@ -98,12 +105,12 @@ export default class ShareSpace extends Component {
                     tabIndex: tabs['media']
                 })
                 return { mediaurl: body }
-            case "media_current_play":
+            case "media_share_time":
                 this.setState({
                     tabIndex: tabs['media']
                 })
                 return {
-                    mediaPlayTime: parseFloat(body),
+                    mediaPlayTimeShare: parseFloat(body),
                 }
             case "media_is_play":
                 this.setState({
@@ -121,6 +128,11 @@ export default class ShareSpace extends Component {
                 return {
                     customUrl: body
                 }
+            case "media_current_time":
+                this.setState({
+                    mediaCurrentPlayTime: parseFloat(body)
+                })
+                return null
         }
     }
 
@@ -176,8 +188,9 @@ export default class ShareSpace extends Component {
                 <MediaPanel
                     mediaurl={this.state.mediaurl}
                     channel={this.props.channel}
-                    mediaPlayTime={this.state.mediaPlayTime}
+                    mediaPlayTimeShare={this.state.mediaPlayTimeShare}
                     isPlay={this.state.mediaIsPlay}
+                    mediaCurrentPlayTime={this.state.mediaCurrentPlayTime}
                     sendTabAction={this.sendTabAction.bind(this)} />
             </Tab.Pane>;
 

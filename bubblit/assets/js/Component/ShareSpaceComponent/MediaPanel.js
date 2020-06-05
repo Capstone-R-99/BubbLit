@@ -36,10 +36,12 @@ export default class MediaPanel extends Component {
 
         // isPlay 변경시 로직
         // props.isPlay랑 state.isPlay 따로 두는 이유: 플레이어를 사용자가 정지/재생할시 props를 직접 변경시키는 구조가 되면 안 되기 때문에...
-        if (nextProps.isPlay != this.state.isPlay) {
-            this.setState({
-                isPlay: nextProps.isPlay
-            })
+        if ((nextProps.isPlay != this.state.isPlay)) {
+            if (this.state.isShareProgress) {
+                this.setState({
+                    isPlay: nextProps.isPlay
+                })
+            }
         }
 
         // 유튜브 링크 변경시 로직
@@ -92,12 +94,6 @@ export default class MediaPanel extends Component {
         }
     }
 
-    handleMediaPauseClick() {
-        if (this.state.isShareProgress) {
-            this.props.sendTabAction("media_is_play", !this.state.isPlay)
-        }
-    }
-
     handleMediaShareClick() {
         if (this.state.isShareProgress) {
             this.props.sendTabAction("media_share_time", this.player.getCurrentTime())
@@ -136,7 +132,7 @@ export default class MediaPanel extends Component {
 
     mediaTimeShareButton() {
         if (this.state.isShareProgress) {
-            return <Button onClick={this.handleMediaShareClick.bind(this)}>현재 재생시간 공유</Button>
+            return <Button onClick={this.handleMediaShareClick.bind(this)}>진행상황 공유</Button>
         }
         else {
             return <font></font>
@@ -152,11 +148,12 @@ export default class MediaPanel extends Component {
             return <font>당신이 현재 재생되는 미디어의 호스트입니다.</font>
         }
 
-        if (this.player == undefined) {
+        // player가 로딩이 안 된 상태 or 진행상황을 공유하지 않는 상태
+        if ((this.player == undefined) || !this.state.isShareProgress) {
             return <div></div>
         }
 
-        let recvedTime = parseFloat(this.props.mediaCurrentPlayTime)
+        let recvedTime = this.props.mediaCurrentPlayTime
         if (Math.abs(recvedTime - this.player.getCurrentTime()) >= 5) {
             return <div>
                 <font>현재 재생시간이 미디어 업로더의 재생시간과 일치하지 않습니다.</font>

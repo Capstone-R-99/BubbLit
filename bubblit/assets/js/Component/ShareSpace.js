@@ -26,7 +26,7 @@ export default class ShareSpace extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props.channel)
+
         if (this.props.channel != null) {
             this.props.channel.on('room_after_join', payload => {
                 // 시간대형식을 js 식으로 해줌 (ISO 포맷)
@@ -59,7 +59,10 @@ export default class ShareSpace extends Component {
             })
             this.props.channel.on("tab_action", payload => {
                 var new_action = { user_id: payload['user_id'], type: payload['type'], param: payload['body'], inserted_at: new Date().toISOString() }
-                console.log("tab action recieved", new_action)
+
+                if (new_action.type != 'media_current_time') {
+                    console.log("tab action recieved", new_action)
+                }
                 var change = this.handleTabAction(new_action.type, new_action.param, new_action.user_id)
                 // 액션 히스토리에 추가할 필요 없는 action들은 null을 반환함.
                 if (change != null) {

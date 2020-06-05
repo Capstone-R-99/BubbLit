@@ -25,26 +25,6 @@ function RemoveFromRoomUsers(roomUsers, user_id) {
     }
 }
 
-function addMessageInChanges(changes, user_id, msg) {
-    let find_user_id = (element) => {
-        return element == user_id
-    }
-
-    if (msg == null) {
-        return;
-    }
-    let user_idx = changes.participants.findIndex(find_user_id)
-    let modified_contents = changes.contents;
-
-    if (modified_contents[user_idx] == undefined) {
-        console.log("ignore no participants msg", user_id, msg)
-        return;
-    }
-    changes.contents[user_idx] = modified_contents[user_idx].concat(msg)
-
-    return changes;
-}
-
 function addMessageInBubbleHistory(bubble_history, bubble_log) {
     let user_id = bubble_log.user_id
 
@@ -81,7 +61,8 @@ const init_state = {
         users: [], // 방에 들어온 적이 있는(지금 방에서 없을수도 있음)
         room_title: '',
         chat_timeline: [], // bubble_history -> 시간순 정렬, ShareSpace의 LogPannel로 전달됨
-        host_user: ''
+        host_user: '',
+        presences: {},
     },
 }
 
@@ -192,6 +173,12 @@ export default createStore(function (state, action) {
             }
         }
     }
-
+    if (action.type === 'PRESENCE_UPDATE') {
+        return {
+            ...state, roomInfo: {
+                ...state.roomInfo, presences: action.presences
+            }
+        }
+    }
 
 }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())

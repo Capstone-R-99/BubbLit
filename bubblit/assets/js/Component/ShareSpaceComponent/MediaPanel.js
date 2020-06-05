@@ -18,9 +18,6 @@ export default class MediaPanel extends Component {
 
     componentWillUpdate(nextProps, nextState) {
         // mediaPlayTimeShare 변경시 로직
-        console.log('시간은')
-        console.log(this.props.mediaPlayTimeShare)
-        console.log(nextProps.mediaPlayTimeShare)
         if (this.props.mediaPlayTimeShare != nextProps.mediaPlayTimeShare) {
             if (this.state.isShareProgress) {
                 let time = nextProps.mediaPlayTimeShare
@@ -136,6 +133,10 @@ export default class MediaPanel extends Component {
     }
 
     mediaSyncButton() {
+        if (this.state.isMediaHost) {
+            return <font>당신이 현재 재생되는 미디어의 호스트입니다.</font>
+        }
+
         if (this.player == undefined) {
             return <div></div>
         }

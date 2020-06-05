@@ -16,7 +16,6 @@ class Room extends Component {
             userID: 1,
             shareSpace_width: window.innerWidth * 0.5,
             shareSpace_height: 0.85,
-            presences: {},
             isEnter: false,
             isHost: false,
             redirect: false
@@ -80,12 +79,13 @@ class Room extends Component {
             this.props.addMessage(payload['user_id'], payload['body']);
         })
         this.props.channel.on("presence_state", state => {
-            this.state.presences = Presence.syncState(this.state.presences, state)
-            console.log("presence_state", this.state.presences)
+            let presences = Presence.syncState(this.props.roomInfo.presences, state)
+            this.props.updatePresences(presences)
+
         })
         this.props.channel.on("presence_diff", diff => {
-            this.state.presences = Presence.syncDiff(this.state.presences, diff)
-            console.log("presence_diff", this.state.presences)
+            let presences = Presence.syncDiff(this.props.roomInfo.presences, diff)
+            this.props.updatePresences(presences)
         })
     }
 
@@ -148,7 +148,7 @@ class Room extends Component {
                             </Rnd>
                         </Grid.Column>
                         <Grid.Column>
-                            <ChatModule presenses={this.state.presences}></ChatModule>
+                            <ChatModule></ChatModule>
                         </Grid.Column>
                     </Grid>
                 </div>

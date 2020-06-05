@@ -50,7 +50,8 @@ export default class ChatModule extends Component {
     chatboxRenderer() {
         var myName = document.getElementById('current-username').innerHTML
         var message = [];
-        if (this.props.roomInfo === undefined) {
+        console.dir(this.props.roomInfo)
+        if (this.props.roomInfo.presences === undefined) {
             return <p>Loading...</p>
         }
 
@@ -59,10 +60,9 @@ export default class ChatModule extends Component {
             let user_info = this.props.roomInfo.users[user_id];
             let user_bubble_history = this.props.roomInfo.bubble_history[user_id]
             user_bubble_history = user_bubble_history == undefined ? [] : user_bubble_history
-
             message.push(
                 <ChatBox
-                    isOnline={user_id in this.props.presenses}
+                    isOnline={user_id in this.props.roomInfo.presences}
                     is_my_box={myName == user_info.name}
                     key={i} name={user_info.name}
                     chatboxInfo={this.state.chatboxInfo[i]}

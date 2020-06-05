@@ -53,7 +53,6 @@ const init_state = {
     contents: [[], [], [], [], [], []],
     participants: [],
 
-    //리팩토링 완료되면 밑의 history 사용
     roomInfo: {
         bubble_history: [],
         tab_action_history: [],
@@ -62,7 +61,7 @@ const init_state = {
         room_title: '',
         chat_timeline: [], // bubble_history -> 시간순 정렬, ShareSpace의 LogPannel로 전달됨
         host_user: '',
-        presences: {},
+        presences: {}
     },
 }
 
@@ -149,6 +148,8 @@ export default createStore(function (state, action) {
         modifiedRoomInfo.room_title = action.room_title;
         modifiedRoomInfo.chat_timeline = action.bubble_history.reverse(); //로그 기능에서 사용을 위해 reverse 해줌
         modifiedRoomInfo.host_user = action.host_user
+        // presence는 따로 업데이트 하는데, 이거 없으면 modifiedRoomInfo로 덮어씌워져서 presence가 아예 사라짐...
+        modifiedRoomInfo.presences = state.roomInfo.presences
 
         return { ...state, roomInfo: modifiedRoomInfo }
     }

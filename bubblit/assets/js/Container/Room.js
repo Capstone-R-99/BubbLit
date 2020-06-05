@@ -49,6 +49,9 @@ function mapReduxDispatchToReactProps(dispatch) {
         userQuit: function (user_id) {
             dispatch({ type: 'USER_QUIT', user_id: user_id })
         },
+        updatePresences: function (presences) {
+            dispatch({ type: 'PRESENCE_UPDATE', presences: presences })
+        }
 
     }
 }

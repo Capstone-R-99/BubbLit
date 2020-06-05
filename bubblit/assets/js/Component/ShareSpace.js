@@ -191,7 +191,8 @@ export default class ShareSpace extends Component {
                     mediaPlayTimeShare={this.state.mediaPlayTimeShare}
                     isPlay={this.state.mediaIsPlay}
                     mediaCurrentPlayTime={this.state.mediaCurrentPlayTime}
-                    sendTabAction={this.sendTabAction.bind(this)} />
+                    sendTabAction={this.sendTabAction.bind(this)}
+                    presences={this.props.roomInfo.presences} />
             </Tab.Pane>;
 
         let customContent =

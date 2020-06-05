@@ -16,6 +16,7 @@ export default class MediaPanel extends Component {
         }
     }
 
+
     componentWillUpdate(nextProps, nextState) {
         // mediaPlayTimeShare 변경시 로직
         if (this.props.mediaPlayTimeShare != nextProps.mediaPlayTimeShare) {
@@ -47,6 +48,20 @@ export default class MediaPanel extends Component {
                 this.setState({
                     isMediaHost: true,
                     isISharedMedia: false
+                })
+            }
+            else {
+                this.setState({
+                    isMediaHost: false,
+                })
+            }
+        }
+
+        // presence 관련 로직
+        if (this.props.presences != nextProps.presences) {
+            if ((Object.keys(this.props.presences).length == 1) && (Object.keys(nextProps.presences).length == 1)) {
+                this.setState({
+                    isISharedMedia: true
                 })
             }
         }

@@ -19,7 +19,10 @@ class CreateRoom extends Component {
             title: this.state.inputMessage,
             is_private: this.state.isPrivate
         }).then(function (response) {
-            self.props.alert.show("방 생성에 성공했습니다!")
+
+            // 방 생성 후 즉시 리로드하면, alert가 안 보이므로 2.5초의 인터벌 후 새로고침함.
+            self.props.alert.show("방 생성에 성공했습니다! 잠시 후 자동으로 새로고침 됩니다!")
+            setTimeout(() => { window.location.reload(false); }, 2500);
             // window.location.reload(false);
         }).catch(function (error) {
             console.log(error);

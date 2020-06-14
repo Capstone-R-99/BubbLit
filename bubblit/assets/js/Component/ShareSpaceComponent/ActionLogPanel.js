@@ -84,6 +84,9 @@ export default class ActionLogPanel extends Component {
             if ((item.type.indexOf(showtype) == -1) && (showtype != 'all'))
                 return true;
 
+            if (item.type === 'media_current_time')
+                return true;
+
             let name = roomInfo.users[item.user_id].name
             let time = new Date(item.inserted_at)
             let timeStr = time.toLocaleTimeString(navigator.language, { hour12: false, hour: '2-digit', minute: '2-digit' });

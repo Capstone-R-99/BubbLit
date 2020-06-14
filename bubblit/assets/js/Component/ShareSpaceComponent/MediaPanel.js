@@ -204,6 +204,7 @@ export default class MediaPanel extends Component {
                     미디어 재생시간 공유하기
                 <input type='checkbox' checked={this.state.isShareProgress}
                         onChange={this.toggleShareProgressChange.bind(this)} />
+                    {this.props.mediaurl == '' && <p>현재 재생되고 있는 미디어는 없습니다.</p>}
 
                 </p>
             </div>

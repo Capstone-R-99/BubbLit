@@ -57,6 +57,7 @@ export default class ChatModule extends Component {
 
         for (var i = 0; i < this.props.roomInfo.room_users.length; i++) {
             let user_id = this.props.roomInfo.room_users[i];
+            let is_host = (this.props.roomInfo.room_users[i] == this.props.roomInfo.host_user)
             let user_info = this.props.roomInfo.users[user_id];
             let user_bubble_history = this.props.roomInfo.bubble_history[user_id]
             user_bubble_history = user_bubble_history == undefined ? [] : user_bubble_history
@@ -64,6 +65,7 @@ export default class ChatModule extends Component {
                 <ChatBox
                     isOnline={user_id in this.props.roomInfo.presences}
                     is_my_box={myName == user_info.name}
+                    is_host={is_host}
                     key={i} name={user_info.name}
                     chatboxInfo={this.state.chatboxInfo[i]}
                     chatboxNo={i}

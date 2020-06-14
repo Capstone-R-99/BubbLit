@@ -7,7 +7,7 @@ import { Presence } from "phoenix"
 import '../../css/room.css'
 import { withRouter } from 'react-router-dom'
 import { Redirect } from 'react-router';
-import crown from '../../static/images/crown.png'
+import { withAlert } from "react-alert";
 
 class Room extends Component {
     constructor(props) {
@@ -30,7 +30,7 @@ class Room extends Component {
     }
 
     lobbyRedirect = () => {
-        alert("방에 접속할 수 없습니다. 로비로 이동합니다.")
+        this.props.alert.show("방에 접속할 수 없습니다. 로비로 이동합니다.")
         this.props.history.push('/')
     }
 
@@ -66,7 +66,7 @@ class Room extends Component {
             console.log('user_quit', payload);
             this.props.userQuit(payload.body);
             if (this.props.userId == payload.body) {
-                alert("탈출!");
+                this.props.alert.show("탈출!");
                 this.setState({
                     redirect: true
                 })
@@ -157,4 +157,4 @@ class Room extends Component {
     }
 }
 
-export default withRouter(Room)
+export default withAlert()(withRouter(Room))

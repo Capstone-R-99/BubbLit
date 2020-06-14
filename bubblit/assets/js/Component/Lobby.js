@@ -5,8 +5,9 @@ import CreateRoom from './CreateRoom'
 import { Link } from 'react-router-dom'
 import '../../css/lobby.css'
 import JoinRoom from './JoinRoom'
+import { withAlert } from "react-alert";
 
-export default class Lobby extends Component {
+class Lobby extends Component {
 
     constructor(props) {
         super(props);
@@ -56,7 +57,7 @@ export default class Lobby extends Component {
     setRoomIDWithRoomCode(room_code) {
         var splited = room_code.split(":")
         if (splited.length < 2) {
-            alert("유효하지 않은 Room Code입니다.")
+            this.props.alert.show("유효하지 않은 Room Code입니다.", { type: 'error' })
             return false;
         }
 
@@ -227,3 +228,5 @@ export default class Lobby extends Component {
 
     }
 }
+
+export default withAlert()(Lobby)

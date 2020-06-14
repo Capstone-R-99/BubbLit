@@ -7,8 +7,9 @@ import LogPanel from './ShareSpaceComponent/LogPanel'
 import ActionLogPanel from './ShareSpaceComponent/ActionLogPanel'
 import './../../css/shareSpace.css'
 import { Redirect } from 'react-router';
+import { withAlert } from "react-alert";
 
-export default class ShareSpace extends Component {
+class ShareSpace extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,10 +24,10 @@ export default class ShareSpace extends Component {
             tabIndex: 0,
             redirect: false
         }
+
     }
 
     componentDidMount() {
-
         if (this.props.channel != null) {
             this.props.channel.on('room_after_join', payload => {
                 // 시간대형식을 js 식으로 해줌 (ISO 포맷)
@@ -71,10 +72,12 @@ export default class ShareSpace extends Component {
                 }
             })
             this.props.channel.on('get_room_code', payload => {
-                alert(payload.body)
+                this.props.alert.show(payload.body, { type: 'info', timeout: 0 })
+                // alert(payload.body)
             })
             this.props.channel.on('delete_room', payload => {
-                alert("방이 터졌어요")
+                this.props.alert.show("방이 삭제되었습니다!", { type: 'info' })
+                // alert("방이 터졌어요")
                 this.setState({
                     redirect: true
                 })
@@ -141,7 +144,7 @@ export default class ShareSpace extends Component {
 
     sendTabAction(type, body) {
         if (this.state.restrict_control == "true" && this.props.isHost == false) {
-            alert("방장이 조작을 제한하고 있습니다.")
+            this.props.alert.show("방장이 조작을 제한하고 있습니다.")
         }
         this.props.channel.push("tab_action", { type: type, body: body })
     }
@@ -275,3 +278,5 @@ export default class ShareSpace extends Component {
         )
     }
 }
+
+export default withAlert()(ShareSpace)

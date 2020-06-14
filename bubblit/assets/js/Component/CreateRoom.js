@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Form } from 'semantic-ui-react'
 import axios from 'axios'
+import { withAlert } from "react-alert";
 
 class CreateRoom extends Component {
     constructor(props) {
@@ -12,14 +13,14 @@ class CreateRoom extends Component {
     }
 
     makeRoom() {
+        var self = this
         console.log(this.state.inputMessage);
         axios.post('/api/room/make', {
             title: this.state.inputMessage,
             is_private: this.state.isPrivate
         }).then(function (response) {
-            console.log(response);
-            alert("Success to create room!")
-            window.location.reload(false);
+            self.props.alert.show("방 생성에 성공했습니다!")
+            // window.location.reload(false);
         }).catch(function (error) {
             console.log(error);
         });
@@ -66,4 +67,4 @@ class CreateRoom extends Component {
     }
 }
 
-export default CreateRoom
+export default withAlert()(CreateRoom)
